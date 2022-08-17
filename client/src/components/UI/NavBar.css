@@ -1,0 +1,24 @@
+
+.nav-container {
+   width: 100%;
+   /* background-color: GBA(255, 255, 255, 0.04); */
+   color: black;
+   display: flex;
+   justify-content: center;
+   
+
+ 
+   
+}
+
+.nav-links {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: .4rem;
+    width: 350px;
+    letter-spacing: 1px;
+    font-size: 20px; 
+}
+
+
