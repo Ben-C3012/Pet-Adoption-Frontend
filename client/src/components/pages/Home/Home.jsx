@@ -20,7 +20,7 @@ const imgURL = 'https://cdn.pixabay.com/photo/2016/07/21/14/18/dog-1532627_960_7
       </Center>
  
 
-      <Center  bgImage={imgURL} bgRepeat = {'no-repeat'}   bgPosition="center"  h='600px' color='white'>
+      <Center mt={5}  bgImage={imgURL} bgRepeat = {'no-repeat'}   bgPosition="center"  h='600px' color='white'>
         <Flex direction={'column'}>
          
     
