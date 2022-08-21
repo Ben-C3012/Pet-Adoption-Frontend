@@ -1,31 +1,21 @@
-
-import { Center, Box, Heading, Flex, Text } from '@chakra-ui/react'
-import { Grid, GridItem } from '@chakra-ui/react'
-import React from 'react'
+import { Text } from '@chakra-ui/react'
 import './Home.css'
 import NavBar from '../../UI/NavBar'
+
 function Home() {
-
-const imgURL = 'https://cdn.pixabay.com/photo/2016/07/21/14/18/dog-1532627_960_720.png'
-
 
   return (
     <>
       <NavBar />
-      <Center bg={'teal.400'} h='200px' color='white' mt={100}>
-        <Flex direction={'column'}>
-          <Heading>Pet Adoption Site</Heading>
-          <Text mt={2} fontSize='lg'>Find Your Next Pet Today!</Text>
-        </Flex>
-      </Center>
- 
 
-      <Center mt={5}  bgImage={imgURL} bgRepeat = {'no-repeat'}   bgPosition="center"  h='600px' color='white'>
-        <Flex direction={'column'}>
-         
-    
-        </Flex>
-      </Center>
+      <div className="home-container">
+        <Text mt={4} bgGradient='linear(to-l, #023047, #1d3557)' bgClip='text' fontSize='4xl' fontWeight='extrabold'> Discover Your Next Pet </Text>
+      </div>
+
+
+      <Text>Search For a Pet 🐕</Text>
+      <Text>Adopt 😀</Text>
+      <Text>Enjoy 🧫</Text>
 
 
 
@@ -34,5 +24,4 @@ const imgURL = 'https://cdn.pixabay.com/photo/2016/07/21/14/18/dog-1532627_960_7
 }
 
 export default Home
-
 

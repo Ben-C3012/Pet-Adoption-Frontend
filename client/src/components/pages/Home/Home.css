@@ -1,19 +1,12 @@
 
-
-/* .hero-section {
-    height: 1200px;
-    background-color: aqua;
+.home-container {
     margin-top: 100px;
-    background-image: url('https://cdn.dribbble.com/users/1355613/screenshots/15686980/media/0386991ad0017c5da127247d5c087b0c.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border: 1px solid black;
-} */
+}
 
 
-
-@media (max-width : '500px') {
-      .backgournd-div {
+@media (max-width : '1200px') {
+      .home-container {
          display: none;
       }
 }
+
