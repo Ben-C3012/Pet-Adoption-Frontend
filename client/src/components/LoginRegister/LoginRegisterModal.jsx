@@ -1,14 +1,15 @@
 import React from 'react'
 import ToggleRegister from './ToggleRegister'
-import {Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody,  ModalCloseButton,  Button,
-useDisclosure,
+import {
+    Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button,
+    useDisclosure, Text
 } from '@chakra-ui/react'
 
 function LoginRegister() {
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <>
-            <Button onClick={onOpen}>Login / Register</Button>
+            <Text onClick={onOpen}>Login / Register</Text>
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
@@ -16,13 +17,13 @@ function LoginRegister() {
                     <ModalHeader>Login / Register</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                       
-                       <ToggleRegister/>
-                   
+
+                        <ToggleRegister />
+
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button variant='outline'  mr={3} onClick={onClose}>
+                        <Button variant='outline' mr={3} onClick={onClose}>
                             Close
                         </Button>
                     </ModalFooter>

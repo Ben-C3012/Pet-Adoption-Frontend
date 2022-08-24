@@ -1,42 +1,95 @@
-import { NavLink } from "react-router-dom"
-import LoginRegister from "../LoginRegister/LoginRegisterModal"
-import './NavBar.css'
-import { Button, Text } from '@chakra-ui/react'
-import { FaBone } from 'react-icons/fa';
-import Nav from "./Nav";
+
+import {
+    Box,
+    Flex,
+    Avatar,
+    Link,
+    Button,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    MenuDivider,
+    useDisclosure,
+    useColorModeValue,
+    Stack,
+    useColorMode,
+    Center,
+    Text
+} from '@chakra-ui/react';
+import { BsFillMoonFill } from 'react-icons/bs'
+import { FaSun } from 'react-icons/fa'
+import LoginRegisterModal from '../LoginRegister/LoginRegisterModal'
 
 
+const NavLink = ({ children }) => (
+    <Link
+        px={2}
+        py={1}
+        rounded={'md'}
+        _hover={{
+            textDecoration: 'none',
+            bg: useColorModeValue('gray.200', 'gray.700'),
+        }}
+        href={'#'}>
+        {children}
+    </Link>
+);
 
-function NavBar() {
-
-
+export default function NavBar() {
+    const { colorMode, toggleColorMode } = useColorMode();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     return (
+        <>
+            <Box bg={useColorModeValue('teal.400', 'gray.900')} px={4}>
+                <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
+                    <Box>
+                        <Text color={'white'} mb={2} className='logo' fontSize='3xl'>Pet Adoption</Text>
+                    </Box>
 
-         <Nav></Nav>
-        
+                    <Flex alignItems={'center'}>
+                        <Stack direction={'row'} spacing={7}>
+                            <Button onClick={toggleColorMode}>
+                                {colorMode === 'light' ? <BsFillMoonFill /> : <FaSun />}
+                            </Button>
 
-    )
+                            <Menu>
+                                <MenuButton
+                                    as={Button}
+                                    rounded={'full'}
+                                    variant={'link'}
+                                    cursor={'pointer'}
+                                    minW={0}>
+                                    <Avatar
+                                        size={'sm'}
+                                        src={'https://avatars.dicebear.com/api/male/username.svg'}
+                                    />
+                                </MenuButton>
+                                <MenuList alignItems={'center'}>
+                                    <br />
+                                    <Center>
+                                        <Avatar
+                                            size={'2xl'}
+                                            src={'https://avatars.dicebear.com/api/male/username.svg'}
+                                        />
+                                    </Center>
+                                    <br />
+                                    <Center>
+                                        <p>Username</p>
+                                    </Center>
+                                    <br />
+                                    <MenuDivider />
+                                    <MenuItem>Your Servers</MenuItem>
+                                    <MenuItem>Account Settings</MenuItem>
+                                    <MenuItem>
+                                        <LoginRegisterModal>Login</LoginRegisterModal>
+                                    </MenuItem>
+                                </MenuList>
+                            </Menu>
+                        </Stack>
+                    </Flex>
+                </Flex>
+            </Box>
+        </>
+    );
 }
-
-export default NavBar
-
-
-// <div className="nav-container">
-
-        //     <span className="logo-container">
-        //        <h1 className="heading">Pet Adoption</h1>
-
-        //     </span>
-
-        //     <div>
-        //         <ul className='nav-links'>
-        //             <li id="search">
-        //                 <NavLink activeclassname="active" className='Search' to='/pets'><Button color={'black'} bg={'orange.400'} variant={'solid'}>Search Pets</Button></NavLink>
-        //             </li>
-
-        //             <li>
-        //                 <LoginRegister />
-        //             </li>
-        //         </ul>
-        //     </div>
-        // </div>

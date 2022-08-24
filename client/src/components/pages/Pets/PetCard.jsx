@@ -1,9 +1,19 @@
 import { Center, Image, Box, Text } from '@chakra-ui/react'
-import { useColorModeValue, Heading, Stack } from '@chakra-ui/react';
-
+import { useColorModeValue, Heading, Stack, Button } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom'
 
 function PetCard(props) {
-    const { type, petName, adoptionStatus, bio, breed, color, dietaryRestrictions, picture } = props
+    const { type, petName, adoptionStatus, bio, breed, color, dietaryRestrictions, picture, id } = props
+
+    const navigate = useNavigate()
+
+    const handleClick = (event) => {
+        console.log(event.currentTarget.id)
+        navigate({ pathname: '/pet', search: `?id=${id}` });
+
+    }
+
+
 
     return (
 
@@ -51,7 +61,7 @@ function PetCard(props) {
                         />
                     </Box>
                     <Stack pt={10} align={'center'}>
-                        <Text color={'gray.500'} fontSize={'sm'} textTransform={'uppercase'}>
+                        <Text color={'gray.500'} fontSize={'sm'}>
                             {petName}
                         </Text>
                         <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
@@ -63,14 +73,15 @@ function PetCard(props) {
                             </Text>
 
                         </Stack>
-                        <Text>{color}</Text>
-                        <Text>Hypoallergenioic</Text>
-                        <Text>{dietaryRestrictions}</Text>
-                        <Text>{bio}</Text>
+
+
+                        <Button onClick={handleClick}>Read More</Button>
 
                     </Stack>
                 </Box>
+
             </Center>
+
 
 
         </>

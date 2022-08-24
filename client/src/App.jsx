@@ -1,9 +1,9 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './components/pages/Home/Home'
-// import Pets from './components/pages/Pets/Pets';
-import NavBar from './components/UI/NavBar';
 import SearchPets from './components/pages/SearchPets/SearchPets';
+import NavBar from './components/UI/NavBar';
+import Pet from './components/pages/Pets/Pet';
 
 function App() {
   return (
@@ -18,6 +18,8 @@ function App() {
             <Route path='/' element={<Home />} />
 
             <Route path='/pets' element={<SearchPets />} />
+
+            <Route path='/pet/' element={<Pet />} />
 
           </Routes>
 
