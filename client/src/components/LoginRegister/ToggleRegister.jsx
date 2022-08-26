@@ -4,6 +4,8 @@ import Register from './Register'
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 function ToggleRegister() {
+  
+
     return (
         <Tabs>
             <TabList>
@@ -19,7 +21,7 @@ function ToggleRegister() {
 
                 </TabPanel>
                 <TabPanel>
-                    
+
                     <Register />
 
                 </TabPanel>

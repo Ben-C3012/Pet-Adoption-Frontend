@@ -1,12 +1,28 @@
-import React from 'react'
 import ToggleRegister from './ToggleRegister'
 import {
     Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Button,
     useDisclosure, Text
 } from '@chakra-ui/react'
+import { Context } from '../../App'
+import { useContext , useEffect } from 'react'
 
-function LoginRegister() {
+
+function LoginRegister(props) {
+    const value = useContext(Context);
+    const { loggedIn, isLoggedIn } = value
+
+  
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    useEffect(() => {
+      if(loggedIn) {
+        onClose()
+      }
+    }, [loggedIn])
+    
+
+
+
     return (
         <>
             <Text onClick={onOpen}>Login / Register</Text>
@@ -18,7 +34,7 @@ function LoginRegister() {
                     <ModalCloseButton />
                     <ModalBody>
 
-                        <ToggleRegister />
+                        <ToggleRegister onclose = {onclose} />
 
                     </ModalBody>
 

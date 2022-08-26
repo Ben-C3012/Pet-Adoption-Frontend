@@ -20,7 +20,9 @@ import {
 import { BsFillMoonFill } from 'react-icons/bs'
 import { FaSun } from 'react-icons/fa'
 import LoginRegisterModal from '../LoginRegister/LoginRegisterModal'
-
+import { Context } from '../../App';
+import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NavLink = ({ children }) => (
     <Link
@@ -28,7 +30,7 @@ const NavLink = ({ children }) => (
         py={1}
         rounded={'md'}
         _hover={{
-            textDecoration: 'none',
+            textDecoration: 'underline',
             bg: useColorModeValue('gray.200', 'gray.700'),
         }}
         href={'#'}>
@@ -37,8 +39,23 @@ const NavLink = ({ children }) => (
 );
 
 export default function NavBar() {
+    const navigate = useNavigate()
+
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+
+    const value = useContext(Context);
+    const { loggedIn, isLoggedIn } = value
+
+    console.log('Logged In:', loggedIn)
+
+    const handleAcountSettings = () => {
+        navigate('/settings')
+    }
+
+
+
     return (
         <>
             <Box bg={useColorModeValue('teal.400', 'gray.900')} px={4}>
@@ -79,10 +96,13 @@ export default function NavBar() {
                                     </Center>
                                     <br />
                                     <MenuDivider />
-                                    <MenuItem>Your Servers</MenuItem>
-                                    <MenuItem>Account Settings</MenuItem>
+                                    {loggedIn && <MenuItem>Your Pets</MenuItem>}
+                                    {loggedIn && <MenuItem onClick={handleAcountSettings}>Account Settings</MenuItem>}
                                     <MenuItem>
-                                        <LoginRegisterModal>Login</LoginRegisterModal>
+
+                                        {!loggedIn && <LoginRegisterModal></LoginRegisterModal>}
+
+
                                     </MenuItem>
                                 </MenuList>
                             </Menu>
