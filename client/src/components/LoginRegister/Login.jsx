@@ -35,6 +35,7 @@ function Login() {
             if (res) {
                 isLoggedIn(true)
                 navigate('/main', { replace: true })
+                window.location.reload()
             }
 
 

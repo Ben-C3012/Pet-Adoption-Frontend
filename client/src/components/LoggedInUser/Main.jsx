@@ -68,7 +68,7 @@ export default function SplitScreen() {
                         </Text>{' '}
                     </Heading>
                     <Text fontSize={{ base: 'md', lg: 'lg' }} color={'gray.500'}>
-                        Adopt Your Next Pet Or Save One For Later.
+                        Adopt Your Next Best Friend Or Save One For Later.
                     </Text>
                     <Stack direction={{ base: 'column', md: 'row' }} spacing={4}>
                         <Button onClick={handleSearchClick}

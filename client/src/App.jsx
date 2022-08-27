@@ -5,11 +5,13 @@ import SearchPets from './components/pages/SearchPets/SearchPets';
 import NavBar from './components/UI/NavBar';
 import Pet from './components/pages/Pets/Pet';
 import { useState, useEffect } from 'react'
-import Profile from './components/pages/Profile/Profile';
+import Profile from './components/LoggedInUser/MyPets';
 import Main from './components/LoggedInUser/Main';
 import { createContext } from 'react';
 import axios from 'axios';
 import Settings from './components/LoggedInUser/Settings';
+import UserProfileEdit from './components/LoggedInUser/UserProfileEdit';
+import MyPets from './components/LoggedInUser/MyPets';
 
 export const Context = createContext('Default Value');
 
@@ -17,6 +19,24 @@ function App() {
 
   // Check if Logged in 
   const [loggedIn, isLoggedIn] = useState(false)
+
+
+  useEffect(() => {
+    axios({
+      method: 'POST',
+      url: 'http://localhost:8080/api/v1/users/isloggedin',
+      withCredentials: true
+    })
+
+      .then(res => {
+        console.log(res)
+        isLoggedIn(true)
+      })
+      .catch(err => console.log(err.message))
+  }, [])
+
+
+
 
 
 
@@ -44,9 +64,16 @@ function App() {
 
             <Route path='/main' element={<Main />} />
 
-            <Route path='/profile' element={<Profile />} />
-
             <Route path='/settings' element={<Settings />} />
+
+            <Route path='/userProfileEdit' element={<UserProfileEdit />} />
+
+            <Route path='/myPets' element={<MyPets/>} />
+
+
+
+
+
 
 
           </Routes>

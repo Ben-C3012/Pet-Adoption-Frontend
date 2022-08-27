@@ -86,7 +86,7 @@ export default function SearchPets() {
                         <Text fontSize={'lg'} color={'gray.600'}>
                             To enjoy all of our cute  <Link color={'blue.400'}>animals</Link> 🐶
                         </Text>
-                        <Button onClick={handleHome} position={'absolute'} top={'1'} right={'10rem'} colorScheme='orange' variant='solid'>
+                        <Button onClick={handleHome} position={'absolute'} top={'1'} right={'8.6rem'} colorScheme='orange' variant='solid'>
                             Back To Home
                         </Button>
                     </Stack>

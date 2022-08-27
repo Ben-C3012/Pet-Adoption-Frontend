@@ -21,8 +21,9 @@ import { BsFillMoonFill } from 'react-icons/bs'
 import { FaSun } from 'react-icons/fa'
 import LoginRegisterModal from '../LoginRegister/LoginRegisterModal'
 import { Context } from '../../App';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const NavLink = ({ children }) => (
     <Link
@@ -40,20 +41,58 @@ const NavLink = ({ children }) => (
 
 export default function NavBar() {
     const navigate = useNavigate()
+    const [name, setName] = useState('')
+    const [photo, setPhoto] = useState('')
+
 
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
-
 
     const value = useContext(Context);
     const { loggedIn, isLoggedIn } = value
 
     console.log('Logged In:', loggedIn)
 
-    const handleAcountSettings = () => {
-        navigate('/settings')
+    const handleAcountSettings = () => navigate('/settings')
+
+    const handleLogOut = () => {
+        axios({
+            method: 'GET',
+            url: 'http://localhost:8080/api/v1/users/logout',
+            withCredentials: true
+        })
+
+            .then(res => {
+                isLoggedIn(false)
+                navigate('/')
+                window.location.reload()
+            })
+            .catch(err => console.log(err.message))
     }
 
+
+
+    useEffect(() => {
+        axios({
+            method: 'POST',
+            url: 'http://localhost:8080/api/v1/users/isloggedin',
+            withCredentials: true
+        })
+
+            .then(res => {
+                console.log(res.data.user)
+                const { name, photo } = res.data.user
+                setName(name)
+                setPhoto(photo)
+
+            })
+            .catch(err => console.log(err.message))
+    }, [])
+
+
+    const handleYourPetsClick = () => {
+        navigate('/myPets')
+    }
 
 
     return (
@@ -79,7 +118,7 @@ export default function NavBar() {
                                     minW={0}>
                                     <Avatar
                                         size={'sm'}
-                                        src={'https://avatars.dicebear.com/api/male/username.svg'}
+                                        src={photo}
                                     />
                                 </MenuButton>
                                 <MenuList alignItems={'center'}>
@@ -87,17 +126,18 @@ export default function NavBar() {
                                     <Center>
                                         <Avatar
                                             size={'2xl'}
-                                            src={'https://avatars.dicebear.com/api/male/username.svg'}
+                                            src={photo}
                                         />
                                     </Center>
                                     <br />
                                     <Center>
-                                        <p>Username</p>
+                                        {loggedIn ? name : <p>Log In</p>}
                                     </Center>
                                     <br />
                                     <MenuDivider />
-                                    {loggedIn && <MenuItem>Your Pets</MenuItem>}
+                                    {loggedIn && <MenuItem onClick={handleYourPetsClick}>Your Pets</MenuItem>}
                                     {loggedIn && <MenuItem onClick={handleAcountSettings}>Account Settings</MenuItem>}
+                                    {loggedIn && <MenuItem onClick={handleLogOut}>Log Out</MenuItem>}
                                     <MenuItem>
 
                                         {!loggedIn && <LoginRegisterModal></LoginRegisterModal>}
