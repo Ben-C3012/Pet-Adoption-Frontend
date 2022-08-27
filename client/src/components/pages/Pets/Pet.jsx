@@ -10,13 +10,18 @@ import {
     Text,
     useColorModeValue,
 } from '@chakra-ui/react';
+import { useContext } from 'react';
+import { Context } from '../../../App';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-const axios = require('axios').default;
+import axios from 'axios';
 
 export default function Pet() {
     const navigate = useNavigate()
     const [pet, setPet] = useState({})
+
+    const value = useContext(Context);
+    const { loggedIn, isLoggedIn } = value
 
     useEffect(() => {
 
@@ -52,7 +57,7 @@ export default function Pet() {
                 borderWidth="1px"
                 borderRadius="lg"
                 w={{ sm: '100%', md: '450px' }}
-                height={{ sm: '700px', md: '45rem' }}
+                height={{ sm: '50rem', md: '50rem' }}
                 direction={{ base: 'column', md: 'column' }}
                 bg={useColorModeValue('white', 'gray.900')}
                 boxShadow={'2xl'}
@@ -123,14 +128,14 @@ export default function Pet() {
                         padding={2}
                         justifyContent={'space-between'}
                         alignItems={'center'}>
-                        <Button
+                        {loggedIn && <Button
                             flex={1}
                             fontSize={'sm'}
                             rounded={'full'}
                         >
                             Foster
-                        </Button>
-                        <Button
+                        </Button>}
+                        {loggedIn && <Button
                             flex={1}
                             fontSize={'sm'}
                             rounded={'full'}
@@ -146,10 +151,11 @@ export default function Pet() {
                                 bg: 'blue.500',
                             }}>
                             Adpot
-                        </Button>
+                        </Button>}
                     </Stack>
-                </Stack>
+                    {!loggedIn && <Center textAlign={'center'}>Log In To Adopt / Foster</Center>}
             </Stack>
-        </Center>
+        </Stack>
+        </Center >
     );
 }

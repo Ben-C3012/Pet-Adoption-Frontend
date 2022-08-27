@@ -1,11 +1,11 @@
 import './App.css';
+import Footer from './components/UI/Footer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './components/pages/Home/Home'
 import SearchPets from './components/pages/SearchPets/SearchPets';
 import NavBar from './components/UI/NavBar';
 import Pet from './components/pages/Pets/Pet';
 import { useState, useEffect } from 'react'
-import Profile from './components/LoggedInUser/MyPets';
 import Main from './components/LoggedInUser/Main';
 import { createContext } from 'react';
 import axios from 'axios';
@@ -72,11 +72,10 @@ function App() {
 
 
 
-
-
-
+    
 
           </Routes>
+
 
           {/* </div> */}
 
