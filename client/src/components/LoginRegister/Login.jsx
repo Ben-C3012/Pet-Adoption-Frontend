@@ -69,11 +69,11 @@ function Login() {
             <FormLabel htmlFor='email'>Email address</FormLabel>
             <Input id='email' type='email' onChange={handleEmail} value={email} />
 
-       
-            <FormControl mt={4} id="password" isRequired>
+
+            <FormControl mt={4} id="password">
                 <FormLabel>Password</FormLabel>
                 <InputGroup>
-                    <Input  onChange={handlePassword} value={password} type={showPassword ? 'text' : 'password'} />
+                    <Input onChange={handlePassword} value={password} type={showPassword ? 'text' : 'password'} />
                     <InputRightElement h={'full'}>
                         <Button
                             variant={'ghost'}

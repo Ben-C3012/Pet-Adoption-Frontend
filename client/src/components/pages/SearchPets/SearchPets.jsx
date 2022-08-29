@@ -19,6 +19,9 @@ import { useState } from 'react';
 import PetCard from '../Pets/PetCard';
 const axios = require('axios').default;
 
+ 
+
+
 export default function SearchPets() {
     const navigate = useNavigate()
     const handleHome = () => navigate('/', { replace: true })

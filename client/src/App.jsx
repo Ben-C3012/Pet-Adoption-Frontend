@@ -12,6 +12,10 @@ import axios from 'axios';
 import Settings from './components/LoggedInUser/Settings';
 import UserProfileEdit from './components/LoggedInUser/UserProfileEdit';
 import MyPets from './components/LoggedInUser/MyPets';
+import NotFound from './components/pages/NotFoundPage/NotFound';
+import AddPet from './components/AdminPages/AddPet';
+import Dashboared from './components/AdminPages/Dashboared';
+import UserProfile from './components/AdminPages/UserProfile';
 
 export const Context = createContext('Default Value');
 
@@ -19,6 +23,7 @@ function App() {
 
   // Check if Logged in 
   const [loggedIn, isLoggedIn] = useState(false)
+  const [admin, isAdmin] = useState(false)
 
 
   useEffect(() => {
@@ -29,7 +34,6 @@ function App() {
     })
 
       .then(res => {
-        console.log(res)
         isLoggedIn(true)
       })
       .catch(err => console.log(err.message))
@@ -43,7 +47,7 @@ function App() {
   return (
     <>
 
-      <Context.Provider value={{ loggedIn, isLoggedIn }}>
+      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin }}>
 
         <BrowserRouter>
           {/* <div className="App"> */}
@@ -68,11 +72,23 @@ function App() {
 
             <Route path='/userProfileEdit' element={<UserProfileEdit />} />
 
-            <Route path='/myPets' element={<MyPets/>} />
+            <Route path='/myPets' element={<MyPets />} />
+
+
+            {/* Admin Pages */}
+
+            <Route path='/addPet' element={<AddPet />} />
+
+            <Route path='/dashboared' element={<Dashboared />} />
+
+            <Route path='/user' element={<UserProfile />} />
 
 
 
-    
+
+            {/* Catch All */}
+            <Route path='*' element={<NotFound />} />
+
 
           </Routes>
 

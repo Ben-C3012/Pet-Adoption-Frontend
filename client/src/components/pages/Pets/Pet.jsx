@@ -5,10 +5,9 @@ import {
     Flex,
     Heading,
     Image,
-    Link,
     Stack,
     Text,
-    useColorModeValue,
+    useColorModeValue
 } from '@chakra-ui/react';
 import { useContext } from 'react';
 import { Context } from '../../../App';
@@ -18,35 +17,128 @@ import axios from 'axios';
 
 export default function Pet() {
     const navigate = useNavigate()
-    const [pet, setPet] = useState({})
-
     const value = useContext(Context);
     const { loggedIn, isLoggedIn } = value
 
-    useEffect(() => {
+    const [pet, setPet] = useState({})
+    const [id, setId] = useState('')
 
+    const [saved, setSaved] = useState(false)
+    const [petName, setPetName] = useState('')
+
+    const [adopted, setAdopted] = useState(false)
+    const [currentPets, setCurrentPets] = useState(false)
+
+    const handleBackToSearch = () => navigate('/pets', { replace: true })
+
+    useEffect(() => {
         const params = new Proxy(new URLSearchParams(window.location.search), {
             get: (searchParams, prop) => searchParams.get(prop),
         });
 
         let petId = params.id;
-
-        console.log(petId)
+        setId(petId)
 
         axios.get(`http://localhost:8080/api/v1/pets/${petId}`)
             .then(res => {
-                console.log(res.data.data.pet)
                 const data = res.data.data.pet
+                setPetName(res.data.data.pet.name)
                 setPet(data)
-
             })
             .catch(err => console.log(err))
     }, [])
 
 
-    const handleBackToSearch = () => {
-        navigate('/pets', { replace: true })
+
+    // Get Users Saved Pets
+    useEffect(() => {
+        axios({
+            method: 'POST',
+            url: 'http://localhost:8080/api/v1/users/isloggedin',
+            withCredentials: true
+        })
+            .then(res => {
+
+                const arr = res.data.user.savedPets
+                const found = arr.some(pet => pet.name == petName)
+                if (!found) setSaved(true)
+
+                // const userCurrentPets = res.data.user.currentPets
+                // console.log(userCurrentPets)
+                // const doesOwnPet = userCurrentPets.find(pet => pet.name === petName)
+                // console.log(doesOwnPet) 
+
+            })
+            .catch(err => console.log(err.message))
+
+
+
+
+
+    }, [])
+
+
+    const handleSavePet = () => {
+        axios({
+            method: 'PATCH',
+            url: `http://localhost:8080/api/v1/pets/${id}/save`,
+            withCredentials: true
+        })
+
+            .then(res => {
+                console.log(res)
+                setSaved(true)
+
+            })
+            .catch(err => console.log(err))
     }
+
+
+    const handleUnsavePet = () => {
+        axios({
+            method: 'DELETE',
+            url: `http://localhost:8080/api/v1/pets/${id}/save`,
+            withCredentials: true
+        })
+
+            .then(res => {
+                console.log(res)
+                setSaved(false)
+
+            })
+            .catch(err => console.log(err))
+    }
+
+
+    const handleAdoptClick = () => {
+        axios({
+            method: 'PATCH',
+            url: `http://localhost:8080/api/v1/pets/${id}/adopt`,
+            withCredentials: true
+        })
+
+            .then(res => {
+                console.log(res)
+                setAdopted(true)
+            })
+
+            .catch(err => console.log(err))
+    }
+
+
+    // const handleReturnPet = () => {
+    //     axios({
+    //         method: 'POST',
+    //         url: `http://localhost:8080/api/v1/pets/return/${id}`,
+    //         withCredentials: true
+    //     })
+
+    //     .then(res => {
+    //         console.log(res)
+    //         setAdopted(false)
+    //     })
+    // }
+
 
 
 
@@ -64,6 +156,9 @@ export default function Pet() {
                 padding={4}>
                 <Flex flex={1} bg="blue.200">
                     <Image
+                        boxShadow={
+                            '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
+                        }
                         objectFit="cover"
                         boxSize="100%"
                         src={
@@ -84,44 +179,55 @@ export default function Pet() {
                     <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
                         {pet.breed}
                     </Text>
+                    <Text fontWeight={600} color={'gray.200'} size="sm" mb={4}>
+                        {pet.adoptionStatus}
+                    </Text>
                     <Text
                         textAlign={'center'}
                         color={useColorModeValue('gray.700', 'gray.400')}
                         px={3}>
                         {pet.bio}
                     </Text>
-                    <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
+                    <Stack align={'center'} justify={'center'} direction={'column'} mt={6}>
+
+
                         <Badge
                             px={2}
                             py={1}
-                            bg={useColorModeValue('gray.50', 'gray.800')}
+                            bg={useColorModeValue('gray.100', 'gray.800')}
                             fontWeight={'400'} fontSize={'md'}>
-                            {pet.height}cm
+                            Height: {pet.height}cm
                         </Badge>
                         <Badge
                             px={2}
                             py={1}
-                            bg={useColorModeValue('gray.50', 'gray.800')}
+                            bg={useColorModeValue('gray.100', 'gray.800')}
                             fontWeight={'400'} fontSize={'md'}>
-                            {pet.weight}kg
+                            Weight: {pet.weight}kg
+                        </Badge>
+
+
+
+                        <Badge
+                            px={2}
+                            py={1}
+                            bg={useColorModeValue('gray.100', 'gray.800')}
+                            fontWeight={'400'} fontSize={'md'}>
+                            Color: {pet.color}
                         </Badge>
                         <Badge
                             px={2}
                             py={1}
-                            bg={useColorModeValue('gray.50', 'gray.800')}
+                            bg={useColorModeValue('gray.100', 'gray.800')}
                             fontWeight={'400'} fontSize={'md'}>
-                            {pet.color}
+                            DietaryRestrictions {pet.dietaryRestrictions}
                         </Badge>
-                        <Badge
-                            px={2}
-                            py={1}
-                            bg={useColorModeValue('gray.50', 'gray.800')}
-                            fontWeight={'400'} fontSize={'md'}>
-                            {pet.dietaryRestrictions === false ? 'No Diet Restrictions' : pet.dietaryRestrictions}
-                        </Badge>
+
+
                     </Stack>
 
                     <Stack
+
                         width={'100%'}
                         mt={'2rem'}
                         direction={'row'}
@@ -129,33 +235,84 @@ export default function Pet() {
                         justifyContent={'space-between'}
                         alignItems={'center'}>
                         {loggedIn && <Button
+                            bg={'orange.400'}
                             flex={1}
                             fontSize={'sm'}
                             rounded={'full'}
+                            _hover={{
+                                bg: 'orange.300',
+                            }}
+                            _focus={{
+                                bg: 'orange.200',
+
+                            }}
+                            color={'white'}
                         >
+
                             Foster
                         </Button>}
+
                         {loggedIn && <Button
+                            onClick={handleAdoptClick}
                             flex={1}
                             fontSize={'sm'}
                             rounded={'full'}
                             bg={'blue.400'}
                             color={'white'}
-                            boxShadow={
-                                '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-                            }
+
                             _hover={{
                                 bg: 'blue.500',
                             }}
                             _focus={{
-                                bg: 'blue.500',
+                                bg: 'blue.300',
                             }}>
                             Adpot
                         </Button>}
+
+                        {loggedIn && !saved && <Button
+                            onClick={handleSavePet}
+                            flex={1}
+                            fontSize={'sm'}
+                            rounded={'full'}
+                            bg={'gray.500'}
+                            color={'white'}
+                            _hover={{
+                                bg: 'gray.600',
+                            }}
+                            _focus={{
+                                bg: 'gray.500',
+                            }}>
+
+                            Save For Later
+
+                        </Button>}
+
+
+
+                        {loggedIn && saved && <Button
+                            onClick={handleUnsavePet}
+                            flex={1}
+                            fontSize={'sm'}
+                            rounded={'full'}
+                            bg={'gray.500'}
+                            color={'white'}
+                            _hover={{
+                                bg: 'gray.600',
+                            }}
+                            _focus={{
+                                bg: 'gray.500',
+                            }}>
+
+                            Unsave
+
+                        </Button>}
+
+
+
                     </Stack>
                     {!loggedIn && <Center textAlign={'center'}>Log In To Adopt / Foster</Center>}
+                </Stack>
             </Stack>
-        </Stack>
         </Center >
     );
 }

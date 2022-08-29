@@ -49,9 +49,11 @@ export default function NavBar() {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const value = useContext(Context);
-    const { loggedIn, isLoggedIn } = value
+    const { loggedIn, isLoggedIn, admin, isAdmin } = value
 
     console.log('Logged In:', loggedIn)
+    console.log('Admin:', admin)
+
 
     const handleAcountSettings = () => navigate('/settings')
 
@@ -80,8 +82,8 @@ export default function NavBar() {
         })
 
             .then(res => {
-                console.log(res.data.user)
-                const { name, photo } = res.data.user
+                const { name, photo, role } = res.data.user
+                if (role === 'admin') isAdmin(true)
                 setName(name)
                 setPhoto(photo)
 
@@ -90,9 +92,10 @@ export default function NavBar() {
     }, [])
 
 
-    const handleYourPetsClick = () => {
-        navigate('/myPets')
-    }
+    const handleYourPetsClick = () => navigate('/myPets')
+    const handleAddPetClick = () => navigate('/addPet')
+    const handleDashboaredClick = () => navigate('/dashboared')
+    
 
 
     return (
@@ -135,6 +138,8 @@ export default function NavBar() {
                                     </Center>
                                     <br />
                                     <MenuDivider />
+                                    {admin && <MenuItem onClick={handleDashboaredClick}>Dashboared</MenuItem>}
+                                    {admin && <MenuItem onClick={handleAddPetClick}>Add Pet</MenuItem>}
                                     {loggedIn && <MenuItem onClick={handleYourPetsClick}>Your Pets</MenuItem>}
                                     {loggedIn && <MenuItem onClick={handleAcountSettings}>Account Settings</MenuItem>}
                                     {loggedIn && <MenuItem onClick={handleLogOut}>Log Out</MenuItem>}

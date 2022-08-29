@@ -27,7 +27,6 @@ export default function SplitScreen() {
 
 
             .then(res => {
-                console.log(res.data.user.name)
                 setName(res.data.user.name)
             })
     }, [])
