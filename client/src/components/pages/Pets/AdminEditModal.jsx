@@ -14,7 +14,7 @@ import AdminEditForm from './AdminEditForm'
 
 
 export default function AdminEditModal(props) {
-    const { pet } = props
+    const { pet  } = props
     const { isOpen, onOpen, onClose } = useDisclosure()
     return (
         <>

@@ -26,11 +26,12 @@ export default function Pet() {
     const [id, setId] = useState('')
     const [saved, setSaved] = useState(false)
     const [petName, setPetName] = useState('')
-    const [adopted, setAdopted] = useState(false)
 
-    // Pets Arrays
-    const [currentPets, setCurrentPets] = useState([])
-    const [savedPets, setSavedPets] = useState([])
+    const [adopted, setAdopted] = useState(false)
+    const [fostered, setFostered] = useState(false)
+
+
+
 
     const handleBackToSearch = () => navigate('/pets', { replace: true })
 
@@ -59,29 +60,24 @@ export default function Pet() {
         })
 
             .then(res => {
-                setSavedPets(res.data)
+                // Saved Pet 
                 const result = res.data
                 const { savedPets, currentPets } = result
                 const findIfPetSaved = savedPets.find(pet => pet._id === petId)
                 if (findIfPetSaved) setSaved(true)
+
+                // Check if the user is the current owner of the pet
+                console.log(currentPets)
+                const findIfUserOwnsPet = currentPets.find(pet => pet._id === petId)
+                console.log(findIfUserOwnsPet)
+                if (findIfUserOwnsPet) setAdopted(true)
 
 
 
             })
 
 
-    }, [])
-
-
-    useEffect(() => {
-
-
-
-    }, [])
-
-
-
-
+    }, [fostered, adopted])
 
     const handleSavePet = () => {
         axios({
@@ -89,12 +85,7 @@ export default function Pet() {
             url: `http://localhost:8080/api/v1/pets/${id}/save`,
             withCredentials: true
         })
-
-            .then(res => {
-                console.log(res)
-                setSaved(true)
-
-            })
+            .then(res => setSaved(true))
             .catch(err => console.log(err))
     }
 
@@ -105,11 +96,7 @@ export default function Pet() {
             url: `http://localhost:8080/api/v1/pets/${id}/save`,
             withCredentials: true
         })
-            .then(res => {
-                console.log(res)
-                setSaved(false)
-            })
-
+            .then(res => setSaved(false))
             .catch(err => console.log(err))
     }
 
@@ -129,8 +116,7 @@ export default function Pet() {
             .catch(err => console.log(err))
     }
 
-
-    const handleReturnPet = () => {
+    const handleReturnPet = (event) => {
         axios({
             method: 'POST',
             url: `http://localhost:8080/api/v1/pets/return/${id}`,
@@ -144,9 +130,37 @@ export default function Pet() {
     }
 
 
+    const handleFosterPet = () => {
+        axios({
+            method: 'PATCH',
+            url: `http://localhost:8080/api/v1/pets/${id}/adopt`,
+            withCredentials: true,
+            data: {
+                foster: 'foster'
+            },
 
 
+        })
 
+            .then(res => {
+                console.log(res)
+                setFostered(true)
+            })
+    }
+
+
+    const handleReturnFromFoster = () => {
+        axios({
+            method: 'POST',
+            url: `http://localhost:8080/api/v1/pets/return/${id}`,
+            withCredentials: true
+        })
+
+            .then(res => {
+                console.log(res)
+                setFostered(false)
+            })
+    }
 
     return (
         <Center py={6}>
@@ -180,7 +194,8 @@ export default function Pet() {
                     p={1}
                     pt={2}>
                     <Heading fontSize={'2xl'} fontFamily={'body'}>
-                        {pet.name}
+
+                        {petName}
                     </Heading>
                     <Text fontWeight={600} color={'gray.600'} size="sm" mb={4}>
                         {pet.breed}
@@ -241,7 +256,8 @@ export default function Pet() {
                         padding={2}
                         justifyContent={'space-between'}
                         alignItems={'center'}>
-                        {loggedIn && <Button
+                        {loggedIn && !fostered && <Button
+                            onClick={handleFosterPet}
                             bg={'orange.400'}
                             flex={1}
                             fontSize={'sm'}
@@ -257,6 +273,25 @@ export default function Pet() {
                         >
 
                             Foster
+                        </Button>}
+
+                        {loggedIn && fostered && <Button
+                            onClick={handleReturnFromFoster}
+                            bg={'orange.400'}
+                            flex={1}
+                            fontSize={'sm'}
+                            rounded={'full'}
+                            _hover={{
+                                bg: 'orange.300',
+                            }}
+                            _focus={{
+                                bg: 'orange.200',
+
+                            }}
+                            color={'white'}
+                        >
+
+                            Return Pet
                         </Button>}
 
                         {loggedIn && !adopted && <Button
@@ -282,9 +317,15 @@ export default function Pet() {
                             fontSize={'sm'}
                             rounded={'full'}
                             color={'white'}
-                            colorScheme={'pink'}
+                            bg={'teal.500'}
+                            _hover={{
+                                bg: 'teal.600',
+                            }}
+                            _focus={{
+                                bg: 'teal.700',
+                            }}>
 
-                        >
+
                             Return
                         </Button>}
 

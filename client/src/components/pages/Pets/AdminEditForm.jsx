@@ -44,7 +44,7 @@ export default function AdminEditForm(props) {
 
     const handleFormSubmit = async () => {
         console.log(formik.values)
-        
+
         try {
             const res = await axios.patch(`http://localhost:8080/api/v1/pets/${pet._id}`, formik.values, {
                 headers: {
@@ -65,7 +65,8 @@ export default function AdminEditForm(props) {
             setMessage('Something Went Wrong! Please Try Again')
         }
 
-       window.location.reload()
+       
+           window.location.reload()
     }
 
 
@@ -179,7 +180,7 @@ export default function AdminEditForm(props) {
                                 _hover={{
                                     bg: 'blue.500',
                                 }}>
-                              Edit Pet
+                                Edit Pet
                             </Button>
                         </Stack>
                         <Stack pt={6}>
