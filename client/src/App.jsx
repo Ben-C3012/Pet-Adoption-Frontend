@@ -24,6 +24,7 @@ function App() {
   // Check if Logged in 
   const [loggedIn, isLoggedIn] = useState(false)
   const [admin, isAdmin] = useState(false)
+  const [userId, setUserId] = useState('')
 
 
   useEffect(() => {
@@ -35,6 +36,8 @@ function App() {
 
       .then(res => {
         isLoggedIn(true)
+        setUserId(res.data.user._id)
+
       })
       .catch(err => console.log(err.message))
   }, [])
@@ -47,10 +50,10 @@ function App() {
   return (
     <>
 
-      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin }}>
+      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin , userId }}>
 
         <BrowserRouter>
-          {/* <div className="App"> */}
+
           <NavBar />
 
 

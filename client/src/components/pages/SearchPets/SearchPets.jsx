@@ -15,16 +15,19 @@ import {
 
 } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { Context } from '../../../App';
 import PetCard from '../Pets/PetCard';
 const axios = require('axios').default;
 
- 
-
-
 export default function SearchPets() {
+    const value = useContext(Context)
+    const { loggedIn } = value
     const navigate = useNavigate()
-    const handleHome = () => navigate('/', { replace: true })
+    const handleHome = () => loggedIn ? navigate('/main') : navigate('/')
+   
+
+
     const [checkbox, setCheckbox] = useState(false)
     const handleCheckbox = () => setCheckbox(!checkbox)
 
@@ -50,7 +53,6 @@ export default function SearchPets() {
     const handleSearch = () => {
         axios.get(`http://localhost:8080/api/v1/pets/?type=${type}`)
             .then(res => {
-                console.log(res.data.data.pets)
                 const data = res.data.data.pets
                 setPets(data)
 
@@ -61,14 +63,10 @@ export default function SearchPets() {
     const handleAdvancedSearch = () => {
         axios.get(`http://localhost:8080/api/v1/pets/?type=${type}&adoptionStatus=${adoptionStatus}&name=${name}&weight=${weight}&height=${height}`)
             .then(res => {
-                console.log(res.data.data.pets)
                 setPets(res.data.data.pets)
             })
             .catch(err => console.log(err))
     }
-
-
-
 
     return (
 

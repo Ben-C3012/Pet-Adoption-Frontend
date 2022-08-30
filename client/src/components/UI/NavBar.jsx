@@ -51,8 +51,7 @@ export default function NavBar() {
     const value = useContext(Context);
     const { loggedIn, isLoggedIn, admin, isAdmin } = value
 
-    console.log('Logged In:', loggedIn)
-    console.log('Admin:', admin)
+  
 
 
     const handleAcountSettings = () => navigate('/settings')
@@ -95,7 +94,7 @@ export default function NavBar() {
     const handleYourPetsClick = () => navigate('/myPets')
     const handleAddPetClick = () => navigate('/addPet')
     const handleDashboaredClick = () => navigate('/dashboared')
-    
+    const HandleHomeClick = () => loggedIn ? navigate('/main') : navigate('/home')
 
 
     return (
@@ -138,6 +137,7 @@ export default function NavBar() {
                                     </Center>
                                     <br />
                                     <MenuDivider />
+                                    {loggedIn && <MenuItem onClick={HandleHomeClick}>Home</MenuItem>}
                                     {admin && <MenuItem onClick={handleDashboaredClick}>Dashboared</MenuItem>}
                                     {admin && <MenuItem onClick={handleAddPetClick}>Add Pet</MenuItem>}
                                     {loggedIn && <MenuItem onClick={handleYourPetsClick}>Your Pets</MenuItem>}
