@@ -12,10 +12,14 @@ import {
     Text,
     useColorModeValue,
     Select,
+    Center,
+    Square,
+    Switch
 
 } from '@chakra-ui/react';
+import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom'
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { Context } from '../../../App';
 import PetCard from '../Pets/PetCard';
 const axios = require('axios').default;
@@ -25,33 +29,29 @@ export default function SearchPets() {
     const { loggedIn } = value
     const navigate = useNavigate()
     const handleHome = () => loggedIn ? navigate('/main') : navigate('/')
-   
-
 
     const [checkbox, setCheckbox] = useState(false)
     const handleCheckbox = () => setCheckbox(!checkbox)
 
     const [pets, setPets] = useState([])
+    const [query, setQuery] = useState('')
+
+    const buttonRef = useRef(null)
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+            password: '',
+            passwordConfirm: '',
+            phoneNumber: ''
+        }
+    })
 
 
-    // Form States
-    const [type, setType] = useState('')
-    const [adoptionStatus, setAdoptionStatus] = useState('')
-    const [weight, setWeight] = useState('')
-    const [height, setHeight] = useState('')
-    const [name, setName] = useState('')
-
-    // Form Handlers
-    const handleType = (e) => setType(e.target.value)
-    const handleAdoptionStatus = (e) => setAdoptionStatus(e.target.value)
-    const handleWeight = (e) => setWeight(e.target.value)
-    const handleHeight = (e) => setHeight(e.target.value)
-    const handleName = (e) => setName(e.target.value)
-
-
-    // Search Handlers
+    // Bacic Search
     const handleSearch = () => {
-        axios.get(`http://localhost:8080/api/v1/pets/?type=${type}`)
+        axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}`)
             .then(res => {
                 const data = res.data.data.pets
                 setPets(data)
@@ -60,13 +60,34 @@ export default function SearchPets() {
             .catch(err => console.log(err))
     }
 
+
+    //  Advanced Search
     const handleAdvancedSearch = () => {
-        axios.get(`http://localhost:8080/api/v1/pets/?type=${type}&adoptionStatus=${adoptionStatus}&name=${name}&weight=${weight}&height=${height}`)
+        buttonRef.current.click()
+        setQuery('')
+        setPets('')
+
+        if (formik.values.adoptionStatus) setQuery(prev => prev + `&adoptionStatus=${formik.values.adoptionStatus}`)
+        if (formik.values.weight) setQuery(prev => prev + `&weight=${formik.values.weight}`)
+        if (formik.values.height) setQuery(prev => prev + `&height=${formik.values.height}`)
+        if (formik.values.name) setQuery(prev => prev + `&name=${formik.values.name}`)
+        // console.log('Query', query)
+
+
+
+
+        axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}${query}`)
             .then(res => {
                 setPets(res.data.data.pets)
+                // console.log(pets)
             })
             .catch(err => console.log(err))
+
+        console.log(pets.filter(pet => {
+            return pet.adoptionStatus === 'Available'
+        }))
     }
+
 
     return (
 
@@ -77,7 +98,7 @@ export default function SearchPets() {
                 minH={'100vh'}
                 align={'start'}
                 justify={'start'}
-                direction={'row'}
+                direction={'column'}
                 bg={useColorModeValue('gray.50', 'gray.800')}>
                 <Stack spacing={8} mx={'auto'} maxW={'xl '} width={'xl'} py={12} px={6}>
                     <Stack align={'center'}>
@@ -100,9 +121,9 @@ export default function SearchPets() {
                             <Checkbox onChange={handleCheckbox}>Advanced Search</Checkbox>
 
 
-                            <FormControl onChange={handleType}>
+                            <FormControl>
                                 <FormLabel>Type</FormLabel>
-                                <Select placeholder=' Select Type'>
+                                <Select onChange={formik.handleChange} value={formik.values.type} placeholder=' Select Type' name='type' >
                                     <option value='Dog'>Dog</option>
                                     <option value='Cat'>Cat</option>
                                 </Select>
@@ -113,9 +134,9 @@ export default function SearchPets() {
 
                                 <>
 
-                                    <FormControl onChange={handleAdoptionStatus}>
+                                    <FormControl onChange={formik.handleChange} value={formik.values.adoptionStatus} >
                                         <FormLabel>Adoption Status</FormLabel>
-                                        <Select placeholder=' Select Adoption Status'>
+                                        <Select placeholder=' Select Adoption Status' name='adoptionStatus'  >
                                             <option value='Available'>Available</option>
                                             <option value='Fostered'>Fostered</option>
                                             <option value='Adopted'>Adopted</option>
@@ -124,20 +145,20 @@ export default function SearchPets() {
 
 
 
-                                    <FormControl onChange={handleWeight}>
+                                    <FormControl>
                                         <FormLabel>Weight</FormLabel>
-                                        <Input type={'number'} />
+                                        <Input onChange={formik.handleChange} value={formik.values.weight} min={0} type={'number'} name={'weight'} />
                                     </FormControl>
 
-                                    <FormControl onChange={handleHeight}>
+                                    <FormControl>
                                         <FormLabel>Height</FormLabel>
-                                        <Input min={0} type={'number'} />
+                                        <Input onChange={formik.handleChange} value={formik.values.height} min={0} type={'number'} name={'height'} />
                                     </FormControl>
 
 
-                                    <FormControl onChange={handleName}>
+                                    <FormControl>
                                         <FormLabel>Name</FormLabel>
-                                        <Input type={'name'} />
+                                        <Input onChange={formik.handleChange} value={formik.values.name} type={'text'} name='name' />
                                     </FormControl>
                                 </>
                             }
@@ -157,6 +178,7 @@ export default function SearchPets() {
                                     :
                                     <Button
                                         onClick={handleAdvancedSearch}
+                                        ref={buttonRef}
                                         bg={'blue.400'}
                                         color={'white'}
                                         _hover={{
@@ -171,15 +193,27 @@ export default function SearchPets() {
                         </Stack>
                     </Box>
 
+                </Stack>
+
+
+                <Flex justify={'center'} color='white' w={'100%'} wrap='wrap'>
+
+
+
+
                     {pets && pets.map(pet => {
-                        return <PetCard key={pet._id} type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
-                            breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
+
+                        return <Center key={pet._id} w='500px' h={'500px'} >
+                            <PetCard  type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
+                                breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
+                        </Center>
                     })}
 
 
+                </Flex>
 
-                </Stack>
             </Flex>
+
 
 
 

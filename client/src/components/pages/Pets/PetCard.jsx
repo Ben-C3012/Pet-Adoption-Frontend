@@ -13,6 +13,7 @@ function PetCard(props) {
 
     }
 
+    const ToggleColor = useColorModeValue('gray.800', 'white')
 
 
     return (
@@ -64,23 +65,31 @@ function PetCard(props) {
                         <Text color={'gray.500'} fontSize={'sm'}>
                             {petName}
                         </Text>
-                        <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500}>
+                        <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500} color={ToggleColor}>
                             {breed}
                         </Heading>
                         <Stack direction={'row'} align={'center'}>
-                            <Text fontWeight={800} fontSize={'xl'}>
+                            <Text fontWeight={300} fontSize={'xl'} color={ToggleColor}>
                                 {adoptionStatus}
                             </Text>
 
                         </Stack>
 
 
-                        <Button onClick={handleClick}>Read More</Button>
+
+                        <Button
+
+                            bg={useColorModeValue('gray.800', 'blue.400')}
+                            onClick={handleClick}
+                            _hover={{ bg: 'gray.600' }}
+                        >Read More
+                        </Button>
 
                     </Stack>
                 </Box>
 
             </Center>
+
 
 
 
@@ -92,7 +101,4 @@ function PetCard(props) {
 }
 
 export default PetCard
-
-
-
 

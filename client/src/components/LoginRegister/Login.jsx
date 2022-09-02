@@ -106,5 +106,3 @@ export default Login
 
 
 
-// <FormLabel htmlFor='password' mt={5}>Password</FormLabel>
-// <Input id='password' type='password' onChange={handlePassword} value={password} />

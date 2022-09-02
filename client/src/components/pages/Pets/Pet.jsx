@@ -16,11 +16,14 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import AdminEditModal from './AdminEditModal';
 import AdminEditPicture from './AdminEditPicture';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Pet() {
     const navigate = useNavigate()
     const value = useContext(Context);
-    const { loggedIn, admin, userId } = value
+    const { loggedIn, admin } = value
 
     const [pet, setPet] = useState({})
     const [id, setId] = useState('')
@@ -29,6 +32,9 @@ export default function Pet() {
     const [saved, setSaved] = useState(false)
     const [adopted, setAdopted] = useState(false)
     const [fostered, setFostered] = useState(false)
+
+
+    const [isOwner, setIsOwner] = useState(false)
     const [taken, setTaken] = useState(false)
 
 
@@ -50,10 +56,13 @@ export default function Pet() {
                 const data = res.data.data.pet
                 setPetName(res.data.data.pet.name)
                 setPet(data)
-
                 console.log(data.adoptionStatus)
-                if (data.adoptionStatus !== 'Available') setTaken(true)
-                console.log('taken', taken)
+                if (data.adoptionStatus == 'Fostered') setTaken(true)
+                if (data.adoptionStatus == 'Adopted') setTaken(true)
+                console.log('Taken', taken)
+
+
+
 
 
             })
@@ -75,16 +84,16 @@ export default function Pet() {
 
                 // Check if the user is the current owner of the pet
                 const findIfUserOwnsPet = currentPets.find(pet => pet._id === petId)
+                if (findIfUserOwnsPet) setIsOwner(true)
+                console.log('isOwner', isOwner)
                 if (findIfUserOwnsPet) setAdopted(true)
+
+
+                if (taken && !isOwner) toast('This Pet Is Taken!')
 
             })
 
-
     }, [adopted, fostered])
-
-
-
-
 
 
     const handleSavePet = () => {
@@ -119,25 +128,11 @@ export default function Pet() {
             .then(res => {
                 console.log(res)
                 setAdopted(true)
+                toast.success('Pet Adopted')
             })
 
             .catch(err => console.log(err))
     }
-
-    const handleReturnPet = () => {
-        axios({
-            method: 'POST',
-            url: `http://localhost:8080/api/v1/pets/return/${id}`,
-            withCredentials: true
-        })
-
-            .then(res => {
-                console.log(res)
-                setAdopted(false)
-                // setTaken(false)
-            })
-    }
-
 
     const handleFosterPet = () => {
         axios({
@@ -154,11 +149,12 @@ export default function Pet() {
             .then(res => {
                 console.log(res)
                 setFostered(true)
+                toast.success('Pet Fostered!')
             })
     }
 
 
-    const handleReturnFromFoster = () => {
+    const handleReturnPet = () => {
         axios({
             method: 'POST',
             url: `http://localhost:8080/api/v1/pets/return/${id}`,
@@ -167,9 +163,16 @@ export default function Pet() {
 
             .then(res => {
                 console.log(res)
+                setAdopted(false)
                 setFostered(false)
+                setTaken(false)
+                toast('Pet Returned')
             })
     }
+
+
+
+
 
     return (
         <Center py={6}>
@@ -177,10 +180,10 @@ export default function Pet() {
             <Stack
                 borderWidth="1px"
                 borderRadius="lg"
-                w={{ sm: '100%', md: '450px' }}
-                height={{ sm: '50rem', md: '50rem' }}
+                w={{ sm: '100%', md: '500px' }}
+                height={'57rem'}
                 direction={{ base: 'column', md: 'column' }}
-                bg={useColorModeValue('white', 'gray.900')}
+                bg={useColorModeValue('gray.50', 'gray.900')}
                 boxShadow={'2xl'}
                 padding={4}>
                 <Flex flex={1} bg="blue.200">
@@ -266,6 +269,7 @@ export default function Pet() {
                         alignItems={'center'}>
 
                         {loggedIn && !fostered && !adopted && <Button
+                            disabled={taken ? true : false}
                             onClick={handleFosterPet}
                             bg={'orange.400'}
                             flex={1}
@@ -285,7 +289,7 @@ export default function Pet() {
 
 
                         {loggedIn && fostered && <Button
-                            onClick={handleReturnFromFoster}
+                            onClick={handleReturnPet}
                             bg={'orange.400'}
                             flex={1}
                             fontSize={'sm'}
@@ -302,6 +306,7 @@ export default function Pet() {
                         </Button>}
 
                         {loggedIn && !adopted && <Button
+                            disabled={taken ? true : false}
                             onClick={handleAdoptClick}
                             flex={1}
                             fontSize={'sm'}
@@ -357,6 +362,7 @@ export default function Pet() {
 
 
 
+
                         {loggedIn && saved && <Button
                             onClick={handleUnsavePet}
                             flex={1}
@@ -370,12 +376,12 @@ export default function Pet() {
                             _focus={{
                                 bg: 'gray.500',
                             }}>
+
                             Unsave
                         </Button>}
 
-
-
                     </Stack>
+                    {!adopted && <Text></Text>}
                     {!loggedIn && <Center textAlign={'center'}>Log In To Adopt / Foster</Center>}
                 </Stack>
 
@@ -383,7 +389,7 @@ export default function Pet() {
 
                     {admin && <AdminEditModal pet={pet} />}
                     {admin && <AdminEditPicture pet={pet} />}
-
+                    <ToastContainer />
 
 
                 </Flex>
