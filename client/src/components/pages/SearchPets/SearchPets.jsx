@@ -77,7 +77,7 @@ export default function SearchPets() {
                 minH={'100vh'}
                 align={'start'}
                 justify={'start'}
-                direction={'column'}
+                direction={'row'}
                 bg={useColorModeValue('gray.50', 'gray.800')}>
                 <Stack spacing={8} mx={'auto'} maxW={'xl '} width={'xl'} py={12} px={6}>
                     <Stack align={'center'}>

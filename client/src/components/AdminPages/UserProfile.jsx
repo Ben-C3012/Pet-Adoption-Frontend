@@ -27,36 +27,18 @@ export default function UserProfile() {
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
 
+
     useEffect(() => {
         const params = new Proxy(new URLSearchParams(window.location.search), {
             get: (searchParams, prop) => searchParams.get(prop),
         });
 
-        const userId = params.id;
+        console.log(params)
+        
 
-        axios({
-            method: 'GET',
-            url: `http://localhost:8080/api/v1/users/${userId}`,
-            withCredentials: true
-        })
-
-            .then(res => {
-                console.log(res.data.data)
-                setUser(res.data.data)
-                setEmail(user.user.email)
-                setPhoto(user.user.photo)
-                setName(user.user.name)
-
-
-
-            })
-            .catch(err => console.log(err))
     }, [])
 
 
-    console.log(user)
-    console.log(email)
-    console.log(photo)
 
 
 

@@ -24,11 +24,12 @@ export default function Pet() {
 
     const [pet, setPet] = useState({})
     const [id, setId] = useState('')
-    const [saved, setSaved] = useState(false)
     const [petName, setPetName] = useState('')
 
+    const [saved, setSaved] = useState(false)
     const [adopted, setAdopted] = useState(false)
     const [fostered, setFostered] = useState(false)
+    const [taken, setTaken] = useState(false)
 
 
 
@@ -49,6 +50,12 @@ export default function Pet() {
                 const data = res.data.data.pet
                 setPetName(res.data.data.pet.name)
                 setPet(data)
+
+                console.log(data.adoptionStatus)
+                if (data.adoptionStatus !== 'Available') setTaken(true)
+                console.log('taken', taken)
+
+
             })
             .catch(err => console.log(err))
 
@@ -67,17 +74,18 @@ export default function Pet() {
                 if (findIfPetSaved) setSaved(true)
 
                 // Check if the user is the current owner of the pet
-                console.log(currentPets)
                 const findIfUserOwnsPet = currentPets.find(pet => pet._id === petId)
-                console.log(findIfUserOwnsPet)
                 if (findIfUserOwnsPet) setAdopted(true)
-
-
 
             })
 
 
-    }, [fostered, adopted])
+    }, [adopted, fostered])
+
+
+
+
+
 
     const handleSavePet = () => {
         axios({
@@ -116,7 +124,7 @@ export default function Pet() {
             .catch(err => console.log(err))
     }
 
-    const handleReturnPet = (event) => {
+    const handleReturnPet = () => {
         axios({
             method: 'POST',
             url: `http://localhost:8080/api/v1/pets/return/${id}`,
@@ -126,6 +134,7 @@ export default function Pet() {
             .then(res => {
                 console.log(res)
                 setAdopted(false)
+                // setTaken(false)
             })
     }
 
@@ -249,14 +258,14 @@ export default function Pet() {
                     </Stack>
 
                     <Stack
-
                         width={'100%'}
                         mt={'2rem'}
                         direction={'row'}
                         padding={2}
                         justifyContent={'space-between'}
                         alignItems={'center'}>
-                        {loggedIn && !fostered && <Button
+
+                        {loggedIn && !fostered && !adopted && <Button
                             onClick={handleFosterPet}
                             bg={'orange.400'}
                             flex={1}
@@ -269,11 +278,11 @@ export default function Pet() {
                                 bg: 'orange.200',
 
                             }}
-                            color={'white'}
-                        >
+                            color={'white'}>
 
                             Foster
                         </Button>}
+
 
                         {loggedIn && fostered && <Button
                             onClick={handleReturnFromFoster}
@@ -289,9 +298,7 @@ export default function Pet() {
 
                             }}
                             color={'white'}
-                        >
-
-                            Return Pet
+                        > Return  From Foster
                         </Button>}
 
                         {loggedIn && !adopted && <Button
@@ -311,7 +318,7 @@ export default function Pet() {
                             Adpot
                         </Button>}
 
-                        {loggedIn && adopted && <Button
+                        {loggedIn && adopted && !fostered && <Button
                             onClick={handleReturnPet}
                             flex={1}
                             fontSize={'sm'}

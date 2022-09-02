@@ -1,5 +1,4 @@
 import './App.css';
-import Footer from './components/UI/Footer';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Home from './components/pages/Home/Home'
 import SearchPets from './components/pages/SearchPets/SearchPets';
@@ -15,8 +14,8 @@ import MyPets from './components/LoggedInUser/MyPets';
 import NotFound from './components/pages/NotFoundPage/NotFound';
 import AddPet from './components/AdminPages/AddPet';
 import Dashboared from './components/AdminPages/Dashboared';
+// import Dashboared from './components/AdminPages/Dashboared';
 import UserProfile from './components/AdminPages/UserProfile';
-
 export const Context = createContext('Default Value');
 
 function App() {
@@ -50,7 +49,7 @@ function App() {
   return (
     <>
 
-      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin , userId }}>
+      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, userId }}>
 
         <BrowserRouter>
 
@@ -82,7 +81,8 @@ function App() {
 
             <Route path='/addPet' element={<AddPet />} />
 
-            <Route path='/dashboared' element={<Dashboared />} />
+            <Route path='/dashboared' element={<Dashboared/>} />
+
 
             <Route path='/user' element={<UserProfile />} />
 

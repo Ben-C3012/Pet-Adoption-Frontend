@@ -1,11 +1,11 @@
-import { Heading } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import User from "./User"
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
-import AdminPets from "./AdminPets"
-import { SchemaTypeOptions } from "mongoose"
-function Dashboared() {
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Text, Heading } from '@chakra-ui/react'
+import * as React from "react";
+import UsersTable from "./UsersTable";
+import MainTable from "./tables/MainTable";
+
+export default function Dashboared() {
 
   const [users, setUsers] = useState([])
   const [pets, setPets] = useState([])
@@ -20,8 +20,9 @@ function Dashboared() {
     })
 
       .then(res => {
+        console.log(res.data.data.users)
         setUsers(res.data.data.users)
-        // console.log('users', users)
+
 
       })
       .catch(err => console.log(err.message))
@@ -34,7 +35,7 @@ function Dashboared() {
     })
 
       .then(res => {
-        console.log('res', res.data.data.pets)
+        // console.log('res', res.data.data.pets)
         setPets(res.data.data.pets)
 
       })
@@ -46,42 +47,39 @@ function Dashboared() {
 
 
 
+
+
+
+
   return (
     <>
-      <Tabs>
+
+
+      <Tabs >
         <TabList>
 
-          <Tab>Users</Tab>
-          <Tab>Pets</Tab>
+          <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Users</Tab>
+          <Tab _selected={{ color: 'white', bg: 'green.500' }}>Pets</Tab>
 
         </TabList>
 
         <TabPanels>
           <TabPanel>
 
+            
 
-            <Heading textAlign={'center'} mt={2} as="h1" fontSize="4xl">
-              Users
-            </Heading>
+            <MainTable users={users} />
 
-            {users.map(user => {
-              return <User key={user._id} id={user._id} name={user.name} email={user.email} phoneNumber={user.phoneNumber} photo={user.photo} role={user.role} savedPets={user.savedPets} currentPets={user.currentPets} />
-            })}
 
           </TabPanel>
-
-          <Heading textAlign={'center'} mt={2} as="h1" fontSize="4xl">
-            Pets
-          </Heading>
-
-          {/* <AdminPets  /> */}
-          {pets.map(pet => {
-            return <AdminPets key = {pet._id} name={pet.name} adoptionStatus  = {pet.adoptionStatus} breed = {pet.breed} color = {pet.color} photo = {pet.photo} bio = {pet.bio} hypoallergenic = {pet.hypoallergenic} dietaryRestrictions = {pet.dietaryRestrictions}  />
-          })}
 
 
 
           <TabPanel>
+
+
+
+
 
 
 
@@ -90,7 +88,10 @@ function Dashboared() {
           </TabPanel>
 
         </TabPanels>
+
+
       </Tabs>
+
 
 
 
@@ -98,4 +99,5 @@ function Dashboared() {
   )
 }
 
-export default Dashboared
+
+
