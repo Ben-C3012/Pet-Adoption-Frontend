@@ -14,8 +14,9 @@ import MyPets from './components/LoggedInUser/MyPets';
 import NotFound from './components/pages/NotFoundPage/NotFound';
 import AddPet from './components/AdminPages/AddPet';
 import Dashboared from './components/AdminPages/Dashboared';
-// import Dashboared from './components/AdminPages/Dashboared';
 import UserProfile from './components/AdminPages/UserProfile';
+import RequireAuth from './components/pages/RequireAuth';
+import RequireAdmin from './components/pages/RequireAdmin';
 export const Context = createContext('Default Value');
 
 function App() {
@@ -51,6 +52,8 @@ function App() {
 
       <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, userId }}>
 
+
+
         <BrowserRouter>
 
           <NavBar />
@@ -70,20 +73,20 @@ function App() {
 
             <Route path='/main' element={<Main />} />
 
-            <Route path='/settings' element={<Settings />} />
+            <Route path='/settings' element={<RequireAuth> <Settings /></RequireAuth>} />
 
-            <Route path='/userProfileEdit' element={<UserProfileEdit />} />
+            <Route path='/userProfileEdit' element={<RequireAuth> <UserProfileEdit /> </RequireAuth>} />
 
-            <Route path='/myPets' element={<MyPets />} />
+            <Route path='/myPets' element={<RequireAuth> <MyPets /> </RequireAuth>} />
 
 
             {/* Admin Pages */}
 
-            <Route path='/addPet' element={<AddPet />} />
+            <Route path='/addPet' element={<RequireAdmin> <AddPet /> </RequireAdmin>} />
 
-            <Route path='/dashboared' element={<Dashboared/>} />
+            <Route path='/dashboared' element={<RequireAdmin> <Dashboared /> </RequireAdmin>} />
 
-
+            {/* Not In App */}
             <Route path='/user' element={<UserProfile />} />
 
 
@@ -96,7 +99,7 @@ function App() {
           </Routes>
 
 
-          {/* </div> */}
+
 
 
         </BrowserRouter>

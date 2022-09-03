@@ -57,9 +57,6 @@ export default function AddPet() {
             if (!values.breed) errors.breed = 'Required'
             if (!values.photo) errors.photo = 'Required'
 
-
-
-
             return errors
         }
     })
@@ -79,7 +76,6 @@ export default function AddPet() {
                 withCredentials: true
             });
 
-
             if (res.status === 201) {
                 setStatus('success')
                 setMessage('Pet Successfully Created')
@@ -94,14 +90,12 @@ export default function AddPet() {
         formik.resetForm();
     }
 
-
-
     setTimeout(() => {
         setStatus('')
         setMessage('')
     }, 3000);
 
-    console.log(formik.errors)
+    console.log(formik.touched)
 
     return (
         <Flex
@@ -125,78 +119,78 @@ export default function AddPet() {
 
                         <FormControl>
                             <FormLabel>Type</FormLabel>
-                            <Select onChange={formik.handleChange} value={formik.values.type} placeholder=' Select Type' name='type'>
+                            <Select onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.type} placeholder=' Select Type' name='type'>
                                 <option value='Dog'>Dog</option>
                                 <option value='Cat'>Cat</option>
                             </Select>
-                            {formik.errors.type ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.type}</Text> : null}
+                            {formik.touched.type && formik.errors.type && formik.errors.type ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.type}</Text> : null}
                         </FormControl>
 
                         <FormControl mb={'30px'} >
                             <FormLabel>Name</FormLabel>
-                            <Input onChange={formik.handleChange} value={formik.values.name} type={'text'} name='name' />
-                            {formik.errors.name ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.name}</Text> : null}
+                            <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.name} type={'text'} name='name' />
+                            {formik.touched.name && formik.errors.name && formik.errors.name ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.name}</Text> : null}
                         </FormControl>
 
                         <FormControl>
                             <FormLabel>Adoption Status</FormLabel>
-                            <Select onChange={formik.handleChange} value={formik.values.adoptionStatus} placeholder=' Select Adoption Status' name='adoptionStatus'>
+                            <Select onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.adoptionStatus} placeholder=' Select Adoption Status' name='adoptionStatus'>
                                 <option value='Available'>Available</option>
                                 <option value='Fostered'>Fostered</option>
                                 <option value='Adopted'>Adopted</option>
                             </Select>
-                            {formik.errors.adoptionStatus ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.adoptionStatus}</Text> : null}
+                            {formik.touched.adoptionStatus && formik.errors.adoptionStatus && formik.errors.adoptionStatus ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.adoptionStatus}</Text> : null}
                         </FormControl>
 
                         <FormControl >
                             <FormLabel>Height</FormLabel>
-                            <Input onChange={formik.handleChange} value={formik.values.height} min={0} type={'number'} name={'height'} />
-                            {formik.errors.height ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.height}</Text> : null}
+                            <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.height} min={0} type={'number'} name={'height'} />
+                            {formik.touched.height && formik.errors.height && formik.errors.height ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.height}</Text> : null}
                         </FormControl>
 
                         <FormControl>
                             <FormLabel>Weight</FormLabel>
-                            <Input onChange={formik.handleChange} value={formik.values.weight} min={0} type={'number'} name={'weight'} />
-                            {formik.errors.weight ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.weight}</Text> : null}
+                            <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.weight} min={0} type={'number'} name={'weight'} />
+                            {formik.touched.weight && formik.errors.weight && formik.errors.weight ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.weight}</Text> : null}
                         </FormControl>
 
                         <FormControl >
                             <FormLabel>Color</FormLabel>
-                            <Input onChange={formik.handleChange} value={formik.values.color} type={'text'} name={'color'} />
-                            {formik.errors.color ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.color}</Text> : null}
+                            <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.color} type={'text'} name={'color'} />
+                            {formik.touched.color && formik.errors.color && formik.errors.color ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.color}</Text> : null}
                         </FormControl>
 
                         <FormControl >
                             <FormLabel>Bio</FormLabel>
-                            <Input onChange={formik.handleChange} value={formik.values.bio} type={'text'} name={'bio'} />
-                            {formik.errors.bio ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.bio}</Text> : null}
+                            <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.bio} type={'text'} name={'bio'} />
+                            {formik.touched.bio && formik.errors.bio && formik.errors.bio ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.bio}</Text> : null}
                         </FormControl>
 
                         <FormControl>
                             <FormLabel>Hypoallergenic</FormLabel>
-                            <Select onChange={formik.handleChange} value={formik.values.hypoallergenic} name={'hypoallergenic'} placeholder=' Select Hypoallergenic Status'>
+                            <Select onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.hypoallergenic} name={'hypoallergenic'} placeholder=' Select Hypoallergenic Status'>
                                 <option value={true}>Yes</option>
                                 <option value={false}>No</option>
                             </Select>
-                            {formik.errors.hypoallergenic ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.hypoallergenic}</Text> : null}
+                            {formik.touched.hypoallergenic && formik.errors.hypoallergenic && formik.errors.hypoallergenic ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.hypoallergenic}</Text> : null}
                         </FormControl>
 
                         <FormControl >
                             <FormLabel>Dietary Restrictions</FormLabel>
-                            <Input onChange={formik.handleChange} value={formik.values.dietaryRestrictions} name={'dietaryRestrictions'} type={'text'} />
-                            {formik.errors.bio ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.bio}</Text> : null}
+                            <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.dietaryRestrictions} name={'dietaryRestrictions'} type={'text'} />
+                            {formik.touched.dietaryRestrictions  &&  formik.errors.dietaryRestrictions && formik.errors.bio ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.bio}</Text> : null}
                         </FormControl>
 
                         <FormControl >
                             <FormLabel>Breed</FormLabel>
-                            <Input onChange={formik.handleChange} value={formik.values.breed} name={'breed'} type={'text'} />
-                            {formik.errors.breed ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.breed}</Text> : null}
+                            <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.breed} name={'breed'} type={'text'} />
+                            {formik.touched.breed  &&  formik.errors.breed && formik.errors.breed ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.breed}</Text> : null}
                         </FormControl>
 
                         <Tooltip label={photo.name} fontSize='md'>
                             <Center w="full" display={'flex'} flexDirection={'column'}>
                                 <Button onClick={handleClick} w="full">Choose Photo</Button>
-                                <Input onChange={handleFileChange} name={'photo'} ref={inputRef} type={'file'} bg={'green.300'} display={'none'} />
+                                <Input onBlur={formik.handleBlur} onChange={handleFileChange} name={'photo'} ref={inputRef} type={'file'} bg={'green.300'} display={'none'} />
                             </Center>
                         </Tooltip>
 
