@@ -20,6 +20,7 @@ export default function Settings() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
+  const [bio, setBio] = useState('')
 
   useEffect(() => {
     const res = axios({
@@ -30,14 +31,13 @@ export default function Settings() {
 
       .then(res => {
         console.log(res.data)
-        const name = res.data.user.name
-        const email = res.data.user.email
-        const phoneNumber = res.data.user.phoneNumber
+        const {name , email , phoneNumber , bio } = res.data.user
         setName(name)
         setEmail(email)
         setPhoneNumber(phoneNumber)
+        setBio(bio)
 
-        console.log(name, email, phoneNumber)
+        console.log(name, email, phoneNumber , bio)
 
       })
   }, [])
@@ -99,7 +99,7 @@ export default function Settings() {
             </ListItem>
             <ListItem>
               <InfoIcon as={''} color="green.400" mr={4} />
-              All features
+              {bio}
             </ListItem>
           </List>
 

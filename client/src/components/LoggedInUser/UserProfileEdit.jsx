@@ -31,10 +31,12 @@ export default function UserProfileEdit() {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
+    const [bio, setBio] = useState('')
 
     const handleNameChange = (e) => setName(e.target.value)
     const handleEmailChange = (e) => setEmail(e.target.value)
     const handlePhoneNumberChange = (e) => setPhoneNumber(e.target.value)
+    const handleBioChange = (e) => setBio(e.target.value)
 
     const handleProfileEdit = () => {
         axios({
@@ -43,7 +45,8 @@ export default function UserProfileEdit() {
             data: {
                 name,
                 email,
-                phoneNumber
+                phoneNumber,
+                bio
 
             },
             withCredentials: true
@@ -67,8 +70,12 @@ export default function UserProfileEdit() {
 
             .then(res => {
                 console.log(res.data.user)
-                const { photo } = res.data.user
+                const { photo , name , email , phoneNumber, bio } = res.data.user
                 setPhoto(photo)
+                setEmail(email)
+                setName(name)
+                setPhoneNumber(phoneNumber)
+                setBio(bio)
 
             })
             .catch(err => console.log(err.message))
@@ -162,6 +169,17 @@ export default function UserProfileEdit() {
                         placeholder="0523456789"
                         _placeholder={{ color: 'gray.500' }}
                         type="number"
+                    />
+                </FormControl>
+
+                <FormControl id="bio">
+                    <FormLabel>bio</FormLabel>
+                    <Input
+                        onChange={handleBioChange}
+                        value={bio}
+                        placeholder="This is my bio"
+                        _placeholder={{ color: 'gray.500' }}
+                        type="text"
                     />
                 </FormControl>
 

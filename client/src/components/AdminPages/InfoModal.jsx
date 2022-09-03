@@ -11,11 +11,11 @@ import {
     useDisclosure,
 } from '@chakra-ui/react'
 import { useState } from 'react'
-import { getDropdownMenuPlacement } from 'react-bootstrap/esm/DropdownMenu'
 import axios from 'axios'
 import UserCard from './tables/UserCard'
 
-export default function InfoModal({ getOnOpen, id }) {
+export default function InfoModal() {
+   
     // console.log(id)
     const [user, setUser] = useState('')
     const [currentPets, setcurrentPets] = useState([])
@@ -23,23 +23,23 @@ export default function InfoModal({ getOnOpen, id }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
 
 
-    const handleUserInfo = () => {
+    // const handleUserInfo = () => {
 
-        const userId = id
+    //     const userId = id
 
-        axios({
-            method: 'GET',
-            url: `http://localhost:8080/api/v1/users/${userId}`,
-            withCredentials: true
-        })
+    //     axios({
+    //         method: 'GET',
+    //         url: `http://localhost:8080/api/v1/users/${userId}`,
+    //         withCredentials: true
+    //     })
 
-            .then(res => {
-                // console.log(res.data.data.user)
-                setUser(res.data.data.user)
-                setcurrentPets(res.data.data.user.currentPets)
-            })
+    //         .then(res => {
+    //             // console.log(res.data.data.user)
+    //             setUser(res.data.data.user)
+    //             setcurrentPets(res.data.data.user.currentPets)
+    //         })
 
-    }
+    // }
 
 
 
@@ -49,7 +49,7 @@ export default function InfoModal({ getOnOpen, id }) {
             <Button
                 onClick={() => {
                     onOpen();
-                    handleUserInfo();
+                    // handleUserInfo();
                 }}>
 
                 +</Button>
@@ -62,7 +62,7 @@ export default function InfoModal({ getOnOpen, id }) {
                     <ModalBody>
 
 
-                        <UserCard id={id} user={user} currentPets={currentPets} />
+                        <UserCard  user={user} currentPets={currentPets} />
 
 
 

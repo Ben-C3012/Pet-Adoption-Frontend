@@ -19,20 +19,25 @@ import {
 } from '@chakra-ui/react'
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { CheckIcon } from '@chakra-ui/icons'
+import { PhoneIcon } from '@chakra-ui/icons'
 import { BiBone } from 'react-icons/bi'
+import { Icon } from '@chakra-ui/icons';
 
 
 export default function UserCard(props) {
-    const { id, user, currentPets } = props
-    // const [user, setUser] = useState('')
+    const { user } = props
+    const { name, email, photo, role, currentPets, savedPets, phoneNumber, bio } = user
+
     console.log(user)
+    // const { id, user, currentPets } = props
+    // // const [user, setUser] = useState('')
+    // console.log(user)
 
 
 
-    // const [currentPets, setcurrentPets] = useState([])
+    // // const [currentPets, setcurrentPets] = useState([])
 
-    console.log(currentPets)
+    // console.log(currentPets)
 
 
 
@@ -51,7 +56,7 @@ export default function UserCard(props) {
                 <Avatar
                     size={'xl'}
                     src={
-                        user.photo
+                        photo
                     }
                     alt={'Avatar Alt'}
                     mb={4}
@@ -69,26 +74,48 @@ export default function UserCard(props) {
                     }}
                 />
                 <Heading fontSize={'2xl'} fontFamily={'body'}>
-                    {user.name}
+
                 </Heading>
                 <Text fontWeight={600} color={'gray.500'} mb={4}>
-                    {user.email}
+                    {email}
                 </Text>
                 <Text
                     textAlign={'center'}
                     color={useColorModeValue('gray.700', 'gray.400')}
                     px={3}>
-
-                    Bio
+                    {bio}
                 </Text>
 
-                <Text mt={4} textAlign={'start'} decoration={'underline'}>Current Pets</Text>
+                <Stack align={'center'} justify={'center'} direction={'row'}>
+
+                    
+                    <Text
+                        textAlign={'center'}
+                        color={useColorModeValue('gray.700', 'gray.400')}
+                        px={3}>
+                        {phoneNumber}
+                    </Text>
+
+
+
+                </Stack>
 
                 <Stack align={'start'} justify={'start'} direction={'row'} mt={6}>
 
+
                     {currentPets.length < 1 ? <Text>No Current Pets</Text> : currentPets.map(pet => {
-                        return <Link>{pet.name}</Link>
-                    })}    
+                        return <Link key={pet._id}>{pet.name}</Link>
+                    })}
+
+
+                </Stack>
+
+
+                <Stack align={'start'} justify={'start'} direction={'row'} mt={6}>
+
+                    {savedPets.length < 1 ? <Text>No Saved Pets</Text> : savedPets.map(pet => {
+                        return <Link key={pet._id}>{pet.name}</Link>
+                    })}
                 </Stack>
 
                 <Stack mt={8} direction={'row'} spacing={4}>

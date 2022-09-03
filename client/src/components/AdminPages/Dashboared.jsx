@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Text, Heading } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Center } from '@chakra-ui/react'
 import * as React from "react";
 import UsersTable from "./UsersTable";
 import MainTable from "./tables/MainTable";
+import AGPetTable from "./tables/AGPetTable";
+import AGUserTable from "./tables/AGUserTable";
 
 export default function Dashboared() {
 
@@ -11,39 +13,35 @@ export default function Dashboared() {
   const [pets, setPets] = useState([])
 
 
-  useEffect(() => {
-
-    axios({
-      method: 'GET',
-      url: 'http://localhost:8080/api/v1/users/',
-      withCredentials: true
-    })
-
-      .then(res => {
-        console.log(res.data.data.users)
-        setUsers(res.data.data.users)
+  // useEffect(() => {
 
 
-      })
-      .catch(err => console.log(err.message))
+
+  //     .then(res => {
+  //       console.log(res.data.data.users)
+  //       setUsers(res.data.data.users)
 
 
-    axios({
-      method: 'GET',
-      url: 'http://localhost:8080/api/v1/pets/',
-      withCredentials: true
-    })
+  //     })
+  //     .catch(err => console.log(err.message))
 
-      .then(res => {
-        // console.log('res', res.data.data.pets)
-        setPets(res.data.data.pets)
 
-      })
+  //   axios({
+  //     method: 'GET',
+  //     url: 'http://localhost:8080/api/v1/pets/',
+  //     withCredentials: true
+  //   })
+
+  //     .then(res => {
+  //       // console.log('res', res.data.data.pets)
+  //       setPets(res.data.data.pets)
+
+  //     })
 
 
 
 
-  }, [])
+  // }, [])
 
 
 
@@ -66,22 +64,19 @@ export default function Dashboared() {
         <TabPanels>
           <TabPanel>
 
-            
-
-            <MainTable users={users} />
+            <Center>
+              <AGUserTable />
+            </Center>
 
 
           </TabPanel>
 
-
-
           <TabPanel>
 
 
-
-
-
-
+          <Center>
+              <AGPetTable/>
+            </Center>
 
 
 
@@ -91,6 +86,10 @@ export default function Dashboared() {
 
 
       </Tabs>
+
+
+
+
 
 
 
