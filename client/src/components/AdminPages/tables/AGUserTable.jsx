@@ -102,7 +102,7 @@ const AGUserTable = (props) => {
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant='ghost'>Secondary Action</Button>
+          
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -128,7 +128,7 @@ const AGUserTable = (props) => {
           animateRows={true} // Optional - set to 'true' to have rows animate when sorted
           rowSelection='multiple' // Options - allows click selection of rows
 
-          onCellClicked={cellClickedListener} // Optional - registering for Grid Event
+          onCellDoubleClicked={cellClickedListener} // Optional - registering for Grid Event
         />
       </div>
     </div>

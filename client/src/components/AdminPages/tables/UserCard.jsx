@@ -7,41 +7,25 @@ import {
     Stack,
     Button,
     Link,
-    Badge,
     useColorModeValue,
-} from '@chakra-ui/react';
-import {
     List,
     ListItem,
-    ListIcon,
-    OrderedList,
-    UnorderedList,
-} from '@chakra-ui/react'
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+} from '@chakra-ui/react';
 import { PhoneIcon } from '@chakra-ui/icons'
 import { BiBone } from 'react-icons/bi'
-import { Icon } from '@chakra-ui/icons';
-
+import { GiHearts } from 'react-icons/gi'
+import { useNavigate } from 'react-router-dom';
 
 export default function UserCard(props) {
     const { user } = props
     const { name, email, photo, role, currentPets, savedPets, phoneNumber, bio } = user
 
-    console.log(user)
-    // const { id, user, currentPets } = props
-    // // const [user, setUser] = useState('')
-    // console.log(user)
+    const navigate = useNavigate()
 
-
-
-    // // const [currentPets, setcurrentPets] = useState([])
-
-    // console.log(currentPets)
-
-
-
-
+    const handleClick = (event) => {
+        const id = event.currentTarget.id
+        navigate({ pathname: '/pet', search: `?id=${id}` });
+    }
 
     return (
         <Center py={6}>
@@ -53,6 +37,7 @@ export default function UserCard(props) {
                 rounded={'lg'}
                 p={6}
                 textAlign={'center'}>
+
                 <Avatar
                     size={'xl'}
                     src={
@@ -73,12 +58,19 @@ export default function UserCard(props) {
                         right: 3,
                     }}
                 />
+
                 <Heading fontSize={'2xl'} fontFamily={'body'}>
 
                 </Heading>
-                <Text fontWeight={600} color={'gray.500'} mb={4}>
+
+                <Text fontWeight={500} fontSize={'lg'} color={useColorModeValue('gray.700', 'gray.400')} mb={2}>
+                    {name}
+                </Text>
+
+                <Text fontWeight={600} color={'gray.500'} mb={3}>
                     {email}
                 </Text>
+
                 <Text
                     textAlign={'center'}
                     color={useColorModeValue('gray.700', 'gray.400')}
@@ -88,34 +80,42 @@ export default function UserCard(props) {
 
                 <Stack align={'center'} justify={'center'} direction={'row'}>
 
-                    
-                    <Text
-                        textAlign={'center'}
-                        color={useColorModeValue('gray.700', 'gray.400')}
-                        px={3}>
-                        {phoneNumber}
-                    </Text>
+                    <List spacing={5} mt={2}>
+                        <ListItem>
+                            <PhoneIcon as={' '} color="blue.500" mr={2} />
+                            {phoneNumber}
+                        </ListItem>
 
-
+                    </List>
 
                 </Stack>
 
                 <Stack align={'start'} justify={'start'} direction={'row'} mt={6}>
 
+                    <List spacing={5} mt={2}>
 
-                    {currentPets.length < 1 ? <Text>No Current Pets</Text> : currentPets.map(pet => {
-                        return <Link key={pet._id}>{pet.name}</Link>
-                    })}
+                        <Heading fontSize={'md'}>Current Pets:</Heading>
+                        {currentPets.length < 1 ? <Text>No Current Pets</Text> : currentPets.map(pet => {
+                            return <>
+                                <ListItem key={pet._id} display={'flex'} flexDirection={'row'}>
+                                    <BiBone as={' '} color="blue.600" m={2} />
+                                    <Link id={pet._id} color='blue.500' onClick={handleClick} key={pet._id}>{pet.name}</Link>
+                                </ListItem>
+                            </>
+                        })}
 
+                        <Heading me={1} fontSize={'md'}>Saved Pets:</Heading>
+                        {savedPets.length < 1 ? <Text>No Saved Pets</Text> : savedPets.map(pet => {
+                            return <>
+                                <ListItem key={pet._id} display={'flex'} flexDirection={'row'}>
+                                    <GiHearts as={' '} color="blue.600" m={2} />
+                                    <Link id={pet._id} color='blue.500' onClick={handleClick} key={pet._id}>{pet.name}</Link>
+                                </ListItem>
+                            </>
+                        })}
 
-                </Stack>
+                    </List>
 
-
-                <Stack align={'start'} justify={'start'} direction={'row'} mt={6}>
-
-                    {savedPets.length < 1 ? <Text>No Saved Pets</Text> : savedPets.map(pet => {
-                        return <Link key={pet._id}>{pet.name}</Link>
-                    })}
                 </Stack>
 
                 <Stack mt={8} direction={'row'} spacing={4}>
