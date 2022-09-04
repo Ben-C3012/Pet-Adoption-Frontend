@@ -8,51 +8,29 @@ import {
   Button,
   useColorModeValue,
 } from '@chakra-ui/react';
-
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState , useContext } from 'react';
+import { Context } from '../../App';
 import { PhoneIcon, AtSignIcon, InfoIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 
 export default function Settings() {
   const navigate = useNavigate()
+  const value = useContext(Context)
+  const {user} = value
 
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phoneNumber, setPhoneNumber] = useState('')
-  const [bio, setBio] = useState('')
-
-  useEffect(() => {
-    const res = axios({
-      method: 'POST',
-      url: 'http://localhost:8080/api/v1/users/isloggedin',
-      withCredentials: true
-    })
-
-      .then(res => {
-        console.log(res.data)
-        const {name , email , phoneNumber , bio } = res.data.user
-        setName(name)
-        setEmail(email)
-        setPhoneNumber(phoneNumber)
-        setBio(bio)
-
-        console.log(name, email, phoneNumber , bio)
-
-      })
-  }, [])
-
+const {name , email , phoneNumber , bio} = user
 
   const handleHomePage = () =>  navigate('/main')
   const handleEditProfile = () => navigate('/userProfileEdit')
 
-
-
   return (
     <Center py={6}>
+
       <Button onClick={handleHomePage} position={'absolute'} top={'0.8rem'} right={'8.6rem'} colorScheme='orange' variant='solid'>
         Home Page
       </Button>
+
       <Box
         maxW={'700px'}
         w={'full'}
@@ -60,11 +38,13 @@ export default function Settings() {
         boxShadow={'2xl'}
         rounded={'md'}
         overflow={'hidden'}>
+
         <Stack
           textAlign={'center'}
           p={6}
           color={useColorModeValue('gray.800', 'white')}
           align={'center'}>
+
           <Text
             fontSize={'sm'}
             fontWeight={500}
@@ -75,32 +55,41 @@ export default function Settings() {
             rounded={'full'}>
             Settings
           </Text>
+
           <Stack direction={'row'} align={'center'} justify={'center'}>
+
             <Text fontSize={'3xl'} fontWeight={800}>
               {name}
             </Text>
 
           </Stack>
+
         </Stack>
 
         <Box bg={useColorModeValue('gray.50', 'gray.900')} px={6} py={10} >
+
           <List spacing={5}>
+
             <ListItem>
               <InfoIcon as={''} color="green.400" mr={4} />
               Name: {name}
             </ListItem>
+
             <ListItem>
               <AtSignIcon as={''} color="green.400" mr={4} />
               {email}
             </ListItem>
+
             <ListItem>
               <PhoneIcon as={''} color="green.400" mr={4} />
               {phoneNumber}
             </ListItem>
+
             <ListItem>
               <InfoIcon as={''} color="green.400" mr={4} />
               {bio}
             </ListItem>
+
           </List>
 
           <Button
@@ -120,9 +109,6 @@ export default function Settings() {
             Edit
           </Button>
       
-
-
-
         </Box>
       </Box>
     </Center>

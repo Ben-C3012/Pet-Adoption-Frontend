@@ -13,9 +13,6 @@ import {
     useColorModeValue,
     Select,
     Center,
-    Square,
-    Switch
-
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom'
@@ -40,14 +37,15 @@ export default function SearchPets() {
 
     const formik = useFormik({
         initialValues: {
-            name: '',
-            email: '',
-            password: '',
-            passwordConfirm: '',
-            phoneNumber: ''
+            type: '',
+            adoptionStatus: '',
+            weight: '',
+            height: '',
+            name: ''
         }
     })
 
+    console.log(formik.values)
 
     // Bacic Search
     const handleSearch = () => {
@@ -63,29 +61,24 @@ export default function SearchPets() {
 
     //  Advanced Search
     const handleAdvancedSearch = () => {
-        buttonRef.current.click()
         setQuery('')
-        setPets('')
+  
 
-        if (formik.values.adoptionStatus) setQuery(prev => prev + `&adoptionStatus=${formik.values.adoptionStatus}`)
+        if (formik.values.adoptionStatus) setQuery(`&adoptionStatus=${formik.values.adoptionStatus}`)
         if (formik.values.weight) setQuery(prev => prev + `&weight=${formik.values.weight}`)
         if (formik.values.height) setQuery(prev => prev + `&height=${formik.values.height}`)
         if (formik.values.name) setQuery(prev => prev + `&name=${formik.values.name}`)
-        // console.log('Query', query)
-
-
-
-
+        console.log('Query', query)
+     
+        buttonRef.current.click()
         axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}${query}`)
             .then(res => {
                 setPets(res.data.data.pets)
                 // console.log(pets)
+               
             })
             .catch(err => console.log(err))
 
-        console.log(pets.filter(pet => {
-            return pet.adoptionStatus === 'Available'
-        }))
     }
 
 
@@ -134,7 +127,7 @@ export default function SearchPets() {
 
                                 <>
 
-                                    <FormControl onChange={formik.handleChange} value={formik.values.adoptionStatus} >
+                                    <FormControl onChange={formik.handleChange} value={formik.values.adoptionStatus} name = 'adoptionStatus' >
                                         <FormLabel>Adoption Status</FormLabel>
                                         <Select placeholder=' Select Adoption Status' name='adoptionStatus'  >
                                             <option value='Available'>Available</option>

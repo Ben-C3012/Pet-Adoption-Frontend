@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 import { MdLocalShipping } from 'react-icons/md';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 
 export default function UserProfile() {
 
@@ -32,15 +31,7 @@ export default function UserProfile() {
         const params = new Proxy(new URLSearchParams(window.location.search), {
             get: (searchParams, prop) => searchParams.get(prop),
         });
-
-        console.log(params)
-        
-
     }, [])
-
-
-
-
 
     return (
         <Container maxW={'7xl'}>
@@ -96,6 +87,7 @@ export default function UserProfile() {
                                 {email}
                             </Text>
                         </VStack>
+
                         <Box>
                             <Text
                                 fontSize={{ base: '16px', lg: '18px' }}
@@ -112,12 +104,14 @@ export default function UserProfile() {
                                     <ListItem>Master Chronometer Certified</ListItem>{' '}
                                     <ListItem>Tachymeter</ListItem>
                                 </List>
+
                                 <List spacing={2}>
                                     <ListItem>Anti‑magnetic</ListItem>
                                     <ListItem>Chronometer</ListItem>
                                     <ListItem>Small seconds</ListItem>
                                 </List>
                             </SimpleGrid>
+
                         </Box>
                         <Box>
                             <Text
@@ -137,6 +131,7 @@ export default function UserProfile() {
                                     20 mm
                                 </ListItem>
                                 <ListItem>
+
                                     <Text as={'span'} fontWeight={'bold'}>
                                         Bracelet:
                                     </Text>{' '}
@@ -148,18 +143,21 @@ export default function UserProfile() {
                                     </Text>{' '}
                                     Steel
                                 </ListItem>
+
                                 <ListItem>
                                     <Text as={'span'} fontWeight={'bold'}>
                                         Case diameter:
                                     </Text>{' '}
                                     42 mm
                                 </ListItem>
+
                                 <ListItem>
                                     <Text as={'span'} fontWeight={'bold'}>
                                         Dial color:
                                     </Text>{' '}
                                     Black
                                 </ListItem>
+
                                 <ListItem>
                                     <Text as={'span'} fontWeight={'bold'}>
                                         Crystal:
@@ -167,6 +165,7 @@ export default function UserProfile() {
                                     Domed, scratch‑resistant sapphire crystal with anti‑reflective
                                     treatment inside
                                 </ListItem>
+                                
                                 <ListItem>
                                     <Text as={'span'} fontWeight={'bold'}>
                                         Water resistance:

@@ -102,7 +102,10 @@ export default function Pet() {
             url: `http://localhost:8080/api/v1/pets/${id}/save`,
             withCredentials: true
         })
-            .then(res => setSaved(true))
+            .then(res =>  {
+                setSaved(true)
+                toast('Pet Saved!')
+            })
             .catch(err => console.log(err))
     }
 
@@ -113,7 +116,10 @@ export default function Pet() {
             url: `http://localhost:8080/api/v1/pets/${id}/save`,
             withCredentials: true
         })
-            .then(res => setSaved(false))
+            .then(res => {
+                setSaved(false)
+                toast.info('Pet Unsaved')
+            })
             .catch(err => console.log(err))
     }
 

@@ -10,13 +10,10 @@ import {
     Alert,
     AlertIcon,
     AlertTitle,
-    AlertDescription,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 export default function ResetPassword() {
-    const navigate = useNavigate()
 
     const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
@@ -27,7 +24,6 @@ export default function ResetPassword() {
     const handleCurrentPassword = (e) => setCurrentPassword(e.target.value)
     const handleNewPassword = (e) => setNewPassword(e.target.value)
     const handleConfirmPassword = (e) => setConfirmPassword(e.target.value)
-
 
     const handleResetPassword = () => {
         axios({
@@ -47,7 +43,6 @@ export default function ResetPassword() {
                     setMessage('Password Changed Successfully')
                     setStatus('success')
                 }
-
             })
 
             .catch(err => {
@@ -56,7 +51,6 @@ export default function ResetPassword() {
                 setStatus('error')
             })
     }
-
 
     return (
         <Flex
@@ -76,12 +70,14 @@ export default function ResetPassword() {
                 <Heading lineHeight={1.1} fontSize={{ base: '2xl', md: '3xl' }}>
                     Reset Password
                 </Heading>
+
                 <FormControl id="email" isRequired>
                     <FormLabel>Current Password</FormLabel>
                     <Input onChange={handleCurrentPassword}
                         type="password"
                     />
                 </FormControl>
+
                 <FormControl id="password" isRequired>
                     <FormLabel>Password</FormLabel>
                     <Input type="password" onChange={handleNewPassword} />
@@ -93,6 +89,7 @@ export default function ResetPassword() {
                 </FormControl>
 
                 <Stack spacing={6}>
+                    
                     <Button
                         onClick={handleResetPassword}
                         bg={'blue.400'}

@@ -2,7 +2,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalFooter,
   ModalBody,
   ModalCloseButton,
@@ -36,10 +35,10 @@ export default function ResetPasswordForm() {
 
             <ResetPassword />
 
-
           </ModalBody>
 
           <ModalFooter>
+
             <Button colorScheme='blue' mr={3} onClick={onClose} bg={'blue.700'}>
               Close
             </Button>

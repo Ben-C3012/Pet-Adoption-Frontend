@@ -15,34 +15,10 @@ import axios from 'axios'
 import UserCard from './tables/UserCard'
 
 export default function InfoModal() {
-   
-    // console.log(id)
     const [user, setUser] = useState('')
     const [currentPets, setcurrentPets] = useState([])
 
     const { isOpen, onOpen, onClose } = useDisclosure()
-
-
-    // const handleUserInfo = () => {
-
-    //     const userId = id
-
-    //     axios({
-    //         method: 'GET',
-    //         url: `http://localhost:8080/api/v1/users/${userId}`,
-    //         withCredentials: true
-    //     })
-
-    //         .then(res => {
-    //             // console.log(res.data.data.user)
-    //             setUser(res.data.data.user)
-    //             setcurrentPets(res.data.data.user.currentPets)
-    //         })
-
-    // }
-
-
-
 
     return (
         <>

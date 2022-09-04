@@ -1,10 +1,8 @@
 import {
     Heading,
-    Avatar,
     Box,
     Center,
     Image,
-    Flex,
     Text,
     Stack,
     Button,
@@ -16,18 +14,11 @@ export default function SavedPets(props) {
     const { name, adoptionStatus, photo, id } = props
     const navigate = useNavigate()
 
-    const handleClick = (event) => {
-
-      
-
-        console.log(event.currentTarget.id)
-        navigate({ pathname: '/pet', search: `?id=${id}` });
-
-    }
-
+    const handleClick = () => navigate({ pathname: '/pet', search: `?id=${id}` });
 
     return (
         <Center py={6}>
+
             <Box
                 maxW={'500px'}
                 w={'full'}
@@ -35,6 +26,7 @@ export default function SavedPets(props) {
                 boxShadow={'2xl'}
                 rounded={'md'}
                 overflow={'hidden'}>
+
                 <Image
                     h={'250px'}
                     w={'full'}
@@ -44,16 +36,16 @@ export default function SavedPets(props) {
                     objectFit={'cover'}
                 />
 
-
                 <Box p={6}>
                     <Stack spacing={0} align={'center'} mb={5}>
+
                         <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
                             {name}
                         </Heading>
+
                         <Text color={'gray.500'}>{adoptionStatus}</Text>
+
                     </Stack>
-
-
 
                     <Button
                         onClick={handleClick}
@@ -68,6 +60,7 @@ export default function SavedPets(props) {
                         }}>
                         Read More
                     </Button>
+                    
                 </Box>
             </Box>
         </Center>

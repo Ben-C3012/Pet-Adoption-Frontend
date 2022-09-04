@@ -24,7 +24,7 @@ function App() {
   // Check if Logged in 
   const [loggedIn, isLoggedIn] = useState(false)
   const [admin, isAdmin] = useState(false)
-  const [userId, setUserId] = useState('')
+  const [user, setUser] = useState('')
 
 
   useEffect(() => {
@@ -36,7 +36,8 @@ function App() {
 
       .then(res => {
         isLoggedIn(true)
-        setUserId(res.data.user._id)
+        console.log(res.data.user)
+        setUser(res.data.user)
 
       })
       .catch(err => console.log(err.message))
@@ -50,7 +51,7 @@ function App() {
   return (
     <>
 
-      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, userId }}>
+      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, user }}>
 
 
 

@@ -5,24 +5,11 @@ import {
     Image,
     Badge,
     useColorModeValue,
-    Icon,
-    chakra,
-    Tooltip,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useEffect } from 'react';
-
-
-
 
 function AdminPets(props) {
 
     const { name, adoptionStatus, breed, color, photo, bio, hypoallergeni, dietaryRestrictions } = props
-
-
-
-
-
 
     return (
         <Flex p={50} w="full" alignItems="center" justifyContent="center">
