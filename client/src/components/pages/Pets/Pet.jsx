@@ -18,12 +18,18 @@ import AdminEditModal from './AdminEditModal';
 import AdminEditPicture from './AdminEditPicture';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Heart from "react-animated-heart";
+
 
 
 export default function Pet() {
     const navigate = useNavigate()
     const value = useContext(Context);
     const { loggedIn, admin } = value
+
+
+    const [isClick, setClick] = useState(false);
+
 
     const [pet, setPet] = useState({})
     const [id, setId] = useState('')
@@ -81,6 +87,7 @@ export default function Pet() {
                 const { savedPets, currentPets } = result
                 const findIfPetSaved = savedPets.find(pet => pet._id === petId)
                 if (findIfPetSaved) setSaved(true)
+                if (findIfPetSaved) setClick(true)
 
                 // Check if the user is the current owner of the pet
                 const findIfUserOwnsPet = currentPets.find(pet => pet._id === petId)
@@ -102,7 +109,7 @@ export default function Pet() {
             url: `http://localhost:8080/api/v1/pets/${id}/save`,
             withCredentials: true
         })
-            .then(res =>  {
+            .then(res => {
                 setSaved(true)
                 toast('Pet Saved!')
             })
@@ -361,8 +368,9 @@ export default function Pet() {
                                 bg: 'gray.500',
                             }}>
 
+                            <Heart isClick={isClick} onClick={() => setClick(true)} />
 
-                            Save For Later
+
 
                         </Button>}
 
@@ -383,7 +391,8 @@ export default function Pet() {
                                 bg: 'gray.500',
                             }}>
 
-                            Unsave
+                            <Heart isClick={isClick} onClick={() => setClick(false)} />
+
                         </Button>}
 
                     </Stack>

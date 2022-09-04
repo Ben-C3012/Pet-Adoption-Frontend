@@ -22,28 +22,27 @@ export default function SavedPets(props) {
             <Box
                 maxW={'500px'}
                 w={'full'}
-                bg={useColorModeValue('white', 'gray.800')}
+                bg={useColorModeValue('gray.50', 'teal.500')}
                 boxShadow={'2xl'}
                 rounded={'md'}
                 overflow={'hidden'}>
 
                 <Image
-                    h={'250px'}
+                    h={'300px'}
                     w={'full'}
                     src={
                         photo
                     }
-                    objectFit={'cover'}
                 />
 
                 <Box p={6}>
                     <Stack spacing={0} align={'center'} mb={5}>
 
                         <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                            {name}
+                            {name} 
                         </Heading>
 
-                        <Text color={'gray.500'}>{adoptionStatus}</Text>
+                        <Text color={'gray.800'}>{adoptionStatus}</Text>
 
                     </Stack>
 
@@ -51,7 +50,7 @@ export default function SavedPets(props) {
                         onClick={handleClick}
                         w={'full'}
                         mt={8}
-                        bg={useColorModeValue('gray.900', 'teal.400')}
+                        bg={useColorModeValue('teal.500', 'gray.800')}
                         color={'white'}
                         rounded={'md'}
                         _hover={{

@@ -1,22 +1,16 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Center, Text, useColorModeValue } from '@chakra-ui/react'
 import axios from 'axios';
-import CurrentPets from './CurrentPets'
 import SavedPets from './SavedPets'
+import CurrentPets from './CurrentPets';
 import { useState, useEffect } from 'react';
 import { BiBone } from 'react-icons/bi'
 import { GiHearts } from 'react-icons/gi'
 function MyPets() {
 
-  // Pet Data 
-  const [name, setName] = useState('')
-  const [photo, setPhoto] = useState('')
-  const [adoptionStatus, setAdoptionStatus] = useState('')
-
+  const [color, setcolor] = useState(true)
   // Pet Arrays
   const [savedPets, setSavedPets] = useState([])
   const [currentPets, setCurrentPets] = useState([])
-
-
 
   useEffect(() => {
     axios({
@@ -41,7 +35,7 @@ function MyPets() {
       <Tabs w={'1200px'} p={'4rem'} mt={'3rem'} variant='soft-rounded' >
         <TabList>
           <Tab>Saved Pets  &nbsp;  <GiHearts /> </Tab>
-          <Tab>Current Pets &nbsp;  <BiBone  /></Tab>
+          <Tab>Current Pets &nbsp;  <BiBone /></Tab>
         </TabList>
         <TabPanels>
           <TabPanel>
@@ -57,7 +51,7 @@ function MyPets() {
 
             {currentPets.length === 0 ? <Text>You Don't have Any Pets</Text> : ''}
             {currentPets.map(pet => {
-              return <SavedPets key={pet._id} id={pet._id} name={pet.name} adoptionStatus={pet.adoptionStatus} photo={pet.photo} />
+              return <CurrentPets key={pet._id} id={pet._id} name={pet.name} adoptionStatus={pet.adoptionStatus} photo={pet.photo} />
             })}
 
 

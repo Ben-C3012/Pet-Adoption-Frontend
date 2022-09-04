@@ -13,6 +13,8 @@ export default function Dashboared() {
 
           <Tab _selected={{ color: 'white', bg: 'blue.500' }}>Users</Tab>
           <Tab _selected={{ color: 'white', bg: 'green.500' }}>Pets</Tab>
+          <Tab _selected={{ color: 'white', bg: 'purple.500' }}>Stats</Tab>
+
 
         </TabList>
 
@@ -29,6 +31,16 @@ export default function Dashboared() {
 
             <Center>
               <AGPetTable />
+            </Center>
+
+          </TabPanel>
+
+          <TabPanel>
+
+            <Center>
+                 
+                  <h1>Hello Wrold</h1>
+
             </Center>
 
           </TabPanel>

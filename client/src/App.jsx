@@ -64,7 +64,7 @@ function App() {
             {/* Logged In */}
 
 
-            <Route path='/main' element={<RequireAuth> <Main /> </RequireAuth>} />
+            <Route path='/main' element={<Main />} />
 
             <Route path='/settings' element={<RequireAuth> <Settings /></RequireAuth>} />
 
@@ -79,7 +79,7 @@ function App() {
 
             <Route path='/dashboared' element={<RequireAdmin> <Dashboared /> </RequireAdmin>} />
 
-          
+
             {/* Catch All */}
             <Route path='*' element={<NotFound />} />
 

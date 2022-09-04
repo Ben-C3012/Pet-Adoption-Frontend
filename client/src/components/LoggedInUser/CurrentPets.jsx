@@ -25,12 +25,12 @@ export default function CurrentPets(props) {
                 maxW={'500px'}
                 w={'full'}
                 bg={useColorModeValue('white', 'gray.800')}
-                boxShadow={'2xl'}
+                boxShadow={'3xl'}
                 rounded={'md'}
                 overflow={'hidden'}>
 
                 <Image
-                    h={'120px'}
+                    h={'300px'}
                     w={'full'}
                     src={
                         photo
