@@ -4,13 +4,11 @@ import { Navigate } from 'react-router-dom'
 
 function RequireAdmin({children}) {
     const value = useContext(Context)
-    const { admin, loggedIn } = value
+    const { admin} = value
 
     if(!admin) {
         return <Navigate to='/main' />
     }
-
-
 
     return children
 }

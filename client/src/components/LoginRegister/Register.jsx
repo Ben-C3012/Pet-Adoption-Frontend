@@ -46,7 +46,6 @@ function Register() {
                 withCredentials: true
             })
 
-            console.log(res.status === 200)
             if (res) {
                 console.log(res)
                 isLoggedIn(true)
@@ -72,7 +71,6 @@ function Register() {
             position: toast.POSITION.TOP_CENTER
         });
     }
-
 
     return (
         <> <FormControl>

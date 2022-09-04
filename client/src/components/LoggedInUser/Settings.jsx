@@ -9,20 +9,38 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import axios from 'axios';
-import { useEffect, useState , useContext } from 'react';
-import { Context } from '../../App';
+import { useEffect, useState } from 'react';
 import { PhoneIcon, AtSignIcon, InfoIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
 
 export default function Settings() {
   const navigate = useNavigate()
-  const value = useContext(Context)
-  const {user} = value
 
-const {name , email , phoneNumber , bio} = user
-
-  const handleHomePage = () =>  navigate('/main')
+  const handleHomePage = () => navigate('/main')
   const handleEditProfile = () => navigate('/userProfileEdit')
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [bio, setBio] = useState('')
+
+  useEffect(() => {
+    axios({
+      method: 'POST',
+      url: 'http://localhost:8080/api/v1/users/isloggedin',
+      withCredentials: true
+    })
+      .then(res => {
+        console.log(res.data.user)
+        const { name, email, phoneNumber, bio } = res.data.user
+        setEmail(email)
+        setName(name)
+        setPhoneNumber(phoneNumber)
+        setBio(bio)
+
+      })
+      .catch(err => console.log(err.message))
+  }, [])
 
   return (
     <Center py={6}>
@@ -93,7 +111,7 @@ const {name , email , phoneNumber , bio} = user
           </List>
 
           <Button
-          onClick={handleEditProfile}
+            onClick={handleEditProfile}
             mt={10}
             w={'full'}
             bg={'teal.400'}
@@ -108,7 +126,7 @@ const {name , email , phoneNumber , bio} = user
             }}>
             Edit
           </Button>
-      
+
         </Box>
       </Box>
     </Center>

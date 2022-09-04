@@ -7,7 +7,6 @@ import {
     Input,
     Stack,
     useColorModeValue,
-    HStack,
     Avatar,
     AvatarBadge,
     IconButton,
@@ -16,18 +15,15 @@ import {
 import ResetPasswordForm from './ResetPasswordForm';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
-
 
 export default function UserProfileEdit() {
     const inputRef = useRef(null);
-
-
     const navigate = useNavigate()
-    const [photo, setPhoto] = useState('')
-
     const backToUserInfo = () => navigate('/settings')
 
+    const [photo, setPhoto] = useState('')
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
@@ -47,19 +43,12 @@ export default function UserProfileEdit() {
                 email,
                 phoneNumber,
                 bio
-
             },
             withCredentials: true
         })
-            .then(res => {
-
-                navigate('/settings')
-                window.location.reload()
-            })
-
+            .then(res => navigate('/settings'))
             .catch(err => console.log(err))
     }
-
 
     useEffect(() => {
         axios({
@@ -70,7 +59,7 @@ export default function UserProfileEdit() {
 
             .then(res => {
                 console.log(res.data.user)
-                const { photo , name , email , phoneNumber, bio } = res.data.user
+                const { photo, name, email, phoneNumber, bio } = res.data.user
                 setPhoto(photo)
                 setEmail(email)
                 setName(name)
@@ -78,6 +67,7 @@ export default function UserProfileEdit() {
                 setBio(bio)
 
             })
+
             .catch(err => console.log(err.message))
     }, [])
 
@@ -85,20 +75,24 @@ export default function UserProfileEdit() {
     const handleClick = () => inputRef.current.click();
 
     const handleFileChange = async (event) => {
-        const fileObj = event.target.files && event.target.files[0]
-        const formData = new FormData();
-        formData.append("photo", fileObj);
-        const res = await axios.patch('http://localhost:8080/api/v1/users/photo', formData, {
-            headers: {
-                "content-type": "multipart/form-data"
-            },
-            withCredentials: true
-        });
+        try {
+            const fileObj = event.target.files && event.target.files[0]
+            const formData = new FormData();
+            formData.append("photo", fileObj);
+            const res = await axios.patch('http://localhost:8080/api/v1/users/photo', formData, {
+                headers: {
+                    "content-type": "multipart/form-data"
+                },
+                withCredentials: true
+            });
+            setPhoto(res.data.data.user.photo)
+            window.location.reload()
 
-        window.location.reload()
+        } catch (err) {
+            console.log(err)
+            toast.error('Something Went Wrong! , Try A Differernt Picture')
+        }
     };
-
-
 
     return (
         <Flex
@@ -206,6 +200,8 @@ export default function UserProfileEdit() {
                     </Button>
 
                     <ResetPasswordForm />
+
+                    <ToastContainer />
 
 
                 </Stack>

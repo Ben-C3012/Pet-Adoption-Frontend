@@ -23,7 +23,7 @@ export default function AdminEditModal(props) {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent >
-                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalHeader>Edit Pet</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody >
 

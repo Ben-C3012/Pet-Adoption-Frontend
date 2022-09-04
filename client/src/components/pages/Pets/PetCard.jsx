@@ -3,18 +3,15 @@ import { useColorModeValue, Heading, Stack, Button } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom'
 
 function PetCard(props) {
-    const { type, petName, adoptionStatus, bio, breed, color, dietaryRestrictions, picture, id } = props
-
     const navigate = useNavigate()
+    const { petName, adoptionStatus, breed, picture, id } = props
 
     const handleClick = (event) => {
         console.log(event.currentTarget.id)
         navigate({ pathname: '/pet', search: `?id=${id}` });
-
     }
 
     const ToggleColor = useColorModeValue('gray.800', 'white')
-
 
     return (
 
@@ -31,6 +28,7 @@ function PetCard(props) {
                     rounded={'lg'}
                     pos={'relative'}
                     zIndex={1}>
+
                     <Box
                         rounded={'lg'}
                         mt={-12}
@@ -53,6 +51,7 @@ function PetCard(props) {
                                 filter: 'blur(20px)',
                             },
                         }}>
+
                         <Image
                             rounded={'lg'}
                             height={230}
@@ -60,22 +59,25 @@ function PetCard(props) {
                             objectFit={'cover'}
                             src={picture}
                         />
+
                     </Box>
                     <Stack pt={10} align={'center'}>
+
                         <Text color={'gray.500'} fontSize={'sm'}>
                             {petName}
                         </Text>
+
                         <Heading fontSize={'2xl'} fontFamily={'body'} fontWeight={500} color={ToggleColor}>
                             {breed}
                         </Heading>
+
                         <Stack direction={'row'} align={'center'}>
+
                             <Text fontWeight={300} fontSize={'xl'} color={ToggleColor}>
                                 {adoptionStatus}
                             </Text>
 
                         </Stack>
-
-
 
                         <Button
 
@@ -89,15 +91,8 @@ function PetCard(props) {
                 </Box>
 
             </Center>
-
-
-
-
         </>
-
     )
-
-
 }
 
 export default PetCard

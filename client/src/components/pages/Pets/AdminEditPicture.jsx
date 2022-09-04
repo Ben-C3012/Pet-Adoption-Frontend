@@ -1,7 +1,5 @@
 import React from 'react'
-import {
-    Button, Input, Tooltip, Alert, AlertIcon, AlertTitle
-} from '@chakra-ui/react'
+import {Button, Input, Tooltip, Alert, AlertIcon, AlertTitle} from '@chakra-ui/react'
 import { useState, useRef } from 'react'
 import axios from 'axios'
 
@@ -52,6 +50,5 @@ function AdminEditPicture(props) {
         </>
 
     )
-
 }
 export default AdminEditPicture

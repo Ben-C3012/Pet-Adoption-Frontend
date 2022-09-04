@@ -14,7 +14,6 @@ import MyPets from './components/LoggedInUser/MyPets';
 import NotFound from './components/pages/NotFoundPage/NotFound';
 import AddPet from './components/AdminPages/AddPet';
 import Dashboared from './components/AdminPages/Dashboared';
-import UserProfile from './components/AdminPages/UserProfile';
 import RequireAuth from './components/pages/RequireAuth';
 import RequireAdmin from './components/pages/RequireAdmin';
 export const Context = createContext('Default Value');
@@ -43,17 +42,10 @@ function App() {
       .catch(err => console.log(err.message))
   }, [])
 
-
-
-
-
-
   return (
     <>
 
       <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, user }}>
-
-
 
         <BrowserRouter>
 
@@ -72,7 +64,7 @@ function App() {
             {/* Logged In */}
 
 
-            <Route path='/main' element={<Main />} />
+            <Route path='/main' element={<RequireAuth> <Main /> </RequireAuth>} />
 
             <Route path='/settings' element={<RequireAuth> <Settings /></RequireAuth>} />
 
@@ -87,21 +79,12 @@ function App() {
 
             <Route path='/dashboared' element={<RequireAdmin> <Dashboared /> </RequireAdmin>} />
 
-            {/* Not In App */}
-            <Route path='/user' element={<UserProfile />} />
-
-
-
-
+          
             {/* Catch All */}
             <Route path='*' element={<NotFound />} />
 
 
           </Routes>
-
-
-
-
 
         </BrowserRouter>
 

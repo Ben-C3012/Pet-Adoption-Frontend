@@ -187,7 +187,7 @@ export default function Pet() {
                 borderWidth="1px"
                 borderRadius="lg"
                 w={{ sm: '100%', md: '500px' }}
-                height={'57rem'}
+                height={'62rem'}
                 direction={{ base: 'column', md: 'column' }}
                 bg={useColorModeValue('gray.50', 'gray.900')}
                 boxShadow={'2xl'}

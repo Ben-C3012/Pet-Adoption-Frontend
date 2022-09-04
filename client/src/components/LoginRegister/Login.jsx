@@ -1,21 +1,14 @@
-import { FormControl, FormLabel, FormErrorMessage, FormHelperText, Input, Button, Flex } from '@chakra-ui/react'
 import {
+    InputGroup,
+    InputRightElement,
+    FormControl, FormLabel,
+    Input,
+    Button,
+    Flex,
     Alert,
     AlertIcon,
-    AlertTitle,
-    AlertDescription,
+    AlertTitle
 } from '@chakra-ui/react'
-import {
-
-    InputGroup,
-
-    InputRightElement,
-
-
-
-    useColorModeValue,
-    Link,
-} from '@chakra-ui/react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useState, useContext } from 'react'
@@ -28,7 +21,6 @@ function Login() {
     const value = useContext(Context);
     const { loggedIn, isLoggedIn } = value
     const [showPassword, setShowPassword] = useState(false);
-
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -63,17 +55,17 @@ function Login() {
         }
     }
 
-
     return (
         <FormControl>
             <FormLabel htmlFor='email'>Email address</FormLabel>
             <Input id='email' type='email' onChange={handleEmail} value={email} />
 
-
             <FormControl mt={4} id="password">
                 <FormLabel>Password</FormLabel>
+
                 <InputGroup>
                     <Input onChange={handlePassword} value={password} type={showPassword ? 'text' : 'password'} />
+
                     <InputRightElement h={'full'}>
                         <Button
                             variant={'ghost'}
@@ -83,10 +75,10 @@ function Login() {
                             {showPassword ? <ViewIcon /> : <ViewOffIcon />}
                         </Button>
                     </InputRightElement>
+                    
                 </InputGroup>
+
             </FormControl>
-
-
 
             <Flex justify={'center'} >
                 <Button onClick={hanldeForm} w={'150px'} mt={5} colorScheme='blue'>Login</Button>

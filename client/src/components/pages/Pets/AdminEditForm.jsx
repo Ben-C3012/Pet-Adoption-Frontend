@@ -7,9 +7,7 @@ import {
     Stack,
     Select,
     Button,
-    Text,
     useColorModeValue,
-    Center,
     Alert,
     AlertIcon,
     AlertDescription,
@@ -22,7 +20,6 @@ export default function AdminEditForm(props) {
     const { pet } = props
     const [message, setMessage] = useState('')
     const [status, setStatus] = useState('')
-
 
     const { type, name, adoptionStatus, height, weight, color, bio, hypoallergenic, dietaryRestrictions, breed } = pet
 
@@ -41,9 +38,7 @@ export default function AdminEditForm(props) {
         }
     })
 
-
     const handleFormSubmit = async () => {
-        console.log(formik.values)
 
         try {
             const res = await axios.patch(`http://localhost:8080/api/v1/pets/${pet._id}`, formik.values, {
@@ -53,10 +48,11 @@ export default function AdminEditForm(props) {
                 withCredentials: true
             });
 
-            console.log(res)
             if (res.status === 200) {
+                console.log(res)
                 setStatus('success')
                 setMessage('Pet Successfully Updated')
+                window.location.reload()
             }
 
         } catch (err) {
@@ -64,32 +60,18 @@ export default function AdminEditForm(props) {
             setStatus('error')
             setMessage('Something Went Wrong! Please Try Again')
         }
-
-       
-           window.location.reload()
     }
-
-
-
-    setTimeout(() => {
-        setStatus('')
-        setMessage('')
-    }, 3000);
-
-
 
     return (
         <Flex
             minH={'100vh'}
-
+            borderRadius={'5px'}
             align={'start'}
             justify={'center'}
-            bg={useColorModeValue('gray.50', 'gray.800')}>
+            bg={useColorModeValue('gray.50', 'gray.700')}>
+
             <Stack spacing={8} mx={'auto'} py={12} px={6}>
-                <Stack align={'center'}>
 
-
-                </Stack>
                 <Box
                     rounded={'lg'}
                     borderRadius={'10px'}
@@ -110,7 +92,6 @@ export default function AdminEditForm(props) {
                             <Input onChange={formik.handleChange} value={formik.values.name} type={'text'} name='name' />
                         </FormControl>
 
-
                         <FormControl>
                             <FormLabel>Adoption Status</FormLabel>
                             <Select onChange={formik.handleChange} value={formik.values.adoptionStatus} placeholder=' Select Adoption Status' name='adoptionStatus'>
@@ -125,25 +106,20 @@ export default function AdminEditForm(props) {
                             <Input onChange={formik.handleChange} value={formik.values.height} min={0} type={'number'} name={'height'} />
                         </FormControl>
 
-
                         <FormControl>
                             <FormLabel>Weight</FormLabel>
                             <Input onChange={formik.handleChange} value={formik.values.weight} min={0} type={'number'} name={'weight'} />
                         </FormControl>
-
-
 
                         <FormControl >
                             <FormLabel>Color</FormLabel>
                             <Input onChange={formik.handleChange} value={formik.values.color} type={'text'} name={'color'} />
                         </FormControl>
 
-
                         <FormControl >
                             <FormLabel>Bio</FormLabel>
                             <Input onChange={formik.handleChange} value={formik.values.bio} type={'text'} name={'bio'} />
                         </FormControl>
-
 
                         <FormLabel>Hypoallergenic</FormLabel>
                         <Select onChange={formik.handleChange} value={formik.values.hypoallergenic} name={'hypoallergenic'} placeholder=' Select Hypoallergenic Status'>
@@ -161,16 +137,14 @@ export default function AdminEditForm(props) {
                             <Input onChange={formik.handleChange} value={formik.values.breed} name={'breed'} type={'text'} />
                         </FormControl>
 
-
-
                         {message && <Alert status={status}>
                             <AlertIcon />
 
                             <AlertDescription>{message}</AlertDescription>
                         </Alert>}
 
-
                         <Stack spacing={10} pt={2}>
+
                             <Button
                                 onClick={handleFormSubmit}
                                 loadingText="Submitting"
@@ -183,9 +157,8 @@ export default function AdminEditForm(props) {
                                 Edit Pet
                             </Button>
                         </Stack>
+
                         <Stack pt={6}>
-
-
 
                         </Stack>
                     </Stack>
