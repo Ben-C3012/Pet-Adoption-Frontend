@@ -94,7 +94,23 @@ export default function UserCard(props) {
 
                     <List spacing={5} mt={2}>
 
-                        <Heading fontSize={'md'}>Current Pets:</Heading>
+                        <Button
+                            flex={1}
+                            fontSize={'sm'}
+                            rounded={'full'}
+                            bg={'blue.400'}
+                            color={'white'}
+                            boxShadow={
+                                '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
+                            }
+                            _hover={{
+                                bg: 'blue.500',
+                            }}
+                            _focus={{
+                                bg: 'blue.500',
+                            }}>
+                            Current Pets
+                        </Button>
                         {currentPets.length < 1 ? <Text>No Current Pets</Text> : currentPets.map(pet => {
                             return <>
                                 <ListItem key={pet._id} display={'flex'} flexDirection={'row'}>
@@ -104,7 +120,22 @@ export default function UserCard(props) {
                             </>
                         })}
 
-                        <Heading me={1} fontSize={'md'}>Saved Pets:</Heading>
+                        <Button
+                        mr={1}
+                            flex={1}
+                            fontSize={'sm'}
+                            rounded={'full'}
+                            bg={'gray.600'}
+                            color={'white'}
+                            boxShadow='dark-lg'
+                            _hover={{
+                                bg: 'gray.500',
+                            }}
+                            _focus={{
+                                bg: 'gray.500',
+                            }}>
+                            Saved Pets
+                        </Button>
                         {savedPets.length < 1 ? <Text>No Saved Pets</Text> : savedPets.map(pet => {
                             return <>
                                 <ListItem key={pet._id} display={'flex'} flexDirection={'row'}>
@@ -118,34 +149,6 @@ export default function UserCard(props) {
 
                 </Stack>
 
-                <Stack mt={8} direction={'row'} spacing={4}>
-                    <Button
-                        flex={1}
-                        fontSize={'sm'}
-                        rounded={'full'}
-                        _focus={{
-                            bg: 'gray.200',
-                        }}>
-                        Message
-                    </Button>
-                    <Button
-                        flex={1}
-                        fontSize={'sm'}
-                        rounded={'full'}
-                        bg={'blue.400'}
-                        color={'white'}
-                        boxShadow={
-                            '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-                        }
-                        _hover={{
-                            bg: 'blue.500',
-                        }}
-                        _focus={{
-                            bg: 'blue.500',
-                        }}>
-                        Follow
-                    </Button>
-                </Stack>
             </Box>
         </Center>
     );

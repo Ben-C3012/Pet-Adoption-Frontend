@@ -23,22 +23,19 @@ export default function InfoModal() {
     return (
         <>
             <Button
-                onClick={() => {
-                    onOpen();
-                    // handleUserInfo();
-                }}>
+                onClick={() => onOpen()}>
 
                 +</Button>
 
             <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalHeader>User Info</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
 
 
-                        <UserCard  user={user} currentPets={currentPets} />
+                        <UserCard user={user} currentPets={currentPets} />
 
 
 

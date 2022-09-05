@@ -20,16 +20,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Heart from "react-animated-heart";
 
-
-
 export default function Pet() {
     const navigate = useNavigate()
     const value = useContext(Context);
     const { loggedIn, admin } = value
 
 
-    const [isClick, setClick] = useState(false);
-
+    const [isClick, setClick] = useState(false);   // Heart Icon State
 
     const [pet, setPet] = useState({})
     const [id, setId] = useState('')
@@ -39,15 +36,10 @@ export default function Pet() {
     const [adopted, setAdopted] = useState(false)
     const [fostered, setFostered] = useState(false)
 
-
     const [isOwner, setIsOwner] = useState(false)
     const [taken, setTaken] = useState(false)
 
-
-
-
     const handleBackToSearch = () => navigate('/pets', { replace: true })
-
     // Get Id From Param + Pet Data
     useEffect(() => {
         const params = new Proxy(new URLSearchParams(window.location.search), {
@@ -66,11 +58,6 @@ export default function Pet() {
                 if (data.adoptionStatus == 'Fostered') setTaken(true)
                 if (data.adoptionStatus == 'Adopted') setTaken(true)
                 console.log('Taken', taken)
-
-
-
-
-
             })
             .catch(err => console.log(err))
 
@@ -94,14 +81,9 @@ export default function Pet() {
                 if (findIfUserOwnsPet) setIsOwner(true)
                 console.log('isOwner', isOwner)
                 if (findIfUserOwnsPet) setAdopted(true)
-
-
                 if (taken && !isOwner) toast('This Pet Is Taken!')
-
             })
-
     }, [adopted, fostered])
-
 
     const handleSavePet = () => {
         axios({
@@ -116,7 +98,6 @@ export default function Pet() {
             .catch(err => console.log(err))
     }
 
-
     const handleUnsavePet = () => {
         axios({
             method: 'DELETE',
@@ -129,7 +110,6 @@ export default function Pet() {
             })
             .catch(err => console.log(err))
     }
-
 
     const handleAdoptClick = () => {
         axios({
@@ -166,7 +146,6 @@ export default function Pet() {
             })
     }
 
-
     const handleReturnPet = () => {
         axios({
             method: 'POST',
@@ -183,10 +162,6 @@ export default function Pet() {
             })
     }
 
-
-
-
-
     return (
         <Center py={6}>
             <Button onClick={handleBackToSearch} position={'absolute'} top={'3'} right={'10rem'}>Back To Search</Button>
@@ -199,7 +174,9 @@ export default function Pet() {
                 bg={useColorModeValue('gray.50', 'gray.900')}
                 boxShadow={'2xl'}
                 padding={4}>
+
                 <Flex flex={1} bg="blue.200">
+
                     <Image
                         boxShadow={
                             '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
@@ -210,7 +187,9 @@ export default function Pet() {
                             pet.photo
                         }
                     />
+
                 </Flex>
+
                 <Stack
                     flex={1}
                     flexDirection="column"
@@ -218,16 +197,19 @@ export default function Pet() {
                     alignItems="center"
                     p={1}
                     pt={2}>
-                    <Heading fontSize={'2xl'} fontFamily={'body'}>
 
+                    <Heading fontSize={'2xl'} fontFamily={'body'}>
                         {petName}
                     </Heading>
+
                     <Text fontWeight={600} color={'gray.600'} size="sm" mb={4}>
                         {pet.breed}
                     </Text>
+
                     <Text fontWeight={600} color={'gray.500'} size="sm" mb={4}>
                         {pet.adoptionStatus}
                     </Text>
+
                     <Text
                         textAlign={'center'}
 
@@ -235,8 +217,8 @@ export default function Pet() {
                         px={3}>
                         {pet.bio}
                     </Text>
-                    <Stack align={'center'} justify={'center'} direction={{ sm: 'column', md: 'row' }} mt={6}>
 
+                    <Stack align={'center'} justify={'center'} direction={{ sm: 'column', md: 'row' }} mt={6}>
 
                         <Badge
                             px={2}
@@ -245,6 +227,7 @@ export default function Pet() {
                             fontWeight={'400'} fontSize={'md'}>
                             Height: {pet.height}cm
                         </Badge>
+
                         <Badge
                             px={2}
                             py={1}
@@ -253,8 +236,6 @@ export default function Pet() {
                             Weight: {pet.weight}kg
                         </Badge>
 
-
-
                         <Badge
                             px={2}
                             py={1}
@@ -262,6 +243,7 @@ export default function Pet() {
                             fontWeight={'400'} fontSize={'md'}>
                             Color: {pet.color}
                         </Badge>
+
                         <Badge
                             px={2}
                             py={1}
@@ -269,7 +251,6 @@ export default function Pet() {
                             fontWeight={'400'} fontSize={'md'}>
                             Dietary Restrictions {pet.dietaryRestrictions}
                         </Badge>
-
 
                     </Stack>
 
@@ -299,7 +280,6 @@ export default function Pet() {
 
                             Foster
                         </Button>}
-
 
                         {loggedIn && fostered && <Button
                             onClick={handleReturnPet}
@@ -349,8 +329,6 @@ export default function Pet() {
                             _focus={{
                                 bg: 'teal.700',
                             }}>
-
-
                             Return
                         </Button>}
 
@@ -372,13 +350,7 @@ export default function Pet() {
                                 setClick(true)
                                 handleSavePet()
                             }} />
-
-
-
                         </Button>}
-
-
-
 
                         {loggedIn && saved && <Button
                             // onClick={handleUnsavePet}
@@ -412,11 +384,10 @@ export default function Pet() {
                     {admin && <AdminEditPicture pet={pet} />}
                     <ToastContainer />
 
-
                 </Flex>
 
-
             </Stack>
+            
         </Center >
     );
 }

@@ -77,17 +77,14 @@ const AGUserTable = (props) => {
       <Button
         ref={modalRef}
         display={'none'}
-        onClick={() => {
-          onOpen();
-          // handleUserInfo();
-        }}>
+        onClick={() => { onOpen() }}>
 
         +</Button>
 
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>User Info</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
 
@@ -102,7 +99,7 @@ const AGUserTable = (props) => {
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Close
             </Button>
-          
+
           </ModalFooter>
         </ModalContent>
       </Modal>
