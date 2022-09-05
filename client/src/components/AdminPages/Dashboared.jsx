@@ -1,5 +1,6 @@
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Center } from '@chakra-ui/react'
 import * as React from "react";
+import Stats from './Stats';
 import AGPetTable from "./tables/AGPetTable";
 import AGUserTable from "./tables/AGUserTable";
 
@@ -38,8 +39,8 @@ export default function Dashboared() {
           <TabPanel>
 
             <Center>
-                 
-                  <h1>Hello Wrold</h1>
+
+              <Stats />
 
             </Center>
 

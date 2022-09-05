@@ -194,7 +194,7 @@ export default function Pet() {
                 borderWidth="1px"
                 borderRadius="lg"
                 w={{ sm: '100%', md: '800px' }}
-                height={'55rem'}
+                height={'60rem'}
                 direction={{ base: 'column', md: 'column' }}
                 bg={useColorModeValue('gray.50', 'gray.900')}
                 boxShadow={'2xl'}
@@ -235,7 +235,7 @@ export default function Pet() {
                         px={3}>
                         {pet.bio}
                     </Text>
-                    <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
+                    <Stack align={'center'} justify={'center'} direction={{ sm: 'column', md: 'row' }} mt={6}>
 
 
                         <Badge
@@ -355,7 +355,7 @@ export default function Pet() {
                         </Button>}
 
                         {loggedIn && !saved && <Button
-                            onClick={handleSavePet}
+                            // onClick={handleSavePet}
                             flex={1}
                             fontSize={'sm'}
                             rounded={'full'}
@@ -368,7 +368,10 @@ export default function Pet() {
                                 bg: 'gray.500',
                             }}>
 
-                            <Heart isClick={isClick} onClick={() => setClick(true)} />
+                            <Heart isClick={isClick} onClick={() => {
+                                setClick(true)
+                                handleSavePet()
+                            }} />
 
 
 
@@ -378,7 +381,7 @@ export default function Pet() {
 
 
                         {loggedIn && saved && <Button
-                            onClick={handleUnsavePet}
+                            // onClick={handleUnsavePet}
                             flex={1}
                             fontSize={'sm'}
                             rounded={'full'}
@@ -391,7 +394,10 @@ export default function Pet() {
                                 bg: 'gray.500',
                             }}>
 
-                            <Heart isClick={isClick} onClick={() => setClick(false)} />
+                            <Heart isClick={isClick} onClick={() => {
+                                setClick(false)
+                                handleUnsavePet()
+                            }} />
 
                         </Button>}
 
