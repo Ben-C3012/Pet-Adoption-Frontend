@@ -45,7 +45,7 @@ export default function SearchPets() {
         }
     })
 
-    console.log(formik.values)
+    // console.log(formik.values)
 
     // Bacic Search
     const handleSearch = () => {
@@ -62,20 +62,22 @@ export default function SearchPets() {
     //  Advanced Search
     const handleAdvancedSearch = () => {
         setQuery('')
-  
 
-        if (formik.values.adoptionStatus) setQuery(`&adoptionStatus=${formik.values.adoptionStatus}`)
-        if (formik.values.weight) setQuery(prev => prev + `&weight=${formik.values.weight}`)
-        if (formik.values.height) setQuery(prev => prev + `&height=${formik.values.height}`)
-        if (formik.values.name) setQuery(prev => prev + `&name=${formik.values.name}`)
-        console.log('Query', query)
-     
+        let updateQuery = '';
+        if (formik.values.adoptionStatus) updateQuery += `&adoptionStatus=${formik.values.adoptionStatus}`;
+        if (formik.values.weight) updateQuery += `&weight=${formik.values.weight}`;
+        if (formik.values.height) updateQuery += `&height=${formik.values.height}`;
+        if (formik.values.name) updateQuery += `&name=${formik.values.name}`;
+        setQuery(updateQuery);
+
+        console.log('Query', updateQuery)
+
         buttonRef.current.click()
-        axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}${query}`)
+        axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}${updateQuery}`)
             .then(res => {
                 setPets(res.data.data.pets)
                 // console.log(pets)
-               
+
             })
             .catch(err => console.log(err))
 
@@ -127,7 +129,7 @@ export default function SearchPets() {
 
                                 <>
 
-                                    <FormControl onChange={formik.handleChange} value={formik.values.adoptionStatus} name = 'adoptionStatus' >
+                                    <FormControl onChange={formik.handleChange} value={formik.values.adoptionStatus} name='adoptionStatus' >
                                         <FormLabel>Adoption Status</FormLabel>
                                         <Select placeholder=' Select Adoption Status' name='adoptionStatus'  >
                                             <option value='Available'>Available</option>
@@ -197,7 +199,7 @@ export default function SearchPets() {
                     {pets && pets.map(pet => {
 
                         return <Center key={pet._id} w='500px' h={'500px'} >
-                            <PetCard  type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
+                            <PetCard type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
                                 breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
                         </Center>
                     })}

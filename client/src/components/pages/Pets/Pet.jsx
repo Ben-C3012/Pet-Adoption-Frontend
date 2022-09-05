@@ -193,8 +193,8 @@ export default function Pet() {
             <Stack
                 borderWidth="1px"
                 borderRadius="lg"
-                w={{ sm: '100%', md: '500px' }}
-                height={'62rem'}
+                w={{ sm: '100%', md: '800px' }}
+                height={'55rem'}
                 direction={{ base: 'column', md: 'column' }}
                 bg={useColorModeValue('gray.50', 'gray.900')}
                 boxShadow={'2xl'}
@@ -235,7 +235,7 @@ export default function Pet() {
                         px={3}>
                         {pet.bio}
                     </Text>
-                    <Stack align={'center'} justify={'center'} direction={'column'} mt={6}>
+                    <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
 
 
                         <Badge
