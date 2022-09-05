@@ -13,7 +13,6 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
-  Text,
   useDisclosure,
 } from '@chakra-ui/react'
 import InfoModal from '../InfoModal';
@@ -22,6 +21,7 @@ import UserCard from './UserCard';
 
 
 const AGUserTable = (props) => {
+
   const { isOpen, onOpen, onClose } = useDisclosure()
   const modalRef = useRef()
   const [user, setUser] = useState('')
@@ -107,12 +107,10 @@ const AGUserTable = (props) => {
 
 
       {/* Example using Grid's API */}
-      <button onClick={buttonListener}>Push Me</button>
+      <button onClick={buttonListener}>Clear Selection</button>
 
       {/* On div wrAGUserTableing Grid a) specify theme CSS Class Class and b) sets Grid size */}
       <div className="ag-theme-alpine" style={{ width: 650, height: 800, borderRadius: '30px' }}>
-
-
 
         <AgGridReact
           ref={gridRef} // Ref for accessing Grid's API

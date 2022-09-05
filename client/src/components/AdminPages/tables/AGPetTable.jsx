@@ -58,7 +58,7 @@ const AGPetTable = (props) => {
     <div>
 
       {/* Example using Grid's API */}
-      <button onClick={buttonListener}>Push Me</button>
+      <button onClick={buttonListener}>Clear Selection</button>
 
       {/* On div wrAGPetTableing Grid a) specify theme CSS Class Class and b) sets Grid size */}
       <div className="ag-theme-alpine" style={{ width: 830, height: 800, alignContent: 'center' }}>
