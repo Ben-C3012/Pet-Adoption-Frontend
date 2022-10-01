@@ -25,9 +25,9 @@ export default function SplitScreen() {
             .then(res => setName(res.data.user.name))
     }, [])
 
-    const handleSearchClick = () => {
-        navigate('/pets', { replace: true })
-    }
+    const handleSearchClick = () =>  navigate('/pets', { replace: true })
+    const handleSocialClick = () => navigate('/social')
+    
 
     return (
         <Stack minH={'60vh'} direction={{ base: 'column', md: 'row' }}>
@@ -77,7 +77,7 @@ export default function SplitScreen() {
                             Search For Pets
                         </Button>
 
-                        <Button rounded={'full'}>How It Works</Button>
+                        <Button onClick={handleSocialClick} rounded={'full'}>Social</Button>
 
                     </Stack>
                 </Stack>

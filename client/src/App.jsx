@@ -16,6 +16,7 @@ import AddPet from './components/AdminPages/AddPet';
 import Dashboared from './components/AdminPages/Dashboared';
 import RequireAuth from './components/pages/RequireAuth';
 import RequireAdmin from './components/pages/RequireAdmin';
+import Social from './components/pages/Social/Social';
 export const Context = createContext('Default Value');
 
 function App() {
@@ -72,6 +73,7 @@ function App() {
 
             <Route path='/myPets' element={<RequireAuth> <MyPets /> </RequireAuth>} />
 
+            <Route path='/social' element={<RequireAuth> <Social /> </RequireAuth>} />
 
             {/* Admin Pages */}
 
