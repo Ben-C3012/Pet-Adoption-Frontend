@@ -169,7 +169,7 @@ export default function Pet() {
                 borderWidth="1px"
                 borderRadius="lg"
                 w={{ sm: '100%', md: '800px' }}
-                height={'60rem'}
+                height={'55rem'}
                 direction={{ base: 'column', md: 'column' }}
                 bg={useColorModeValue('gray.50', 'gray.900')}
                 boxShadow={'2xl'}
@@ -186,6 +186,8 @@ export default function Pet() {
                         src={
                             pet.photo
                         }
+                        w = {'100%'}
+                        h = {'500px'}
                     />
 
                 </Flex>
