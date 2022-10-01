@@ -5,13 +5,16 @@ import {
     AlertDescription,
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import Tweet from './Tweet'
 
 
 function Social() {
 
+    const [tweetList, setTweetList] = useState([])
     const [tweet, setTweet] = useState('')
     const [isInvalid, setIsInvalid] = useState(false)
     
+
 
     const handleTweetChange = (event) => {
         setTweet(event.target.value)
@@ -38,14 +41,14 @@ function Social() {
             </Center>
 
             <Center display={isInvalid ? 'flex' : 'none'}>
-                <Alert w={'400px'} mt = {5} status='error'>
+                <Alert w={'400px'} mt={5} status='error'>
                     <AlertIcon />
                     <AlertDescription>Max Length of Tweet should be 50 characters</AlertDescription>
                 </Alert>
             </Center>
 
-            
 
+            <Tweet />
 
 
 
