@@ -7,7 +7,9 @@ import {
     Flex,
     Alert,
     AlertIcon,
-    AlertTitle
+    AlertTitle,
+    Box,
+    Progress
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
@@ -24,13 +26,14 @@ function Login() {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [message, setmessage] = useState('')
+    const [message, setMessage] = useState('')
+    const [spinner, setSpinner] = useState(false)
 
     const handleEmail = (e) => setEmail(e.target.value)
     const handlePassword = (e) => setPassword(e.target.value)
 
-    const hanldeForm = async () => {
-        console.log(email, password)
+    const handleForm = async () => {
+        setSpinner(true)
         try {
             const res = await axios({
                 method: 'POST',
@@ -44,52 +47,63 @@ function Login() {
 
             console.log(res.status === 200)
             if (res) {
+                setSpinner(false)
                 isLoggedIn(true)
                 navigate('/main', { replace: true })
                 window.location.reload()
             }
 
         } catch (err) {
+            setSpinner(false)
             console.log(err.response.data.message)
-            setmessage(err.response.data.message)
+            setMessage(err.response.data.message)
+
         }
     }
 
     return (
-        <FormControl>
-            <FormLabel htmlFor='email'>Email address</FormLabel>
-            <Input id='email' type='email' onChange={handleEmail} value={email} />
 
-            <FormControl mt={4} id="password">
-                <FormLabel>Password</FormLabel>
+        <>
+            {spinner && <Progress size={'xs'} isIndeterminate />}
+            <FormControl mt={6}>
+                <FormLabel htmlFor='email'>Email</FormLabel>
+                <Input id='email' type='email' onChange={handleEmail} value={email} />
 
-                <InputGroup>
-                    <Input onChange={handlePassword} value={password} type={showPassword ? 'text' : 'password'} />
+                <FormControl mt={4} id="password">
+                    <FormLabel>Password</FormLabel>
 
-                    <InputRightElement h={'full'}>
-                        <Button
-                            variant={'ghost'}
-                            onClick={() =>
-                                setShowPassword((showPassword) => !showPassword)
-                            }>
-                            {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                        </Button>
-                    </InputRightElement>
-                    
-                </InputGroup>
+                    <InputGroup>
+                        <Input onChange={handlePassword} value={password} type={showPassword ? 'text' : 'password'} />
+
+                        <InputRightElement h={'full'}>
+                            <Button
+                                variant={'ghost'}
+                                onClick={() =>
+                                    setShowPassword((showPassword) => !showPassword)
+                                }>
+                                {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                            </Button>
+                        </InputRightElement>
+
+                    </InputGroup>
+
+                </FormControl>
+
+                <Flex justify={'center'} >
+                    <Button onClick={handleForm} w={'150px'} mt={5} colorScheme='blue'>Login</Button>
+                </Flex>
+
+                <Box w={'100%'} h={'5vh'} >
+
+                    {message && <Alert mt={1} status='error' >
+                        <AlertIcon />
+                        <AlertTitle>{message}</AlertTitle>
+                    </Alert>}
+
+                </Box>
 
             </FormControl>
-
-            <Flex justify={'center'} >
-                <Button onClick={hanldeForm} w={'150px'} mt={5} colorScheme='blue'>Login</Button>
-            </Flex>
-
-            {message && <Alert mt={1} status='error' >
-                <AlertIcon />
-                <AlertTitle>{message}</AlertTitle>
-            </Alert>}
-
-        </FormControl>
+        </>
     )
 }
 

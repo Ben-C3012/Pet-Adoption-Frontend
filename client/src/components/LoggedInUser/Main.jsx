@@ -77,7 +77,7 @@ export default function SplitScreen() {
                             Search For Pets
                         </Button>
 
-                        <Button onClick={handleSocialClick} rounded={'full'}>Social</Button>
+                        {/* <Button onClick={handleSocialClick} rounded={'full'}>Social</Button> */}
 
                     </Stack>
                 </Stack>
