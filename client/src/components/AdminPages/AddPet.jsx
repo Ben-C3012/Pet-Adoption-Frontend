@@ -11,22 +11,23 @@ import {
     useColorModeValue,
     Center,
     Tooltip,
-    Alert,
-    AlertIcon,
-    AlertDescription,
-    Text
+    Text,
+    Progress
 } from '@chakra-ui/react';
 import { useState, useRef } from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import { useToast } from '@chakra-ui/react'
+
 
 export default function AddPet() {
+    const toast = useToast()
     const inputRef = useRef(null);
-    const [photo, setPhoto] = useState('')
-    const [message, setMessage] = useState('')
-    const [status, setStatus] = useState('')
-
     const handleClick = () => inputRef.current.click();
+
+    const [photo, setPhoto] = useState('')
+    const [spinner, setSpinner] = useState(false)
+    const [photoChosen, setPhotoChosen] = useState(false)
 
     const formik = useFormik({
         initialValues: {
@@ -40,7 +41,7 @@ export default function AddPet() {
             hypoallergenic: '',
             dietaryRestrictions: '',
             breed: '',
-            photo: photo
+            photo: ''
         },
 
         validate: values => {
@@ -55,7 +56,6 @@ export default function AddPet() {
             if (!values.hypoallergenic) errors.hypoallergenic = 'Required'
             if (!values.dietaryRestrictions) errors.dietaryRestrictions = 'Required'
             if (!values.breed) errors.breed = 'Required'
-            if (!values.photo) errors.photo = 'Required'
 
             return errors
         }
@@ -63,10 +63,12 @@ export default function AddPet() {
 
     const handleFileChange = async (event) => {
         const fileObj = event.target.files && event.target.files[0]
+        setPhotoChosen(true)
         setPhoto(fileObj)
     };
 
     const handleFormSubmit = async () => {
+        setSpinner(true)
         formik.values.photo = photo
         try {
             const res = await axios.post('http://localhost:8080/api/v1/pets/', formik.values, {
@@ -77,25 +79,31 @@ export default function AddPet() {
             });
 
             if (res.status === 201) {
-                setStatus('success')
-                setMessage('Pet Successfully Created')
+                setSpinner(false)
+                toast({
+                    title: 'Pet Added Successfully!',
+                    status: 'success',
+                    duration: 3000,
+                    isClosable: true,
+                })
             }
 
         } catch (err) {
             console.log(err)
-            setStatus('error')
-            setMessage('Something Went Wrong! Please Try Again')
+            toast({
+                title: 'Error Adding Pet',
+                description: 'Please try again later',
+                status: 'error',
+                duration: 3000,
+                isClosable: true,
+            })
+            setSpinner(false)
         }
 
-        formik.resetForm();
     }
 
-    setTimeout(() => {
-        setStatus('')
-        setMessage('')
-    }, 3000);
-
-    console.log(formik.touched)
+    const typeIsEmpty = formik.values.type === '' && true
+    const formikErrors = Object.keys(formik.errors).length > 0 && true
 
     return (
         <Flex
@@ -104,12 +112,14 @@ export default function AddPet() {
             justify={'center'}
             bg={useColorModeValue('gray.50', 'gray.800')}>
             <Stack spacing={10} w={'2xl'} mx={'auto'} maxW={'2xl'} py={12} px={6}>
+
                 <Stack align={'center'}>
                     <Heading fontSize={'4xl'} textAlign={'center'}>
                         Add A New Pet
                     </Heading>
 
                 </Stack>
+                
                 <Box
                     rounded={'lg'}
                     bg={useColorModeValue('white', 'gray.700')}
@@ -178,30 +188,29 @@ export default function AddPet() {
                         <FormControl >
                             <FormLabel>Dietary Restrictions</FormLabel>
                             <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.dietaryRestrictions} name={'dietaryRestrictions'} type={'text'} />
-                            {formik.touched.dietaryRestrictions  &&  formik.errors.dietaryRestrictions && formik.errors.bio ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.bio}</Text> : null}
+                            {formik.touched.dietaryRestrictions && formik.errors.dietaryRestrictions && formik.errors.bio ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.bio}</Text> : null}
                         </FormControl>
 
                         <FormControl >
                             <FormLabel>Breed</FormLabel>
                             <Input onBlur={formik.handleBlur} onChange={formik.handleChange} value={formik.values.breed} name={'breed'} type={'text'} />
-                            {formik.touched.breed  &&  formik.errors.breed && formik.errors.breed ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.breed}</Text> : null}
+                            {formik.touched.breed && formik.errors.breed && formik.errors.breed ? <Text position={'absolute'} bottom={'-22px'} color={'red.500'}>{formik.errors.breed}</Text> : null}
                         </FormControl>
 
                         <Tooltip label={photo.name} fontSize='md'>
                             <Center w="full" display={'flex'} flexDirection={'column'}>
                                 <Button onClick={handleClick} w="full">Choose Photo</Button>
-                                <Input onBlur={formik.handleBlur} onChange={handleFileChange} name={'photo'} ref={inputRef} type={'file'} bg={'green.300'} display={'none'} />
+                                <Input onChange={handleFileChange} name={'photo'} ref={inputRef} type={'file'} display={'none'} />
                             </Center>
                         </Tooltip>
 
-                        {message && <Alert status={status}>
-                            <AlertIcon />
+                        <Box w={'100%'} h={'20px'}>
+                            {spinner && <Progress size='xs' isIndeterminate />}
+                        </Box>
 
-                            <AlertDescription>{message}</AlertDescription>
-                        </Alert>}
-
-                        <Stack spacing={10} pt={2}>
+                        <Stack spacing={10} >
                             <Button
+                                disabled={formikErrors || typeIsEmpty || !photoChosen}
                                 onClick={handleFormSubmit}
                                 loadingText="Submitting"
                                 size="lg"

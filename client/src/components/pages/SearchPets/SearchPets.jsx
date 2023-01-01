@@ -1,3 +1,4 @@
+import { useState, useContext, useRef } from 'react';
 import {
     Flex,
     Box,
@@ -13,15 +14,17 @@ import {
     useColorModeValue,
     Select,
     Center,
+    Progress
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom'
-import { useState, useContext, useRef } from 'react';
 import { Context } from '../../../App';
 import PetCard from '../Pets/PetCard';
+import { motion } from 'framer-motion'
 const axios = require('axios').default;
 
 export default function SearchPets() {
+    console.log(motion)
     const value = useContext(Context)
     const { loggedIn } = value
     const navigate = useNavigate()
@@ -31,6 +34,7 @@ export default function SearchPets() {
     const handleCheckbox = () => setCheckbox(!checkbox)
 
     const [pets, setPets] = useState([])
+    const [spinner, setSpinner] = useState(false)
     const [query, setQuery] = useState('')
 
     const buttonRef = useRef(null)
@@ -45,15 +49,14 @@ export default function SearchPets() {
         }
     })
 
-    // console.log(formik.values)
-
-    // Bacic Search
+    // Basic Search
     const handleSearch = () => {
+        setSpinner(true)
         axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}`)
             .then(res => {
                 const data = res.data.data.pets
                 setPets(data)
-
+                setSpinner(false)
             })
             .catch(err => console.log(err))
     }
@@ -76,8 +79,6 @@ export default function SearchPets() {
         axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}${updateQuery}`)
             .then(res => {
                 setPets(res.data.data.pets)
-                // console.log(pets)
-
             })
             .catch(err => console.log(err))
 
@@ -102,6 +103,7 @@ export default function SearchPets() {
                         <Text fontSize={'lg'} color={'gray.600'}>
                             To enjoy all of our cute  <Link color={'blue.400'}>animals</Link> 🐶
                         </Text>
+
                         <Button onClick={handleHome} position={'absolute'} top={'1'} right={'8.6rem'} colorScheme='orange' variant='solid'>
                             Back To Home
                         </Button>
@@ -111,6 +113,14 @@ export default function SearchPets() {
                         bg={useColorModeValue('white', 'gray.700')}
                         boxShadow={'lg'}
                         p={8}>
+
+
+                        <Box w={'100%'} h={'1vh'}>
+                            {spinner && <Progress size="xs" isIndeterminate />}
+                        </Box>
+
+
+
                         <Stack spacing={4}>
 
                             <Checkbox onChange={handleCheckbox}>Advanced Search</Checkbox>
@@ -121,6 +131,7 @@ export default function SearchPets() {
                                 <Select onChange={formik.handleChange} value={formik.values.type} placeholder=' Select Type' name='type' >
                                     <option value='Dog'>Dog</option>
                                     <option value='Cat'>Cat</option>
+
                                 </Select>
                             </FormControl>
 
@@ -158,6 +169,8 @@ export default function SearchPets() {
                                 </>
                             }
 
+
+
                             <Stack spacing={10}>
 
                                 {!checkbox ? <Button
@@ -191,21 +204,24 @@ export default function SearchPets() {
                 </Stack>
 
 
-                <Flex justify={'center'} color='white' w={'100%'} wrap='wrap'>
+               
+                
+                    <Flex justify={'center'} color='white' w={'100%'} wrap='wrap'>
 
 
 
 
-                    {pets && pets.map(pet => {
+                        {pets && pets.map(pet => {
 
-                        return <Center key={pet._id} w='500px' h={'500px'} >
-                            <PetCard type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
-                                breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
-                        </Center>
-                    })}
+                            return <Center key={pet._id} w='500px' h={'500px'} >
+                                <PetCard type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
+                                    breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
+                            </Center>
+                        })}
 
 
-                </Flex>
+                    </Flex>
+          
 
             </Flex>
 

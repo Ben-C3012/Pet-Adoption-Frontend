@@ -14,7 +14,7 @@
     "ag-grid-react": "^28.1.1",
     "axios": "^0.27.2",
     "formik": "^2.2.9",
-    "framer-motion": "^7.2.0",
+    "framer-motion": "^7.10.3",
     "react": "^18.2.0",
     "react-animated-heart": "0.0.7-alpha.1",
     "react-dom": "^18.2.0",
