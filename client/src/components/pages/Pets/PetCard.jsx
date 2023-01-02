@@ -69,7 +69,7 @@ function PetCard(props) {
                         </Box>
                         <Stack pt={10} align={'center'}>
 
-                            <Text color={'gray.500'} fontSize={'sm'}>
+                            <Text color={'gray.500'} fontSize={'lg'}>
                                 {petName}
                             </Text>
 

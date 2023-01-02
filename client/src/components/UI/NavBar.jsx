@@ -43,16 +43,10 @@ export default function NavBar() {
     const navigate = useNavigate()
     const [name, setName] = useState('')
     const [photo, setPhoto] = useState('')
-
-
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
-
     const value = useContext(Context);
     const { loggedIn, isLoggedIn, admin, isAdmin } = value
-
-  
-
 
     const handleAcountSettings = () => navigate('/settings')
 
@@ -71,8 +65,6 @@ export default function NavBar() {
             .catch(err => console.log(err.message))
     }
 
-
-
     useEffect(() => {
         axios({
             method: 'POST',
@@ -90,19 +82,17 @@ export default function NavBar() {
             .catch(err => console.log(err.message))
     }, [])
 
-
     const handleYourPetsClick = () => navigate('/myPets')
     const handleAddPetClick = () => navigate('/addPet')
     const handleDashboaredClick = () => navigate('/dashboared')
     const HandleHomeClick = () => loggedIn ? navigate('/main') : navigate('/home')
-
 
     return (
         <>
             <Box bg={useColorModeValue('teal.400', 'gray.900')} px={4}>
                 <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                     <Box>
-                        <Text color={'white'} mb={2} className='logo' fontSize='3xl'>Pet Adoption</Text>
+                        <Text cursor={'pointer'} onClick={HandleHomeClick} color={'white'} mb={2} className='logo' fontSize='3xl'>Pet Adoption</Text>
                     </Box>
 
                     <Flex alignItems={'center'}>

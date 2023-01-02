@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from 'react';
+import { useState, useContext, useRef, useEffect } from 'react';
 import {
     Flex,
     Box,
@@ -20,11 +20,9 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom'
 import { Context } from '../../../App';
 import PetCard from '../Pets/PetCard';
-import { motion } from 'framer-motion'
 const axios = require('axios').default;
 
 export default function SearchPets() {
-    console.log(motion)
     const value = useContext(Context)
     const { loggedIn } = value
     const navigate = useNavigate()
@@ -35,7 +33,6 @@ export default function SearchPets() {
 
     const [pets, setPets] = useState([])
     const [spinner, setSpinner] = useState(false)
-    const [query, setQuery] = useState('')
 
     const buttonRef = useRef(null)
 
@@ -49,6 +46,10 @@ export default function SearchPets() {
         }
     })
 
+    useEffect(() => {
+        localStorage.getItem('pets') && setPets(JSON.parse(localStorage.getItem('pets')))
+    }, [])
+
     // Basic Search
     const handleSearch = () => {
         setSpinner(true)
@@ -57,21 +58,20 @@ export default function SearchPets() {
                 const data = res.data.data.pets
                 setPets(data)
                 setSpinner(false)
+                localStorage.setItem('pets', JSON.stringify(data))
             })
             .catch(err => console.log(err))
     }
 
-
     //  Advanced Search
     const handleAdvancedSearch = () => {
-        setQuery('')
-
+       
         let updateQuery = '';
         if (formik.values.adoptionStatus) updateQuery += `&adoptionStatus=${formik.values.adoptionStatus}`;
         if (formik.values.weight) updateQuery += `&weight=${formik.values.weight}`;
         if (formik.values.height) updateQuery += `&height=${formik.values.height}`;
         if (formik.values.name) updateQuery += `&name=${formik.values.name}`;
-        setQuery(updateQuery);
+        
 
         console.log('Query', updateQuery)
 
@@ -79,11 +79,11 @@ export default function SearchPets() {
         axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}${updateQuery}`)
             .then(res => {
                 setPets(res.data.data.pets)
+                localStorage.setItem('pets', JSON.stringify(res.data.data.pets))
             })
             .catch(err => console.log(err))
 
     }
-
 
     return (
 
@@ -196,32 +196,26 @@ export default function SearchPets() {
                                     </Button>
                                 }
 
-
                             </Stack>
                         </Stack>
                     </Box>
 
                 </Stack>
 
+                <Flex justify={'center'} color='white' w={'100%'} wrap='wrap'>
 
-               
-                
-                    <Flex justify={'center'} color='white' w={'100%'} wrap='wrap'>
+                    {pets.length === 0 && <Text fontSize={'xl'} color={'gray.600'}>No Pets Found</Text>}
 
+                    {pets && pets.map(pet => {
 
+                        return <Center key={pet._id} w='500px' h={'500px'} >
+                            <PetCard type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
+                                breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
+                        </Center>
+                    })}
 
+                </Flex>
 
-                        {pets && pets.map(pet => {
-
-                            return <Center key={pet._id} w='500px' h={'500px'} >
-                                <PetCard type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
-                                    breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
-                            </Center>
-                        })}
-
-
-                    </Flex>
-          
 
             </Flex>
 
