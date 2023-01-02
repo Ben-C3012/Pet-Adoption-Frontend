@@ -27,6 +27,7 @@ export default function SearchPets() {
     const { loggedIn } = value
     const navigate = useNavigate()
     const handleHome = () => loggedIn ? navigate('/main') : navigate('/')
+    const baseURL = `http://localhost:8080`
 
     const [checkbox, setCheckbox] = useState(false)
     const handleCheckbox = () => setCheckbox(!checkbox)
@@ -52,8 +53,11 @@ export default function SearchPets() {
 
     // Basic Search
     const handleSearch = () => {
+        const dogOrCatSearchString = `${baseURL}/api/v1/pets/?type=${formik.values.type}`
+        const allSearchString = `${baseURL}/api/v1/pets`
+
         setSpinner(true)
-        axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}`)
+        axios.get(formik.values.type === 'All' ? allSearchString : dogOrCatSearchString)
             .then(res => {
                 const data = res.data.data.pets
                 setPets(data)
@@ -65,28 +69,30 @@ export default function SearchPets() {
 
     //  Advanced Search
     const handleAdvancedSearch = () => {
-       
-        let updateQuery = '';
-        if (formik.values.adoptionStatus) updateQuery += `&adoptionStatus=${formik.values.adoptionStatus}`;
-        if (formik.values.weight) updateQuery += `&weight=${formik.values.weight}`;
-        if (formik.values.height) updateQuery += `&height=${formik.values.height}`;
-        if (formik.values.name) updateQuery += `&name=${formik.values.name}`;
-        
+        setSpinner(true)
 
-        console.log('Query', updateQuery)
+        const type = formik.values.type !== 'All' ? `type=${formik.values.type}` : ''
+        const adoptionStatus = formik.values.adoptionStatus ? `&adoptionStatus=${formik.values.adoptionStatus}` : ''
+        const weight = formik.values.weight ? `&weight=${formik.values.weight}` : ''
+        const height = formik.values.height ? `&height=${formik.values.height}` : ''
+        const name = formik.values.name ? `&name=${formik.values.name}` : ''
 
-        buttonRef.current.click()
-        axios.get(`http://localhost:8080/api/v1/pets/?type=${formik.values.type}${updateQuery}`)
+        const searchString = `${baseURL}/api/v1/pets?${type}${adoptionStatus}${weight}${height}${name}`
+  
+        console.log(searchString)
+        console.log('Type: ', formik.values.type)
+
+        axios.get(searchString)
             .then(res => {
                 setPets(res.data.data.pets)
                 localStorage.setItem('pets', JSON.stringify(res.data.data.pets))
+                setSpinner(false)
             })
             .catch(err => console.log(err))
 
     }
 
     return (
-
 
         <>
 
@@ -128,7 +134,8 @@ export default function SearchPets() {
 
                             <FormControl>
                                 <FormLabel>Type</FormLabel>
-                                <Select onChange={formik.handleChange} value={formik.values.type} placeholder=' Select Type' name='type' >
+                                <Select onChange={formik.handleChange} value={formik.values.type} name='type' >
+                                    <option value='All'>All</option>
                                     <option value='Dog'>Dog</option>
                                     <option value='Cat'>Cat</option>
 
@@ -166,15 +173,14 @@ export default function SearchPets() {
                                         <FormLabel>Name</FormLabel>
                                         <Input onChange={formik.handleChange} value={formik.values.name} type={'text'} name='name' />
                                     </FormControl>
+
                                 </>
                             }
 
-
-
                             <Stack spacing={10}>
 
-                                {!checkbox ? <Button
-                                    onClick={handleSearch}
+                                <Button
+                                    onClick={!checkbox ? handleSearch : handleAdvancedSearch}
                                     bg={'blue.400'}
                                     color={'white'}
                                     _hover={{
@@ -182,19 +188,6 @@ export default function SearchPets() {
                                     }}>
                                     Search
                                 </Button>
-
-                                    :
-                                    <Button
-                                        onClick={handleAdvancedSearch}
-                                        ref={buttonRef}
-                                        bg={'blue.400'}
-                                        color={'white'}
-                                        _hover={{
-                                            bg: 'blue.500',
-                                        }}>
-                                        Search
-                                    </Button>
-                                }
 
                             </Stack>
                         </Stack>
@@ -218,15 +211,6 @@ export default function SearchPets() {
 
 
             </Flex>
-
-
-
-
-
-
-
-
-
 
         </>
 
