@@ -25,12 +25,14 @@ function App() {
   const [loggedIn, isLoggedIn] = useState(false)
   const [admin, isAdmin] = useState(false)
   const [user, setUser] = useState('')
+  const remoteURL = 'https://pet-adoption-backend2.up.railway.app'
+  const localURL = 'http://localhost:8080'
 
 
   useEffect(() => {
     axios({
       method: 'POST',
-      url: 'http://localhost:8080/api/v1/users/isloggedin',
+      url: `${remoteURL}/api/v1/users/isloggedin`,
       withCredentials: true
     })
 
@@ -42,6 +44,8 @@ function App() {
       })
       .catch(err => console.log(err.message))
   }, [])
+
+
 
   return (
     <>

@@ -85,7 +85,7 @@ export default function NavBar() {
     const handleYourPetsClick = () => navigate('/myPets')
     const handleAddPetClick = () => navigate('/addPet')
     const handleDashboaredClick = () => navigate('/dashboared')
-    const HandleHomeClick = () => loggedIn ? navigate('/main') : navigate('/home')
+    const HandleHomeClick = () => loggedIn ? navigate('/main') : navigate('/')
 
     return (
         <>
