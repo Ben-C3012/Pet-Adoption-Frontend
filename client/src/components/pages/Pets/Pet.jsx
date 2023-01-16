@@ -19,6 +19,7 @@ import AdminEditPicture from './AdminEditPicture';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Heart from "react-animated-heart";
+import { appUrl } from '../../../config';
 
 export default function Pet() {
     const navigate = useNavigate()
@@ -49,7 +50,7 @@ export default function Pet() {
         let petId = params.id;
         setId(petId)
 
-        axios.get(`http://localhost:8080/api/v1/pets/${petId}`)
+        axios.get(`${appUrl}/api/v1/pets/${petId}`)
             .then(res => {
                 const data = res.data.data.pet
                 setPetName(res.data.data.pet.name)
@@ -64,7 +65,7 @@ export default function Pet() {
         // Get Saved + Current Pets
         axios({
             method: 'GET',
-            url: 'http://localhost:8080/api/v1/pets/user/1111',
+            url: `${appUrl}/api/v1/pets/user/1111`,
             withCredentials: true
         })
 
@@ -88,7 +89,7 @@ export default function Pet() {
     const handleSavePet = () => {
         axios({
             method: 'PATCH',
-            url: `http://localhost:8080/api/v1/pets/${id}/save`,
+            url: `${appUrl}/api/v1/pets/${id}/save`,
             withCredentials: true
         })
             .then(res => {
@@ -101,7 +102,7 @@ export default function Pet() {
     const handleUnsavePet = () => {
         axios({
             method: 'DELETE',
-            url: `http://localhost:8080/api/v1/pets/${id}/save`,
+            url: `${appUrl}/api/v1/pets/${id}/save`,
             withCredentials: true
         })
             .then(res => {
@@ -114,7 +115,7 @@ export default function Pet() {
     const handleAdoptClick = () => {
         axios({
             method: 'PATCH',
-            url: `http://localhost:8080/api/v1/pets/${id}/adopt`,
+            url: `${appUrl}/api/v1/pets/${id}/adopt`,
             withCredentials: true
         })
 
@@ -130,7 +131,7 @@ export default function Pet() {
     const handleFosterPet = () => {
         axios({
             method: 'PATCH',
-            url: `http://localhost:8080/api/v1/pets/${id}/adopt`,
+            url: `${appUrl}/api/v1/pets/${id}/adopt`,
             withCredentials: true,
             data: {
                 foster: 'foster'
@@ -149,7 +150,7 @@ export default function Pet() {
     const handleReturnPet = () => {
         axios({
             method: 'POST',
-            url: `http://localhost:8080/api/v1/pets/return/${id}`,
+            url: `${appUrl}/api/v1/pets/return/${id}`,
             withCredentials: true
         })
 

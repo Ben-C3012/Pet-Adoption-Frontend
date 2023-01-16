@@ -18,7 +18,7 @@ import { useState, useRef } from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { useToast } from '@chakra-ui/react'
-
+import { appUrl } from '../../config';
 
 export default function AddPet() {
     const toast = useToast()
@@ -71,7 +71,7 @@ export default function AddPet() {
         setSpinner(true)
         formik.values.photo = photo
         try {
-            const res = await axios.post('http://localhost:8080/api/v1/pets/', formik.values, {
+            const res = await axios.post(`${appUrl}/api/v1/pets/`, formik.values, {
                 headers: {
                     "content-type": "multipart/form-data"
                 },

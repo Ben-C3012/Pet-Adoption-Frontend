@@ -20,6 +20,9 @@ import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom'
 import { Context } from '../../../App';
 import PetCard from '../Pets/PetCard';
+import { appUrl } from '../../../config';
+
+
 const axios = require('axios').default;
 
 export default function SearchPets() {
@@ -27,7 +30,7 @@ export default function SearchPets() {
     const { loggedIn } = value
     const navigate = useNavigate()
     const handleHome = () => loggedIn ? navigate('/main') : navigate('/')
-    const baseURL = `http://localhost:8080`
+    
 
     const [checkbox, setCheckbox] = useState(false)
     const handleCheckbox = () => setCheckbox(!checkbox)
@@ -53,8 +56,8 @@ export default function SearchPets() {
 
     // Basic Search
     const handleSearch = () => {
-        const dogOrCatSearchString = `${baseURL}/api/v1/pets/?type=${formik.values.type}`
-        const allSearchString = `${baseURL}/api/v1/pets`
+        const dogOrCatSearchString = `${appUrl}/api/v1/pets/?type=${formik.values.type}`
+        const allSearchString = `${appUrl}/api/v1/pets`
 
         setSpinner(true)
         axios.get(formik.values.type === 'All' ? allSearchString : dogOrCatSearchString)
@@ -77,7 +80,7 @@ export default function SearchPets() {
         const height = formik.values.height ? `&height=${formik.values.height}` : ''
         const name = formik.values.name ? `&name=${formik.values.name}` : ''
 
-        const searchString = `${baseURL}/api/v1/pets?${type}${adoptionStatus}${weight}${height}${name}`
+        const searchString = `${appUrl}/api/v1/pets?${type}${adoptionStatus}${weight}${height}${name}`
   
         console.log(searchString)
         console.log('Type: ', formik.values.type)

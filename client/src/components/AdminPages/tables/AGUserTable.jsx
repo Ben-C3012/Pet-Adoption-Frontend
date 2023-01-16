@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react'
 import InfoModal from '../InfoModal';
 import UserCard from './UserCard';
-
+import { appUrl } from '../../../config';
 
 
 const AGUserTable = (props) => {
@@ -56,7 +56,7 @@ const AGUserTable = (props) => {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/api/v1/users/',
+      url: `${appUrl}/api/v1/users/`,
       withCredentials: true
     })
       .then(res => {

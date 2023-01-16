@@ -24,6 +24,7 @@ import { Context } from '../../App';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { appUrl } from '../../config';
 
 const NavLink = ({ children }) => (
     <Link
@@ -53,7 +54,7 @@ export default function NavBar() {
     const handleLogOut = () => {
         axios({
             method: 'GET',
-            url: 'http://localhost:8080/api/v1/users/logout',
+            url: `${appUrl}/api/v1/users/logout`,
             withCredentials: true
         })
 
@@ -68,7 +69,7 @@ export default function NavBar() {
     useEffect(() => {
         axios({
             method: 'POST',
-            url: 'http://localhost:8080/api/v1/users/isloggedin',
+            url: `${appUrl}/api/v1/users/isloggedin`,
             withCredentials: true
         })
 

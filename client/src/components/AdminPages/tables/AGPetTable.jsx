@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 import axios from 'axios';
+import { appUrl } from '../../../config';
+
+
 const AGPetTable = (props) => {
   const navigate = useNavigate()
 
@@ -39,7 +42,7 @@ const AGPetTable = (props) => {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/api/v1/pets/',
+      url: `${appUrl}/api/v1/pets/`,
     })
       .then(res => {
         console.log(res.data.data.pets)

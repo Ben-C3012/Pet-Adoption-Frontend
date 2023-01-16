@@ -18,11 +18,11 @@ export default function SplitScreen() {
     useEffect(() => {
         const res = axios({
             method: 'POST',
-            url: 'http://localhost:8080/api/v1/users/isloggedin',
+            url: 'https://localhost:8080/api/v1/users/isloggedin',
             withCredentials: true
+        }).then(res => {
+            setName(res.data.user.name);
         })
-
-            .then(res => setName(res.data.user.name))
     }, [])
 
     const handleSearchClick = () =>  navigate('/pets', { replace: true })

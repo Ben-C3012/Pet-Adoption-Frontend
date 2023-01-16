@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom'
 import { useState, useContext } from 'react'
 import { Context } from '../../App'
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { appUrl } from '../../config'
 
 function Login() {
 
@@ -37,7 +38,7 @@ function Login() {
         try {
             const res = await axios({
                 method: 'POST',
-                url: 'http://localhost:8080/api/v1/users/login',
+                url: `${appUrl}/api/v1/users/login`,
                 data: {
                     email,
                     password

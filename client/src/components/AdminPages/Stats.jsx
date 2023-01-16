@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Flex, Center, Text, useColorModeValue } from '@chakra-ui/react';
 import { AiOutlineUser } from 'react-icons/ai'
 import { GiSittingDog } from 'react-icons/gi'
-
+import { appUrl } from '../../config';
 
 function Stats() {
 
@@ -13,7 +13,7 @@ function Stats() {
   useEffect(() => {
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/api/v1/users/',
+      url: `${appUrl}/api/v1/users/`,
       withCredentials: true
     })
       .then(res => {
@@ -23,7 +23,7 @@ function Stats() {
 
     axios({
       method: 'GET',
-      url: 'http://localhost:8080/api/v1/pets/',
+      url: `${appUrl}/api/v1/pets/`,
       withCredentials: true
     })
 

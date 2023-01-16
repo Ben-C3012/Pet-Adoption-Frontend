@@ -17,31 +17,33 @@ import Dashboared from './components/AdminPages/Dashboared';
 import RequireAuth from './components/pages/RequireAuth';
 import RequireAdmin from './components/pages/RequireAdmin';
 import Social from './components/pages/Social/Social';
+import { appUrl } from './config'
+import Cookies from 'universal-cookie';
+import { testCookie } from './config';
+
 export const Context = createContext('Default Value');
 
-function App() {
+const cookies = new Cookies();
+cookies.set('jwt ', testCookie, { path: '/' });
+console.log(cookies.get('jwt')); // jwt
 
+function App() {
   // Check if Logged in 
   const [loggedIn, isLoggedIn] = useState(false)
   const [admin, isAdmin] = useState(false)
   const [user, setUser] = useState('')
-  const remoteURL = 'https://pet-adoption-backend2.up.railway.app'
   const localURL = 'http://localhost:8080'
-
 
   useEffect(() => {
     axios({
       method: 'POST',
-      url: `${remoteURL}/api/v1/users/isloggedin`,
-      withCredentials: true
+      url: `${appUrl}/api/v1/users/isLoggedIn`,
+      withCredentials: true,
+    }).then(res => {
+      isLoggedIn(true);
+      console.log(res.data.user);
+      setUser(res.data.user);
     })
-
-      .then(res => {
-        isLoggedIn(true)
-        console.log(res.data.user)
-        setUser(res.data.user)
-
-      })
       .catch(err => console.log(err.message))
   }, [])
 

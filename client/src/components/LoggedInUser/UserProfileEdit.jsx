@@ -53,7 +53,7 @@ export default function UserProfileEdit() {
     useEffect(() => {
         axios({
             method: 'POST',
-            url: 'http://localhost:8080/api/v1/users/isloggedin',
+            url: 'https://localhost:8080/api/v1/users/isloggedIn',
             withCredentials: true
         })
 
