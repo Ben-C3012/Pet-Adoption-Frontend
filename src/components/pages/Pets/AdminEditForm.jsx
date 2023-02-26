@@ -15,6 +15,7 @@ import {
 import { useState } from 'react';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import { appUrl } from '../../../config';
 
 export default function AdminEditForm(props) {
     const { pet } = props
@@ -41,7 +42,7 @@ export default function AdminEditForm(props) {
     const handleFormSubmit = async () => {
 
         try {
-            const res = await axios.patch(`http://localhost:8080/api/v1/pets/${pet._id}`, formik.values, {
+            const res = await axios.patch(`${appUrl}/api/v1/pets/${pet._id}`, formik.values, {
                 headers: {
                     "content-type": "multipart/form-data"
                 },

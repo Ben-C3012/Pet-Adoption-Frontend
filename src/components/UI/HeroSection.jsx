@@ -23,8 +23,6 @@ const handleClick = () => {
 
     return (
         <>
-
-
             <Container maxW={'3xl'}>
                 <Stack
                     as={Box}

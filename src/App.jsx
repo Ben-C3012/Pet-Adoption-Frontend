@@ -23,9 +23,9 @@ import { testCookie } from './config';
 
 export const Context = createContext('Default Value');
 
-const cookies = new Cookies();
-cookies.set('jwt ', testCookie, { path: '/' });
-console.log(cookies.get('jwt')); // jwt
+// const cookies = new Cookies();
+// cookies.set('jwt ', testCookie, { path: '/' });
+// console.log(cookies.get('jwt')); // jwt
 
 function App() {
   // Check if Logged in 
@@ -34,10 +34,15 @@ function App() {
   const [user, setUser] = useState('')
   const localURL = 'http://localhost:8080'
 
+  const axiosInstance = axios.create({
+    withCredentials: true
+  })
+
   useEffect(() => {
     axios({
       method: 'POST',
       url: `${appUrl}/api/v1/users/isLoggedIn`,
+      data:{},
       withCredentials: true,
     }).then(res => {
       isLoggedIn(true);
@@ -46,8 +51,6 @@ function App() {
     })
       .catch(err => console.log(err.message))
   }, [])
-
-
 
   return (
     <>

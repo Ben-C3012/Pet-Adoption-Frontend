@@ -14,11 +14,6 @@ import InfoModal from '../InfoModal'
 function MainTable(props) {
     const { users } = props
 
-    
-
-
-
-
     return (
         <>
 

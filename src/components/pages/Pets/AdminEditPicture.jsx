@@ -1,7 +1,8 @@
 import React from 'react'
-import {Button, Input, Tooltip, Alert, AlertIcon, AlertTitle} from '@chakra-ui/react'
+import { Button, Input, Tooltip, Alert, AlertIcon, AlertTitle } from '@chakra-ui/react'
 import { useState, useRef } from 'react'
 import axios from 'axios'
+import { appUrl } from '../../../config'
 
 function AdminEditPicture(props) {
     const { pet } = props
@@ -19,7 +20,7 @@ function AdminEditPicture(props) {
             setFileName(fileObj.name)
             const formData = new FormData();
             formData.append("photo", fileObj);
-            const res = await axios.patch(`http://localhost:8080/api/v1/pets/${pet._id}/photo`, formData, {
+            const res = await axios.patch(`${appUrl}/api/v1/pets/${pet._id}/photo`, formData, {
                 headers: {
                     "content-type": "multipart/form-data"
                 },

@@ -5,6 +5,7 @@ import CurrentPets from './CurrentPets';
 import { useState, useEffect } from 'react';
 import { BiBone } from 'react-icons/bi'
 import { GiHearts } from 'react-icons/gi'
+import { appUrl } from '../../config';
 function MyPets() {
 
   const [color, setcolor] = useState(true)
@@ -15,7 +16,7 @@ function MyPets() {
   useEffect(() => {
     axios({
       method: 'POST',
-      url: 'https://localhost:8080/api/v1/users/isloggedin',
+      url: `${appUrl}/api/v1/users/isloggedin`,
       withCredentials: true
     })
 

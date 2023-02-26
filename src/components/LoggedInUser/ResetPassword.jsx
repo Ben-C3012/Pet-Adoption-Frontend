@@ -13,6 +13,8 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import axios from 'axios';
+import { appUrl } from '../../config';
+
 export default function ResetPassword() {
 
     const [currentPassword, setCurrentPassword] = useState('')
@@ -28,7 +30,7 @@ export default function ResetPassword() {
     const handleResetPassword = () => {
         axios({
             method: 'PATCH',
-            url: 'http://localhost:8080/api/v1/users/updateMyPassword',
+            url: `${appUrl}/api/v1/users/updateMyPassword`,
             data: {
                 passwordCurrent: currentPassword,
                 password: newPassword,
@@ -89,7 +91,7 @@ export default function ResetPassword() {
                 </FormControl>
 
                 <Stack spacing={6}>
-                    
+
                     <Button
                         onClick={handleResetPassword}
                         bg={'blue.400'}

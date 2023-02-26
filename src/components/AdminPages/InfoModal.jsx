@@ -34,10 +34,7 @@ export default function InfoModal() {
                     <ModalCloseButton />
                     <ModalBody>
 
-
                         <UserCard user={user} currentPets={currentPets} />
-
-
 
                     </ModalBody>
 

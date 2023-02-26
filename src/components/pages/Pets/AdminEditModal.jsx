@@ -29,9 +29,6 @@ export default function AdminEditModal(props) {
 
                         <AdminEditForm pet={pet} />
 
-
-
-
                     </ModalBody>
 
                     <ModalFooter>

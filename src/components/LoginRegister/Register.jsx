@@ -12,6 +12,7 @@ import { Context } from '../../App'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useFormik } from 'formik'
+import { appUrl } from '../../config';
 
 function Register() {
 
@@ -35,7 +36,7 @@ function Register() {
         try {
             const res = await axios({
                 method: 'POST',
-                url: 'http://localhost:8080/api/v1/users/signup',
+                url: `${appUrl}/api/v1/users/signup`,
                 data: {
                     name: formik.values.name,
                     email: formik.values.email,

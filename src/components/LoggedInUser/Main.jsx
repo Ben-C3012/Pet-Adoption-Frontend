@@ -10,6 +10,7 @@ import {
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { appUrl } from '../../config';
 
 export default function SplitScreen() {
     const navigate = useNavigate()
@@ -18,16 +19,16 @@ export default function SplitScreen() {
     useEffect(() => {
         const res = axios({
             method: 'POST',
-            url: 'https://localhost:8080/api/v1/users/isloggedin',
+            url: `${appUrl}/api/v1/users/isloggedin`,
             withCredentials: true
         }).then(res => {
             setName(res.data.user.name);
         })
     }, [])
 
-    const handleSearchClick = () =>  navigate('/pets', { replace: true })
+    const handleSearchClick = () => navigate('/pets', { replace: true })
     const handleSocialClick = () => navigate('/social')
-    
+
 
     return (
         <Stack minH={'60vh'} direction={{ base: 'column', md: 'row' }}>
@@ -92,7 +93,7 @@ export default function SplitScreen() {
                         'https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/Dog_re_fijp.svg'
                     }
                 />
-                
+
             </Flex>
         </Stack>
     );

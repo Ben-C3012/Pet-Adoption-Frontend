@@ -16,6 +16,7 @@ import ResetPasswordForm from './ResetPasswordForm';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import { appUrl } from '../../config';
 import axios from 'axios';
 
 export default function UserProfileEdit() {
@@ -53,7 +54,7 @@ export default function UserProfileEdit() {
     useEffect(() => {
         axios({
             method: 'POST',
-            url: 'https://localhost:8080/api/v1/users/isloggedIn',
+            url: `${appUrl}/api/v1/users/isloggedIn`,
             withCredentials: true
         })
 
@@ -79,7 +80,7 @@ export default function UserProfileEdit() {
             const fileObj = event.target.files && event.target.files[0]
             const formData = new FormData();
             formData.append("photo", fileObj);
-            const res = await axios.patch('http://localhost:8080/api/v1/users/photo', formData, {
+            const res = await axios.patch(`${appUrl}/api/v1/users/photo`, formData, {
                 headers: {
                     "content-type": "multipart/form-data"
                 },
@@ -87,6 +88,7 @@ export default function UserProfileEdit() {
             });
             setPhoto(res.data.data.user.photo)
             window.location.reload()
+
 
         } catch (err) {
             console.log(err)
@@ -208,7 +210,7 @@ export default function UserProfileEdit() {
             </Stack>
 
 
-            
+
         </Flex>
     );
 }

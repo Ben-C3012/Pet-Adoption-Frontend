@@ -12,6 +12,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { PhoneIcon, AtSignIcon, InfoIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
+import { appUrl } from '../../config';
 
 export default function Settings() {
   const navigate = useNavigate()
@@ -27,7 +28,7 @@ export default function Settings() {
   useEffect(() => {
     axios({
       method: 'POST',
-      url: 'https://localhost:8080/api/v1/users/isloggedin',
+      url: `${appUrl}/api/v1/users/isloggedin`,
       withCredentials: true
     })
       .then(res => {
