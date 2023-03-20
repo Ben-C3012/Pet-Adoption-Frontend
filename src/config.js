@@ -1,6 +1,8 @@
 const remoteURL = 'https://pet-adoption-backend2.up.railway.app'
 
-export const appUrl = 'https://pet-adoption-backend-c7kw.onrender.com';
+// export const appUrl = 'https://pet-adoption-backend-c7kw.onrender.com';
+
+export const appUrl = 'https://petadoptionbackend.onrender.com'
 
 // export const appUrl = 'http://localhost:8080';
 
