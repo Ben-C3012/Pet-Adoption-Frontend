@@ -8,14 +8,14 @@ import {
   Button,
   useColorModeValue,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState , useContext } from 'react';
 import { PhoneIcon, AtSignIcon, InfoIcon } from '@chakra-ui/icons'
 import { useNavigate } from 'react-router-dom'
+import { Context } from '../../App'
 
 export default function Settings() {
+  const { loggedIn, isAdmin, user } = useContext(Context)
   const navigate = useNavigate()
-
   const handleHomePage = () => navigate('/main')
   const handleEditProfile = () => navigate('/userProfileEdit')
 
@@ -25,22 +25,14 @@ export default function Settings() {
   const [bio, setBio] = useState('')
 
   useEffect(() => {
-    axios({
-      method: 'POST',
-      url: 'http://localhost:8080/api/v1/users/isloggedin',
-      withCredentials: true
-    })
-      .then(res => {
-        console.log(res.data.user)
-        const { name, email, phoneNumber, bio } = res.data.user
-        setEmail(email)
-        setName(name)
-        setPhoneNumber(phoneNumber)
-        setBio(bio)
-
-      })
-      .catch(err => console.log(err.message))
-  }, [])
+    if (user) {
+      const { name, email, phoneNumber, bio } = user
+      setEmail(email)
+      setName(name)
+      setPhoneNumber(phoneNumber)
+      setBio(bio)
+    }
+  } , [])
 
   return (
     <Center py={6}>

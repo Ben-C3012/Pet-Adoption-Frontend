@@ -13,12 +13,14 @@ import {
     Center,
 } from '@chakra-ui/react';
 import ResetPasswordForm from './ResetPasswordForm';
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useNavigate} from 'react-router-dom';
+import { useState, useEffect, useRef , useContext } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import { Context } from '../../App';
 
 export default function UserProfileEdit() {
+    const { user , setUser } = useContext(Context)
     const inputRef = useRef(null);
     const navigate = useNavigate()
     const backToUserInfo = () => navigate('/settings')
@@ -46,30 +48,24 @@ export default function UserProfileEdit() {
             },
             withCredentials: true
         })
-            .then(res => navigate('/settings'))
+            .then(res => {
+                setUser(res.data.data.user)
+                navigate('/settings')
+                toast.success('Profile Updated Successfully')
+            })
             .catch(err => console.log(err))
     }
 
     useEffect(() => {
-        axios({
-            method: 'POST',
-            url: 'http://localhost:8080/api/v1/users/isloggedin',
-            withCredentials: true
-        })
-
-            .then(res => {
-                console.log(res.data.user)
-                const { photo, name, email, phoneNumber, bio } = res.data.user
-                setPhoto(photo)
-                setEmail(email)
-                setName(name)
-                setPhoneNumber(phoneNumber)
-                setBio(bio)
-
-            })
-
-            .catch(err => console.log(err.message))
-    }, [])
+        if (user) {
+            const { photo, name, email, phoneNumber, bio } = user
+            setPhoto(photo)
+            setEmail(email)
+            setName(name)
+            setPhoneNumber(phoneNumber)
+            setBio(bio)
+        }
+    }, [user])
 
     // Hanlde File input
     const handleClick = () => inputRef.current.click();
@@ -201,13 +197,13 @@ export default function UserProfileEdit() {
 
                     <ResetPasswordForm />
 
-                    <ToastContainer />
+                    <ToastContainer /> 
 
 
                 </Stack>
             </Stack>
 
-
+  
             
         </Flex>
     );

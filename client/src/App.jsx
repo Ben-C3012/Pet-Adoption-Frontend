@@ -7,7 +7,6 @@ import Pet from './components/pages/Pets/Pet';
 import { useState, useEffect } from 'react'
 import Main from './components/LoggedInUser/Main';
 import { createContext } from 'react';
-import axios from 'axios';
 import Settings from './components/LoggedInUser/Settings';
 import UserProfileEdit from './components/LoggedInUser/UserProfileEdit';
 import MyPets from './components/LoggedInUser/MyPets';
@@ -26,13 +25,25 @@ function App() {
   const [loggedIn, isLoggedIn] = useState(false)
   const [admin, isAdmin] = useState(false)
 
-  const user = useIsLoggedIn()
+  const [user, setUser] = useIsLoggedIn();
+
+
+  useEffect(() => {
+    if (user) {
+      isLoggedIn(true)
+      if (user.role === 'admin') {
+        isAdmin(true)
+      }
+    }
+  }, [user])
+
+  
 
 
   return (
     <>
 
-      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, user }}>
+      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, user, setUser }}>
 
         <BrowserRouter>
 

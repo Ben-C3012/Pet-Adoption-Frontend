@@ -13,6 +13,7 @@ function useIsLoggedIn() {
         })
         .then(res => {
             console.log(res.data.user)
+            const user = res.data.user
             setUser(res.data.user)
         })
         .catch(err => {
@@ -20,7 +21,11 @@ function useIsLoggedIn() {
         });
     }, []);
 
-    return user;
+    return [user, setUser];
 }
 
 export default useIsLoggedIn;
+
+function setUser() {
+    // export setUser
+}

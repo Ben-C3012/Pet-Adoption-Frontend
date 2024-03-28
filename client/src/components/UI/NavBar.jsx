@@ -3,7 +3,6 @@ import {
     Box,
     Flex,
     Avatar,
-    Link,
     Button,
     Menu,
     MenuButton,
@@ -25,20 +24,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const NavLink = ({ children }) => (
-    <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'underline',
-            bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-        href={'#'}>
-        {children}
-    </Link>
-);
-
 export default function NavBar() {
     const navigate = useNavigate()
     const [name, setName] = useState('')
@@ -46,42 +31,35 @@ export default function NavBar() {
     const { colorMode, toggleColorMode } = useColorMode();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const value = useContext(Context);
-    const { loggedIn, isLoggedIn, admin, isAdmin } = value
+    const { user, loggedIn, isLoggedIn, admin, isAdmin } = value
 
-    const handleAcountSettings = () => navigate('/settings')
 
-    const handleLogOut = () => {
-        axios({
-            method: 'GET',
-            url: 'http://localhost:8080/api/v1/users/logout',
-            withCredentials: true
-        })
+    const handleLogOut = async () => {
+        try {
+            const res = await axios({
+                method: 'GET',
+                url: 'http://localhost:8080/api/v1/users/logout',
+                withCredentials: true
+            });
 
-            .then(res => {
-                isLoggedIn(false)
-                navigate('/')
-                window.location.reload()
-            })
-            .catch(err => console.log(err.message))
+            isLoggedIn(false);
+            navigate('/');
+            window.location.reload();
+        } catch (err) {
+            console.log(err.message);
+        }
     }
 
     useEffect(() => {
-        axios({
-            method: 'POST',
-            url: 'http://localhost:8080/api/v1/users/isloggedin',
-            withCredentials: true
-        })
+        if (user) {
+            setName(user.name);
+            setPhoto(user.photo)
+        }
 
-            .then(res => {
-                const { name, photo, role } = res.data.user
-                if (role === 'admin') isAdmin(true)
-                setName(name)
-                setPhoto(photo)
+    },[])
 
-            })
-            .catch(err => console.log(err.message))
-    }, [])
-
+    // Navigation
+    const handleAcountSettings = () => navigate('/settings')
     const handleYourPetsClick = () => navigate('/myPets')
     const handleAddPetClick = () => navigate('/addPet')
     const handleDashboaredClick = () => navigate('/dashboared')
