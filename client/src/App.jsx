@@ -17,6 +17,7 @@ import Dashboared from './components/AdminPages/Dashboared';
 import RequireAuth from './components/pages/RequireAuth';
 import RequireAdmin from './components/pages/RequireAdmin';
 import Social from './components/pages/Social/Social';
+import useIsLoggedIn from './isLoogedIn';
 export const Context = createContext('Default Value');
 
 function App() {
@@ -24,24 +25,9 @@ function App() {
   // Check if Logged in 
   const [loggedIn, isLoggedIn] = useState(false)
   const [admin, isAdmin] = useState(false)
-  const [user, setUser] = useState('')
 
+  const user = useIsLoggedIn()
 
-  useEffect(() => {
-    axios({
-      method: 'POST',
-      url: 'http://localhost:8080/api/v1/users/isloggedin',
-      withCredentials: true
-    })
-
-      .then(res => {
-        isLoggedIn(true)
-        console.log(res.data.user)
-        setUser(res.data.user)
-
-      })
-      .catch(err => console.log(err.message))
-  }, [])
 
   return (
     <>

@@ -7,28 +7,26 @@ import {
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Context } from '../../App';
+
 
 export default function SplitScreen() {
+    const { user } = useContext(Context)
     const navigate = useNavigate()
     const [name, setName] = useState('')
 
+    console.log('User:', user ? user.name : 'User not logged in');
+
     useEffect(() => {
-        const res = axios({
-            method: 'POST',
-            url: 'http://localhost:8080/api/v1/users/isloggedin',
-            withCredentials: true
-        })
+        if (user) {
+            setName(user.name);
+        }
+    }, [user]);
 
-            .then(res => setName(res.data.user.name))
-    }, [])
-
-    const handleSearchClick = () =>  navigate('/pets', { replace: true })
-    const handleSocialClick = () => navigate('/social')
-    
-
+    const handleSearchClick = () => navigate('/pets', { replace: true })
+ 
     return (
         <Stack minH={'60vh'} direction={{ base: 'column', md: 'row' }}>
 
@@ -77,8 +75,6 @@ export default function SplitScreen() {
                             Search For Pets
                         </Button>
 
-                        {/* <Button onClick={handleSocialClick} rounded={'full'}>Social</Button> */}
-
                     </Stack>
                 </Stack>
             </Flex>
@@ -92,7 +88,7 @@ export default function SplitScreen() {
                         'https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/Dog_re_fijp.svg'
                     }
                 />
-                
+
             </Flex>
         </Stack>
     );
