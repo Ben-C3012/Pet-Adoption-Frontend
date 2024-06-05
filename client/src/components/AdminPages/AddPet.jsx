@@ -68,6 +68,21 @@ export default function AddPet() {
     };
 
     const handleFormSubmit = async () => {
+
+        setSpinner(true)
+        toast({
+            title: 'Feature Disabled!',
+            description: 'Feature Disabled For Security Purposes',
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+        })
+
+        setSpinner(false)
+
+        return
+
+
         setSpinner(true)
         formik.values.photo = photo
         try {
@@ -119,7 +134,7 @@ export default function AddPet() {
                     </Heading>
 
                 </Stack>
-                
+
                 <Box
                     rounded={'lg'}
                     bg={useColorModeValue('white', 'gray.700')}

@@ -54,10 +54,8 @@ export default function Pet() {
                 const data = res.data.data.pet
                 setPetName(res.data.data.pet.name)
                 setPet(data)
-                console.log(data.adoptionStatus)
                 if (data.adoptionStatus == 'Fostered') setTaken(true)
                 if (data.adoptionStatus == 'Adopted') setTaken(true)
-                console.log('Taken', taken)
             })
             .catch(err => console.log(err))
 
@@ -79,7 +77,6 @@ export default function Pet() {
                 // Check if the user is the current owner of the pet
                 const findIfUserOwnsPet = currentPets.find(pet => pet._id === petId)
                 if (findIfUserOwnsPet) setIsOwner(true)
-                console.log('isOwner', isOwner)
                 if (findIfUserOwnsPet) setAdopted(true)
                 if (taken && !isOwner) toast('This Pet Is Taken!')
             })

@@ -80,7 +80,8 @@ export default function NavBar() {
             <Box bg={useColorModeValue('teal.400', 'gray.900')} px={4}>
                 <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
                     <Box>
-                        <Text cursor={'pointer'} onClick={HandleHomeClick} color={'white'} mb={2} className='logo' fontSize='3xl'>Pet Adoption</Text>
+                        <Text cursor={'pointer'} onClick={HandleHomeClick} color={'white'} mb={2} className='logo' fontSize='3xl'>Pet Adoption {admin ? 'Admin' : ''}</Text>
+                    
                     </Box>
 
                     <Flex alignItems={'center'}>
