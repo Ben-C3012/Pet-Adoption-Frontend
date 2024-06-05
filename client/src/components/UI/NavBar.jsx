@@ -25,19 +25,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const NavLink = ({ children }) => (
-    <Link
-        px={2}
-        py={1}
-        rounded={'md'}
-        _hover={{
-            textDecoration: 'underline',
-            bg: useColorModeValue('gray.200', 'gray.700'),
-        }}
-        href={'#'}>
-        {children}
-    </Link>
-);
+
 
 export default function NavBar() {
     const navigate = useNavigate()
@@ -85,7 +73,7 @@ export default function NavBar() {
     const handleYourPetsClick = () => navigate('/myPets')
     const handleAddPetClick = () => navigate('/addPet')
     const handleDashboaredClick = () => navigate('/dashboared')
-    const HandleHomeClick = () => loggedIn ? navigate('/main') : navigate('/home')
+    const HandleHomeClick = () => loggedIn ? navigate('/main') : navigate('/')
 
     return (
         <>
