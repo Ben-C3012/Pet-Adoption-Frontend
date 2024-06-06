@@ -2,30 +2,35 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel, Center, Text, useColorModeValu
 import axios from 'axios';
 import SavedPets from './SavedPets'
 import CurrentPets from './CurrentPets';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { BiBone } from 'react-icons/bi'
 import { GiHearts } from 'react-icons/gi'
+import { Context } from '../../App';
 function MyPets() {
+   const { user } = useContext(Context)
 
   const [color, setcolor] = useState(true)
   // Pet Arrays
   const [savedPets, setSavedPets] = useState([])
   const [currentPets, setCurrentPets] = useState([])
 
-  useEffect(() => {
-    axios({
-      method: 'POST',
-      url: 'http://localhost:8080/api/v1/users/isloggedin',
-      withCredentials: true
-    })
+  console.log('current', user.currentPets)
+ console.log('saved', user.savedPets)
 
-      .then(res => {
-        setCurrentPets(res.data.user.currentPets)
-        setSavedPets(res.data.user.savedPets)
-        console.log(currentPets)
-      })
-      .catch(err => console.log(err.message))
-  }, [])
+  // useEffect(() => {
+  //   axios({
+  //     method: 'POST',
+  //     url: 'http://localhost:8080/api/v1/users/isloggedin',
+  //     withCredentials: true
+  //   })
+
+  //     .then(res => {
+  //       setCurrentPets(res.data.user.currentPets)
+  //       setSavedPets(res.data.user.savedPets)
+  //       console.log(currentPets)
+  //     })
+  //     .catch(err => console.log(err.message))
+  // }, [])
 
 
 

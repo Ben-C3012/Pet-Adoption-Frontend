@@ -10,7 +10,6 @@ import {
     MenuList,
     MenuItem,
     MenuDivider,
-    useDisclosure,
     useColorModeValue,
     Stack,
     useColorMode,
@@ -32,7 +31,6 @@ export default function NavBar() {
     const [name, setName] = useState('')
     const [photo, setPhoto] = useState('')
     const { colorMode, toggleColorMode } = useColorMode();
-    const { isOpen, onOpen, onClose } = useDisclosure();
     const value = useContext(Context);
     const { loggedIn, isLoggedIn, admin, isAdmin } = value
 

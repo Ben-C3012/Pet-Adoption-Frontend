@@ -7,28 +7,16 @@ import {
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
+import { Context } from '../../App';
 import { useNavigate } from 'react-router-dom';
 
 export default function SplitScreen() {
+
+    const { user} = useContext(Context)
     const navigate = useNavigate()
-    const [name, setName] = useState('')
-
-    useEffect(() => {
-        const res = axios({
-            method: 'POST',
-            url: 'http://localhost:8080/api/v1/users/isloggedin',
-            withCredentials: true
-        })
-
-            .then(res => setName(res.data.user.name))
-    }, [])
-
     const handleSearchClick = () =>  navigate('/pets', { replace: true })
-    const handleSocialClick = () => navigate('/social')
     
-
     return (
         <Stack minH={'60vh'} direction={{ base: 'column', md: 'row' }}>
 
@@ -51,7 +39,7 @@ export default function SplitScreen() {
                                 bg: 'blue.400',
                                 zIndex: -1,
                             }}>
-                            {name}
+                            {user.name}
                         </Text>
 
                         <br />{' '}
@@ -76,8 +64,6 @@ export default function SplitScreen() {
                             }}>
                             Search For Pets
                         </Button>
-
-                        {/* <Button onClick={handleSocialClick} rounded={'full'}>Social</Button> */}
 
                     </Stack>
                 </Stack>
