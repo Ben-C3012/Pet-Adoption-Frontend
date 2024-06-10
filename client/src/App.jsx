@@ -46,7 +46,7 @@ function App() {
   return (
     <>
 
-      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, user }}>
+      <Context.Provider value={{ loggedIn, isLoggedIn, admin, isAdmin, user , setUser }}>
 
         <BrowserRouter>
 

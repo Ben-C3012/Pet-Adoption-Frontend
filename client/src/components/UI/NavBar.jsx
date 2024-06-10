@@ -3,7 +3,6 @@ import {
     Box,
     Flex,
     Avatar,
-    Link,
     Button,
     Menu,
     MenuButton,
@@ -24,8 +23,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
-
 export default function NavBar() {
     const navigate = useNavigate()
     const [name, setName] = useState('')
@@ -33,6 +30,11 @@ export default function NavBar() {
     const { colorMode, toggleColorMode } = useColorMode();
     const value = useContext(Context);
     const { loggedIn, isLoggedIn, admin, isAdmin } = value
+
+    const handleYourPetsClick = () => navigate('/myPets')
+    const handleAddPetClick = () => navigate('/addPet')
+    const handleDashboaredClick = () => navigate('/dashboared')
+    const HandleHomeClick = () => loggedIn ? navigate('/main') : navigate('/')
 
     const handleAcountSettings = () => navigate('/settings')
 
@@ -68,10 +70,7 @@ export default function NavBar() {
             .catch(err => console.log(err.message))
     }, [])
 
-    const handleYourPetsClick = () => navigate('/myPets')
-    const handleAddPetClick = () => navigate('/addPet')
-    const handleDashboaredClick = () => navigate('/dashboared')
-    const HandleHomeClick = () => loggedIn ? navigate('/main') : navigate('/')
+
 
     return (
         <>

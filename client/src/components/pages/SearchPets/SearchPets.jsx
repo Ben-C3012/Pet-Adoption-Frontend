@@ -1,4 +1,4 @@
-import { useState, useContext, useRef, useEffect } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import {
     Flex,
     Box,
@@ -14,12 +14,15 @@ import {
     useColorModeValue,
     Select,
     Center,
-    Progress
+    Progress,
 } from '@chakra-ui/react';
-import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom'
 import { Context } from '../../../App';
 import PetCard from '../Pets/PetCard';
+import { useForm } from 'react-hook-form'
+import { DevTool } from '@hookform/devtools'
+import { searchAllPetsURL } from '../../../utils/url';
+
 const axios = require('axios').default;
 
 export default function SearchPets() {
@@ -34,183 +37,179 @@ export default function SearchPets() {
 
     const [pets, setPets] = useState([])
     const [spinner, setSpinner] = useState(false)
+    const [isDisabled, setIsDisabled] = useState(false);
 
-    const buttonRef = useRef(null)
+    // react-hook-form
+    const form = useForm()
+    const { register, control, getValues } = form
 
-    const formik = useFormik({
-        initialValues: {
-            type: '',
-            adoptionStatus: '',
-            weight: '',
-            height: '',
-            name: ''
-        }
-    })
-
-    useEffect(() => {
-        localStorage.getItem('pets') && setPets(JSON.parse(localStorage.getItem('pets')))
-    }, [])
-
-    // Basic Search
-    const handleSearch = () => {
-        const dogOrCatSearchString = `${baseURL}/api/v1/pets/?type=${formik.values.type}`
-        const allSearchString = `${baseURL}/api/v1/pets`
-
+    const handleSearch = async () => {
         setSpinner(true)
-        axios.get(formik.values.type === 'All' ? allSearchString : dogOrCatSearchString)
-            .then(res => {
-                const data = res.data.data.pets
-                setPets(data)
-                setSpinner(false)
-                localStorage.setItem('pets', JSON.stringify(data))
-            })
-            .catch(err => console.log(err))
+        const type = getValues('type')
+        if (type === 'All') {
+            const res = await axios.get(searchAllPetsURL)
+            setPets(res.data.data.pets)
+            setSpinner(false)
+            return
+        }
+
+        const res = await axios.get(`${baseURL}/api/v1/pets?type=${type}`)
+        setPets(res.data.data.pets)
+        setSpinner(false)
     }
 
-    //  Advanced Search
-    const handleAdvancedSearch = () => {
+    const handleAdvancedSearch = async () => {
         setSpinner(true)
+        const type = getValues('type');
+        const adoptionStatus = getValues('adoptionStatus');
+        const weight = getValues('weight');
+        const height = getValues('height');
+        const name = getValues('name');
 
-        const type = formik.values.type !== 'All' ? `type=${formik.values.type}` : ''
-        const adoptionStatus = formik.values.adoptionStatus ? `&adoptionStatus=${formik.values.adoptionStatus}` : ''
-        const weight = formik.values.weight ? `&weight=${formik.values.weight}` : ''
-        const height = formik.values.height ? `&height=${formik.values.height}` : ''
-        const name = formik.values.name ? `&name=${formik.values.name}` : ''
 
-        const searchString = `${baseURL}/api/v1/pets?${type}${adoptionStatus}${weight}${height}${name}`
-  
-        console.log(searchString)
-        console.log('Type: ', formik.values.type)
+        const params = { type, adoptionStatus, weight, height, name };
+        const queryString = generateQueryString(params);
+        console.log(queryString);
 
-        axios.get(searchString)
-            .then(res => {
-                setPets(res.data.data.pets)
-                localStorage.setItem('pets', JSON.stringify(res.data.data.pets))
-                setSpinner(false)
-            })
-            .catch(err => console.log(err))
+        const res = await axios.get(`${baseURL}/api/v1/pets?${queryString}`)
+        setPets(res.data.data.pets)
+        setSpinner(false)
+    }
 
+
+    const generateQueryString = (params) => {
+        return Object.keys(params)
+            .filter(key => params[key])
+            .map(key => `${key}=${encodeURIComponent(params[key])}`)
+            .join('&');
     }
 
     return (
 
         <>
+            <FormControl >
+                <Flex
+                    minH={'100vh'}
+                    align={'start'}
+                    justify={'start'}
+                    direction={'column'}
+                    bg={useColorModeValue('gray.50', 'gray.800')}>
+                    <Stack spacing={8} mx={'auto'} maxW={'xl '} width={'xl'} py={12} px={6}>
+                        <Stack align={'center'}>
 
-            <Flex
-                minH={'100vh'}
-                align={'start'}
-                justify={'start'}
-                direction={'column'}
-                bg={useColorModeValue('gray.50', 'gray.800')}>
-                <Stack spacing={8} mx={'auto'} maxW={'xl '} width={'xl'} py={12} px={6}>
-                    <Stack align={'center'}>
+                            <Heading fontSize={'4xl'}>Search For Pets</Heading>
+                            <Text fontSize={'lg'} color={'gray.600'}>
+                                To enjoy all of our cute  <Link color={'blue.400'}>animals</Link> 🐶
+                            </Text>
 
-                        <Heading fontSize={'4xl'}>Search For Pets</Heading>
-                        <Text fontSize={'lg'} color={'gray.600'}>
-                            To enjoy all of our cute  <Link color={'blue.400'}>animals</Link> 🐶
-                        </Text>
-
-                        <Button onClick={handleHome} position={'absolute'} top={'1'} right={'8.6rem'} colorScheme='orange' variant='solid'>
-                            Back To Home
-                        </Button>
-                    </Stack>
-                    <Box
-                        rounded={'lg'}
-                        bg={useColorModeValue('white', 'gray.700')}
-                        boxShadow={'lg'}
-                        p={8}>
+                            <Button onClick={handleHome} position={'absolute'} top={'1'} right={'8.6rem'} colorScheme='orange' variant='solid'>
+                                Back To Home
+                            </Button>
+                        </Stack>
+                        <Box
+                            rounded={'lg'}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            boxShadow={'lg'}
+                            p={8}>
 
 
-                        <Box w={'100%'} h={'1vh'}>
-                            {spinner && <Progress size="xs" isIndeterminate />}
+                            <Box w={'100%'} h={'1vh'}>
+                                {spinner && <Progress size="xs" isIndeterminate />}
+                            </Box>
+
+
+
+                            <Stack spacing={4}>
+
+                                <Checkbox onChange={handleCheckbox}>Advanced Search</Checkbox>
+
+
+                                <FormControl>
+                                    <FormLabel>Type</FormLabel>
+                                    <Select id='type' {...register("type")} >
+                                        <option value='All'>All</option>
+                                        <option value='Dog'>Dog</option>
+                                        <option value='Cat'>Cat</option>
+
+                                    </Select>
+                                </FormControl>
+
+
+                                {checkbox &&
+
+                                    <>
+
+                                        <FormControl>
+                                            <FormLabel>Adoption Status</FormLabel>
+                                            <Select id='adoptionStatus' {...register("adoptionStatus", {
+                                                required: 'This is required'
+                                            })}
+                                                placeholder=' Select Adoption Status'    >
+                                                <option value='Available'>Available</option>
+                                                <option value='Fostered'>Fostered</option>
+                                                <option value='Adopted'>Adopted</option>
+                                            </Select>
+                                        </FormControl>
+
+
+
+                                        <FormControl>
+                                            <FormLabel>Weight</FormLabel>
+                                            <Input {...register('weight')} id='weight' min={0} type={'number'} />
+                                        </FormControl>
+
+                                        <FormControl>
+                                            <FormLabel>Height</FormLabel>
+                                            <Input {...register('height')} id='height' min={0} type={'number'} />
+                                        </FormControl>
+
+
+                                        <FormControl>
+                                            <FormLabel>Name</FormLabel>
+                                            <Input  {...register('name')} id='name' type={'text'} name='name' />
+                                        </FormControl>
+
+                                    </>
+                                }
+
+                                <Stack spacing={10}>
+
+                                    <Button
+                                        onClick={!checkbox ? handleSearch : handleAdvancedSearch}
+                                        bg={'blue.400'}
+                                        color={'white'}
+                                        _hover={{
+                                            bg: 'blue.500',
+                                        }}>
+                                        Search
+                                    </Button>
+
+                                </Stack>
+                            </Stack>
                         </Box>
 
+                    </Stack>
 
+                    <Flex justify={'center'} color='white' w={'100%'} wrap='wrap'>
 
-                        <Stack spacing={4}>
+                        {pets.length === 0 && <Text fontSize={'xl'} color={'gray.600'}>No Pets Found</Text>}
 
-                            <Checkbox onChange={handleCheckbox}>Advanced Search</Checkbox>
+                        {pets && pets.map(pet => {
 
+                            return <Center key={pet._id} w='500px' h={'500px'} >
+                                <PetCard type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
+                                    breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
+                            </Center>
+                        })}
 
-                            <FormControl>
-                                <FormLabel>Type</FormLabel>
-                                <Select onChange={formik.handleChange} value={formik.values.type} name='type' >
-                                    <option value='All'>All</option>
-                                    <option value='Dog'>Dog</option>
-                                    <option value='Cat'>Cat</option>
+                    </Flex>
 
-                                </Select>
-                            </FormControl>
+                    <DevTool control={control} />
 
-
-                            {checkbox &&
-
-                                <>
-
-                                    <FormControl onChange={formik.handleChange} value={formik.values.adoptionStatus} name='adoptionStatus' >
-                                        <FormLabel>Adoption Status</FormLabel>
-                                        <Select placeholder=' Select Adoption Status' name='adoptionStatus'  >
-                                            <option value='Available'>Available</option>
-                                            <option value='Fostered'>Fostered</option>
-                                            <option value='Adopted'>Adopted</option>
-                                        </Select>
-                                    </FormControl>
-
-
-
-                                    <FormControl>
-                                        <FormLabel>Weight</FormLabel>
-                                        <Input onChange={formik.handleChange} value={formik.values.weight} min={0} type={'number'} name={'weight'} />
-                                    </FormControl>
-
-                                    <FormControl>
-                                        <FormLabel>Height</FormLabel>
-                                        <Input onChange={formik.handleChange} value={formik.values.height} min={0} type={'number'} name={'height'} />
-                                    </FormControl>
-
-
-                                    <FormControl>
-                                        <FormLabel>Name</FormLabel>
-                                        <Input onChange={formik.handleChange} value={formik.values.name} type={'text'} name='name' />
-                                    </FormControl>
-
-                                </>
-                            }
-
-                            <Stack spacing={10}>
-
-                                <Button
-                                    onClick={!checkbox ? handleSearch : handleAdvancedSearch}
-                                    bg={'blue.400'}
-                                    color={'white'}
-                                    _hover={{
-                                        bg: 'blue.500',
-                                    }}>
-                                    Search
-                                </Button>
-
-                            </Stack>
-                        </Stack>
-                    </Box>
-
-                </Stack>
-
-                <Flex justify={'center'} color='white' w={'100%'} wrap='wrap'>
-
-                    {pets.length === 0 && <Text fontSize={'xl'} color={'gray.600'}>No Pets Found</Text>}
-
-                    {pets && pets.map(pet => {
-
-                        return <Center key={pet._id} w='500px' h={'500px'} >
-                            <PetCard type={pet.type} petName={pet.name} adoptionStatus={pet.adoptionStatus} bio={pet.bio}
-                                breed={pet.breed} color={pet.color} dietaryRestrictions={pet.dietaryRestrictions} picture={pet.photo} id={pet._id} />
-                        </Center>
-                    })}
 
                 </Flex>
 
-
-            </Flex>
+            </FormControl>
 
         </>
 
